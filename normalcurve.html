@@ -1,0 +1,610 @@
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+
+const NormalDistributionExplorer = () => {
+  const [mean, setMean] = useState(0);
+  const [stdDev, setStdDev] = useState(1);
+  const [rawScore, setRawScore] = useState(0);
+  const [showEmpiricalRule, setShowEmpiricalRule] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [focusedElement, setFocusedElement] = useState(null);
+  
+  // Refs for keyboard navigation
+  const chartRef = useRef(null);
+  const liveRegionRef = useRef(null);
+  const empiricalRegionRefs = useRef([]);
+
+  // Calculate z-score
+  const zScore = useMemo(() => {
+    if (stdDev === 0) return 0;
+    return (rawScore - mean) / stdDev;
+  }, [rawScore, mean, stdDev]);
+
+  // Standard normal cumulative distribution function (approximation)
+  const standardNormalCDF = (z) => {
+    const t = 1.0 / (1.0 + 0.2316419 * Math.abs(z));
+    const d = 0.3989423 * Math.exp(-z * z / 2.0);
+    let prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    
+    if (z > 0.0) {
+      prob = 1.0 - prob;
+    }
+    
+    return prob;
+  };
+
+  // Calculate tail probabilities
+  const tailProbabilities = useMemo(() => {
+    const leftTail = standardNormalCDF(zScore);
+    const rightTail = 1 - leftTail;
+    
+    return {
+      leftTail: leftTail,
+      rightTail: rightTail,
+      leftTailPercent: (leftTail * 100).toFixed(2),
+      rightTailPercent: (rightTail * 100).toFixed(2)
+    };
+  }, [zScore]);
+
+  // Normal distribution probability density function
+  const normalPDF = (x, mu, sigma) => {
+    return (1 / (sigma * Math.sqrt(2 * Math.PI))) * 
+           Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));
+  };
+
+  // Generate curve points
+  const curvePoints = useMemo(() => {
+    const points = [];
+    const range = 4 * stdDev;
+    const start = mean - range;
+    const end = mean + range;
+    const step = (end - start) / 200;
+    
+    for (let x = start; x <= end; x += step) {
+      const y = normalPDF(x, mean, stdDev);
+      points.push({ x, y });
+    }
+    return points;
+  }, [mean, stdDev]);
+
+  // Calculate empirical rule percentages
+  const empiricalRuleData = useMemo(() => {
+    return [
+      { 
+        range: '68%', 
+        bounds: [mean - stdDev, mean + stdDev], 
+        color: 'rgba(59, 130, 246, 0.3)',
+        description: 'Within 1 standard deviation',
+        id: 'empirical-1-sigma'
+      },
+      { 
+        range: '95%', 
+        bounds: [mean - 2*stdDev, mean + 2*stdDev], 
+        color: 'rgba(16, 185, 129, 0.2)',
+        description: 'Within 2 standard deviations',
+        id: 'empirical-2-sigma'
+      },
+      { 
+        range: '99.7%', 
+        bounds: [mean - 3*stdDev, mean + 3*stdDev], 
+        color: 'rgba(245, 158, 11, 0.15)',
+        description: 'Within 3 standard deviations',
+        id: 'empirical-3-sigma'
+      }
+    ];
+  }, [mean, stdDev]);
+
+  // SVG dimensions
+  const width = 600;
+  const height = 300;
+  const margin = { top: 20, right: 50, bottom: 50, left: 50 };
+  const plotWidth = width - margin.left - margin.right;
+  const plotHeight = height - margin.top - margin.bottom;
+
+  // Scale functions
+  const xMin = mean - 4 * stdDev;
+  const xMax = mean + 4 * stdDev;
+  const yMax = Math.max(...curvePoints.map(p => p.y));
+  
+  const xScale = (x) => ((x - xMin) / (xMax - xMin)) * plotWidth;
+  const yScale = (y) => plotHeight - ((y / yMax) * plotHeight);
+
+  // Create path for the curve
+  const curvePath = curvePoints.map((point, i) => 
+    `${i === 0 ? 'M' : 'L'} ${xScale(point.x)} ${yScale(point.y)}`
+  ).join(' ');
+
+  // Create filled areas for empirical rule
+  const createFilledArea = (bounds) => {
+    const filteredPoints = curvePoints.filter(p => p.x >= bounds[0] && p.x <= bounds[1]);
+    if (filteredPoints.length === 0) return '';
+    
+    let path = `M ${xScale(bounds[0])} ${yScale(0)}`;
+    filteredPoints.forEach(point => {
+      path += ` L ${xScale(point.x)} ${yScale(point.y)}`;
+    });
+    path += ` L ${xScale(bounds[1])} ${yScale(0)} Z`;
+    return path;
+  };
+
+  // Announce changes to screen readers
+  const announceChange = (message) => {
+    if (liveRegionRef.current) {
+      liveRegionRef.current.textContent = message;
+    }
+  };
+
+  // Handle parameter changes with announcements
+  const handleMeanChange = (value) => {
+    setMean(value);
+    announceChange(`Mean changed to ${value}. Z-score is now ${((rawScore - value) / stdDev).toFixed(3)}`);
+  };
+
+  const handleStdDevChange = (value) => {
+    setStdDev(value);
+    announceChange(`Standard deviation changed to ${value}. Z-score is now ${((rawScore - mean) / value).toFixed(3)}`);
+  };
+
+  const handleRawScoreChange = (value) => {
+    setRawScore(value);
+    const newZScore = ((value - mean) / stdDev).toFixed(3);
+    const leftTail = (standardNormalCDF((value - mean) / stdDev) * 100).toFixed(2);
+    const rightTail = (100 - leftTail).toFixed(2);
+    announceChange(`Raw score changed to ${value}. Z-score is ${newZScore}. Left tail probability is ${leftTail}%, right tail probability is ${rightTail}%`);
+  };
+
+  // Keyboard navigation for empirical rule regions
+  const handleRegionKeyDown = (event, index) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      setSelectedRegion(selectedRegion === index ? null : index);
+      const region = empiricalRuleData[index];
+      announceChange(`${selectedRegion === index ? 'Deselected' : 'Selected'} ${region.range} region: ${region.description}`);
+    }
+  };
+
+  // Generate chart description for screen readers
+  const chartDescription = useMemo(() => {
+    const empiricalText = showEmpiricalRule ? 
+      `Empirical rule regions are visible showing 68%, 95%, and 99.7% of data within 1, 2, and 3 standard deviations respectively.` : '';
+    
+    return `Normal distribution curve with mean ${mean} and standard deviation ${stdDev}. ` +
+           `Raw score marker at ${rawScore.toFixed(1)} with z-score ${zScore.toFixed(3)}. ` +
+           `Left tail (red shaded area) contains ${tailProbabilities.leftTailPercent}% of data. ` +
+           `Right tail (green shaded area) contains ${tailProbabilities.rightTailPercent}% of data. ` +
+           empiricalText;
+  }, [mean, stdDev, rawScore, zScore, tailProbabilities, showEmpiricalRule]);
+
+  return (
+    <div className="p-6 max-w-7xl mx-auto bg-white">
+      {/* Skip Navigation */}
+      <a 
+        href="#main-controls" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-50"
+      >
+        Skip to main controls
+      </a>
+      
+      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
+        Interactive Normal Distribution Explorer
+      </h1>
+      
+      {/* Live Region for Screen Reader Announcements */}
+      <div 
+        ref={liveRegionRef}
+        aria-live="polite" 
+        aria-atomic="true" 
+        className="sr-only"
+      ></div>
+      
+      {/* Instructions */}
+      <div className="mb-8 bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+        <h2 className="font-semibold text-blue-800 mb-2">How to Use:</h2>
+        <ul className="text-sm text-blue-700 space-y-1" role="list">
+          <li>• Adjust sliders to see real-time changes in the curve</li>
+          <li>• Red shaded area represents left tail probability (values less than or equal to raw score)</li>
+          <li>• Green shaded area represents right tail probability (values greater than or equal to raw score)</li>
+          <li>• Toggle empirical rule checkbox to show 68-95-99.7 rule regions</li>
+          <li>• Use Tab key to navigate, Enter or Space to activate buttons and checkboxes</li>
+          <li>• Screen readers will announce changes as you adjust parameters</li>
+        </ul>
+      </div>
+      
+      {/* Two Column Layout */}
+      <div className="grid grid-cols-2 gap-8">
+        
+        {/* Left Column - Controls */}
+        <div className="space-y-6" id="main-controls">
+          
+          {/* Distribution Parameters */}
+          <fieldset className="space-y-4 border-2 border-gray-200 p-4 rounded-lg">
+            <legend className="text-xl font-semibold text-gray-700 px-2">Distribution Parameters</legend>
+            
+            <div>
+              <label 
+                htmlFor="mean-slider" 
+                className="block text-sm font-medium text-gray-600 mb-2"
+              >
+                Mean (μ): {mean}
+              </label>
+              <input
+                id="mean-slider"
+                type="range"
+                min="-5"
+                max="5"
+                step="0.1"
+                value={mean}
+                onChange={(e) => handleMeanChange(parseFloat(e.target.value))}
+                className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-300"
+                aria-describedby="mean-description"
+              />
+              <div id="mean-description" className="text-xs text-gray-500 mt-1">
+                Adjust the center point of the distribution (range: -5 to 5)
+              </div>
+            </div>
+            
+            <div>
+              <label 
+                htmlFor="stddev-slider" 
+                className="block text-sm font-medium text-gray-600 mb-2"
+              >
+                Standard Deviation (σ): {stdDev}
+              </label>
+              <input
+                id="stddev-slider"
+                type="range"
+                min="0.1"
+                max="3"
+                step="0.1"
+                value={stdDev}
+                onChange={(e) => handleStdDevChange(parseFloat(e.target.value))}
+                className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-300"
+                aria-describedby="stddev-description"
+              />
+              <div id="stddev-description" className="text-xs text-gray-500 mt-1">
+                Adjust the spread of the distribution (range: 0.1 to 3)
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Z-Score Calculator */}
+          <fieldset className="space-y-4 border-2 border-gray-200 p-4 rounded-lg">
+            <legend className="text-xl font-semibold text-gray-700 px-2">Z-Score Calculator</legend>
+            
+            <div>
+              <label 
+                htmlFor="rawscore-slider" 
+                className="block text-sm font-medium text-gray-600 mb-2"
+              >
+                Raw Score (X): {rawScore.toFixed(1)}
+              </label>
+              <input
+                id="rawscore-slider"
+                type="range"
+                min={mean - 4 * stdDev}
+                max={mean + 4 * stdDev}
+                step="0.1"
+                value={rawScore}
+                onChange={(e) => handleRawScoreChange(parseFloat(e.target.value))}
+                className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-300"
+                aria-describedby="rawscore-description"
+              />
+              <div id="rawscore-description" className="text-xs text-gray-500 mt-1">
+                Select a value to see its z-score and tail probabilities
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 p-4 rounded-lg space-y-3 border-2 border-blue-200">
+              <div>
+                <p className="text-lg font-semibold text-blue-800" role="status" aria-live="polite">
+                  Z-Score = {zScore.toFixed(3)}
+                </p>
+                <p className="text-sm text-blue-600">
+                  {zScore > 0 ? `${zScore.toFixed(3)} standard deviations above the mean` : 
+                   zScore < 0 ? `${Math.abs(zScore).toFixed(3)} standard deviations below the mean` :
+                   'Exactly at the mean'}
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="bg-white p-3 rounded border-2 border-red-200">
+                  <p className="text-sm font-medium text-gray-700">
+                    Left Tail (P(X ≤ {rawScore.toFixed(1)}))
+                  </p>
+                  <p className="text-lg font-bold text-red-700" role="status" aria-live="polite">
+                    {tailProbabilities.leftTailPercent}%
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    Probability of values less than or equal to raw score (red shaded area)
+                  </p>
+                </div>
+                
+                <div className="bg-white p-3 rounded border-2 border-green-200">
+                  <p className="text-sm font-medium text-gray-700">
+                    Right Tail (P(X ≥ {rawScore.toFixed(1)}))
+                  </p>
+                  <p className="text-lg font-bold text-green-700" role="status" aria-live="polite">
+                    {tailProbabilities.rightTailPercent}%
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    Probability of values greater than or equal to raw score (green shaded area)
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-white p-2 rounded border text-center">
+                <p className="text-xs text-gray-600">
+                  Verification: {tailProbabilities.leftTailPercent}% + {tailProbabilities.rightTailPercent}% = {(parseFloat(tailProbabilities.leftTailPercent) + parseFloat(tailProbabilities.rightTailPercent)).toFixed(2)}%
+                </p>
+              </div>
+            </div>
+          </fieldset>
+
+          {/* Empirical Rule Toggle */}
+          <fieldset className="border-2 border-gray-200 p-4 rounded-lg">
+            <legend className="text-lg font-semibold text-gray-700 px-2">Display Options</legend>
+            <label className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showEmpiricalRule}
+                onChange={(e) => {
+                  setShowEmpiricalRule(e.target.checked);
+                  announceChange(`Empirical rule regions ${e.target.checked ? 'shown' : 'hidden'}`);
+                }}
+                className="w-5 h-5 text-blue-600 rounded focus:ring-4 focus:ring-blue-300 focus:outline-none"
+                aria-describedby="empirical-rule-description"
+              />
+              <span className="text-lg font-medium text-gray-700">Show Empirical Rule (68-95-99.7)</span>
+            </label>
+            <div id="empirical-rule-description" className="text-xs text-gray-500 mt-2">
+              Toggle to display regions showing 68%, 95%, and 99.7% of data within 1, 2, and 3 standard deviations
+            </div>
+          </fieldset>
+
+          {/* Empirical Rule Legend */}
+          {showEmpiricalRule && (
+            <fieldset className="space-y-3 border-2 border-gray-200 p-4 rounded-lg">
+              <legend className="text-lg font-semibold text-gray-700 px-2">Empirical Rule Regions</legend>
+              {empiricalRuleData.map((region, index) => (
+                <div
+                  key={index}
+                  ref={el => empiricalRegionRefs.current[index] = el}
+                  className={`p-3 rounded-lg border-2 cursor-pointer transition-all focus:outline-none focus:ring-4 focus:ring-blue-300 ${
+                    selectedRegion === index ? 'border-gray-600 shadow-lg ring-2 ring-blue-400' : 'border-gray-300'
+                  }`}
+                  style={{ backgroundColor: region.color }}
+                  onClick={() => {
+                    setSelectedRegion(selectedRegion === index ? null : index);
+                    announceChange(`${selectedRegion === index ? 'Deselected' : 'Selected'} ${region.range} region: ${region.description}`);
+                  }}
+                  onKeyDown={(e) => handleRegionKeyDown(e, index)}
+                  tabIndex="0"
+                  role="button"
+                  aria-pressed={selectedRegion === index}
+                  aria-describedby={`${region.id}-description`}
+                >
+                  <h4 className="font-bold text-base text-gray-800">{region.range}</h4>
+                  <p className="text-sm text-gray-700 mb-1">{region.description}</p>
+                  <p className="text-xs text-gray-600" id={`${region.id}-description`}>
+                    Range: [{(region.bounds[0]).toFixed(2)}, {(region.bounds[1]).toFixed(2)}]
+                  </p>
+                  {selectedRegion === index && (
+                    <p className="text-xs text-gray-800 mt-1 font-medium">
+                      Selected - Press Enter or Space to deselect
+                    </p>
+                  )}
+                </div>
+              ))}
+            </fieldset>
+          )}
+        </div>
+
+        {/* Right Column - Chart */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-gray-700 text-center">Normal Distribution Curve</h2>
+          
+          <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-300">
+            <svg 
+              ref={chartRef}
+              width={width} 
+              height={height} 
+              className="border border-gray-400 bg-white rounded w-full focus:outline-none focus:ring-4 focus:ring-blue-300" 
+              role="img"
+              aria-labelledby="chart-title"
+              aria-describedby="chart-description"
+              tabIndex="0"
+            >
+              <title id="chart-title">Normal Distribution Curve Visualization</title>
+              <desc id="chart-description">{chartDescription}</desc>
+              
+              {/* Left tail shading */}
+              {(() => {
+                const leftTailPoints = curvePoints.filter(p => p.x <= rawScore);
+                if (leftTailPoints.length === 0) return null;
+                
+                let path = `M ${xScale(xMin)} ${yScale(0)}`;
+                leftTailPoints.forEach(point => {
+                  path += ` L ${xScale(point.x)} ${yScale(point.y)}`;
+                });
+                path += ` L ${xScale(rawScore)} ${yScale(0)} Z`;
+                
+                return (
+                  <path
+                    d={path}
+                    fill="rgba(239, 68, 68, 0.3)"
+                    stroke="rgba(239, 68, 68, 0.8)"
+                    strokeWidth="1"
+                    aria-label={`Left tail area representing ${tailProbabilities.leftTailPercent}% probability`}
+                  />
+                );
+              })()}
+              
+              {/* Right tail shading */}
+              {(() => {
+                const rightTailPoints = curvePoints.filter(p => p.x >= rawScore);
+                if (rightTailPoints.length === 0) return null;
+                
+                let path = `M ${xScale(rawScore)} ${yScale(0)}`;
+                rightTailPoints.forEach(point => {
+                  path += ` L ${xScale(point.x)} ${yScale(point.y)}`;
+                });
+                path += ` L ${xScale(xMax)} ${yScale(0)} Z`;
+                
+                return (
+                  <path
+                    d={path}
+                    fill="rgba(34, 197, 94, 0.3)"
+                    stroke="rgba(34, 197, 94, 0.8)"
+                    strokeWidth="1"
+                    aria-label={`Right tail area representing ${tailProbabilities.rightTailPercent}% probability`}
+                  />
+                );
+              })()}
+              
+              {/* Empirical rule regions */}
+              {showEmpiricalRule && empiricalRuleData.map((region, index) => (
+                <path
+                  key={index}
+                  d={createFilledArea(region.bounds)}
+                  fill={region.color}
+                  stroke="rgba(0,0,0,0.2)"
+                  strokeWidth="1"
+                  className="cursor-pointer focus:outline-none"
+                  onClick={() => {
+                    setSelectedRegion(selectedRegion === index ? null : index);
+                    announceChange(`${selectedRegion === index ? 'Deselected' : 'Selected'} ${region.range} region: ${region.description}`);
+                  }}
+                  aria-label={`${region.range} empirical rule region: ${region.description}. Range ${region.bounds[0].toFixed(2)} to ${region.bounds[1].toFixed(2)}. ${selectedRegion === index ? 'Currently selected.' : 'Click to select.'}`}
+                  role="button"
+                  tabIndex="0"
+                  onKeyDown={(e) => handleRegionKeyDown(e, index)}
+                />
+              ))}
+              
+              {/* Main curve */}
+              <path
+                d={curvePath}
+                fill="none"
+                stroke="#1f2937"
+                strokeWidth="3"
+                aria-label="Normal distribution curve"
+              />
+              
+              {/* Raw score line */}
+              <line
+                x1={xScale(rawScore)}
+                y1={yScale(0)}
+                x2={xScale(rawScore)}
+                y2={yScale(normalPDF(rawScore, mean, stdDev))}
+                stroke="#dc2626"
+                strokeWidth="3"
+                strokeDasharray="5,5"
+                aria-label={`Raw score marker at ${rawScore.toFixed(1)}`}
+              />
+              
+              {/* Raw score point */}
+              <circle
+                cx={xScale(rawScore)}
+                cy={yScale(normalPDF(rawScore, mean, stdDev))}
+                r="6"
+                fill="#dc2626"
+                stroke="#ffffff"
+                strokeWidth="2"
+                aria-label={`Raw score point at ${rawScore.toFixed(1)} with z-score ${zScore.toFixed(3)}`}
+              />
+              
+              {/* X-axis */}
+              <line
+                x1={margin.left}
+                y1={height - margin.bottom}
+                x2={width - margin.right}
+                y2={height - margin.bottom}
+                stroke="#374151"
+                strokeWidth="2"
+              />
+              
+              {/* Y-axis */}
+              <line
+                x1={margin.left}
+                y1={margin.top}
+                x2={margin.left}
+                y2={height - margin.bottom}
+                stroke="#374151"
+                strokeWidth="2"
+              />
+              
+              {/* X-axis labels */}
+              {[-3, -2, -1, 0, 1, 2, 3].map(z => {
+                const xVal = mean + z * stdDev;
+                return (
+                  <g key={z}>
+                    <line
+                      x1={xScale(xVal)}
+                      y1={height - margin.bottom}
+                      x2={xScale(xVal)}
+                      y2={height - margin.bottom + 5}
+                      stroke="#374151"
+                      strokeWidth="1"
+                    />
+                    <text
+                      x={xScale(xVal)}
+                      y={height - margin.bottom + 20}
+                      textAnchor="middle"
+                      fontSize="12"
+                      fill="#374151"
+                      fontWeight="bold"
+                    >
+                      {xVal.toFixed(1)}
+                    </text>
+                    <text
+                      x={xScale(xVal)}
+                      y={height - margin.bottom + 35}
+                      textAnchor="middle"
+                      fontSize="10"
+                      fill="#6b7280"
+                    >
+                      z={z}
+                    </text>
+                  </g>
+                );
+              })}
+              
+              {/* Axis labels */}
+              <text
+                x={width / 2}
+                y={height - 5}
+                textAnchor="middle"
+                fontSize="16"
+                fill="#374151"
+                fontWeight="bold"
+              >
+                Value (X)
+              </text>
+              
+              <text
+                x={15}
+                y={height / 2}
+                textAnchor="middle"
+                fontSize="16"
+                fill="#374151"
+                fontWeight="bold"
+                transform={`rotate(-90, 15, ${height / 2})`}
+              >
+                Probability Density
+              </text>
+            </svg>
+          </div>
+          
+          {/* Chart Summary for Screen Readers */}
+          <div className="bg-gray-100 p-3 rounded border">
+            <h3 className="font-semibold text-gray-700 mb-2">Chart Summary</h3>
+            <p className="text-sm text-gray-600" aria-live="polite">
+              {chartDescription}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NormalDistributionExplorer;
