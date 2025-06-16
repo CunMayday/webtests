@@ -3,27 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Word Matching Game</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            color: #333;
         }
-        
-        .hello-text {
-            color: red;
-            font-size: 3rem;
-            font-weight: bold;
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
             text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        .instructions {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+        }
+
+        .game-area {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .words-column, .explanations-column {
+            flex: 1;
+            min-height: 200px;
+        }
+
+        .column-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #2d3748;
+        }
+
+        .word-item {
+            background: #4299e1;
+            color: white;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: grab;
+            user-select: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .word-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .word-item:active {
+            cursor: grabbing;
+        }
+
+        .explanation-item {
+            background: #f7fafc;
+            border: 2px dashed #cbd5e0;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            min-height: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .explanation-item.drag-over {
+            border-color: #4299e1;
+            background: #ebf8ff;
+            transform: scale(1.02);
+        }
+
+        .explanation-item.filled {
+            background: #e6fffa;
+            border-color: #38b2ac;
+            border-style: solid;
+        }
+
+        .explanation-text {
+            font-style: italic;
+            color: #4a5568;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .dropped-word {
+            background: #38b2ac;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 12px 24px;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .submit-btn:hover {
+            background: #38a169;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .submit-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .result.correct {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 2px solid #48bb78;
+        }
+
+        .result.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 2px solid #e53e3e;
+        }
+
+        .reset-btn {
+            display: block;
+            width: 150px;
+            margin: 15px auto 0;
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #5a67d8;
+        }
+
+        @media (max-width: 600px) {
+            .game-area {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="hello-text">Hello World!</div>
+    <div class="container">
+        <h1>🎯 Word Matching Game</h1>
+        <div class="instructions">
+            Drag each word from the left column to match it with its correct explanation on the right!
+        </div>
+        
+        <div class="game-area">
+            <div class="words-column">
+                <div class="column-title">Words</div>
+                <div class="word-item" draggable="true" data-word="PG">PG</div>
+                <div class="word-item" draggable="true" data-word="DBA">DBA</div>
+            </div>
+            
+            <div class="explanations-column">
+                <div class="column-title">Explanations</div>
+                <div class="explanation-item" data-explanation="purdue global">
+                    <div class="explanation-text">Purdue Global</div>
+                    <div class="drop-zone"></div>
+                </div>
+                <div class="explanation-item" data-explanation="doctorate in business administration">
+                    <div class="explanation-text">Doctorate in Business Administration</div>
+                    <div class="drop-zone"></div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="submit-btn" onclick="checkAnswers()">Submit Answers</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const correctMatches = {
+            'PG': 'purdue global',
+            'DBA': 'doctorate in business administration'
+        };
+
+        let userMatches = {};
+
+        // Drag and drop functionality
+        document.querySelectorAll('.word-item').forEach(word => {
+            word.addEventListener('dragstart', handleDragStart);
+        });
+
+        document.querySelectorAll('.explanation-item').forEach(explanation => {
+            explanation.addEventListener('dragover', handleDragOver);
+            explanation.addEventListener('drop', handleDrop);
+            explanation.addEventListener('dragenter', handleDragEnter);
+            explanation.addEventListener('dragleave', handleDragLeave);
+        });
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.word);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            
+            const word = e.dataTransfer.getData('text/plain');
+            const explanation = e.currentTarget.dataset.explanation;
+            const dropZone = e.currentTarget.querySelector('.drop-zone');
+            
+            // Clear any existing word in this explanation
+            dropZone.innerHTML = '';
+            
+            // Remove this word from any other explanations
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                if (zone !== dropZone && zone.innerHTML.includes(word)) {
+                    zone.innerHTML = '';
+                    zone.parentElement.classList.remove('filled');
+                }
+            });
+            
+            // Add the word to this explanation
+            dropZone.innerHTML = `<div class="dropped-word">${word}</div>`;
+            e.currentTarget.classList.add('filled');
+            
+            // Update user matches
+            userMatches[word] = explanation;
+            
+            // Clear result when user makes changes
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function checkAnswers() {
+            const resultDiv = document.getElementById('result');
+            let allCorrect = true;
+            let matchCount = 0;
+
+            // Check if all words are matched
+            for (let word in correctMatches) {
+                if (userMatches[word]) {
+                    matchCount++;
+                    if (userMatches[word] !== correctMatches[word]) {
+                        allCorrect = false;
+                    }
+                } else {
+                    allCorrect = false;
+                }
+            }
+
+            if (matchCount === 0) {
+                resultDiv.innerHTML = '<div class="result">Please match the words with their explanations first!</div>';
+                return;
+            }
+
+            if (allCorrect && matchCount === Object.keys(correctMatches).length) {
+                resultDiv.innerHTML = `
+                    <div class="result correct">
+                        🎉 Excellent! All matches are correct!
+                        <button class="reset-btn" onclick="resetGame()">Play Again</button>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="result incorrect">
+                        ❌ Not quite right. Try again!<br>
+                        <small>Make sure each word is matched with its correct explanation.</small>
+                        <button class="reset-btn" onclick="resetGame()">Reset Game</button>
+                    </div>
+                `;
+            }
+        }
+
+        function resetGame() {
+            // Clear all matches
+            userMatches = {};
+            
+            // Clear all drop zones
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.innerHTML = '';
+                zone.parentElement.classList.remove('filled');
+            });
+            
+            // Clear result
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
 </body>
 </html>
