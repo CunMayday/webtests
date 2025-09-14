@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TV Movie Ratings Case Study (g-1)</title>
+  <title>TV Movie Ratings Case Study (g-1.2)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.8.3/simple-statistics.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.5/jstat.min.js"></script>
   <style>
@@ -687,7 +687,7 @@ function formatP(p, sig = 3) {
             <td class="numeric">${fit.beta[i].toFixed(3)}</td>
             <td class="numeric">${fit.se[i].toFixed(3)}</td>
             <td class="numeric">${t.toFixed(2)}</td>
-            <td class="numeric">${(Math.max(0, Math.min(1, p))).toExponential(2)}</td>
+            <td class="numeric">${pStr}</td>
           </tr>`;
         }).join('');
 
