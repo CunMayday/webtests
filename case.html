@@ -92,6 +92,18 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
+        .generation-info {
+            background: #e8f5e8;
+            border: 2px solid #27ae60;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #2d5016;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        /* TABS STYLING */
         .tabs-container {
             margin-top: 30px;
         }
@@ -139,9 +151,200 @@
             display: block;
         }
         
+        .analysis-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .hypothesis-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #9b59b6;
+        }
+        
+        h2 {
+            color: #2980b9;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .hypothesis-section h2 {
+            color: #8e44ad;
+        }
+        
+        .hypothesis-section h3 {
+            color: #8e44ad;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .hypothesis-section th {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .data-display th {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        #dataTable {
+            font-size: 0.9em;
+        }
+        
+        tr:hover {
+            background: #f1f2f6;
+            transition: background 0.3s ease;
+        }
+        
+        .numeric {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+        
+        .variable-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .comparison-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .variable-option, .comparison-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ecf0f1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .variable-option:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .comparison-option:hover {
+            border-color: #9b59b6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(155, 89, 182, 0.2);
+        }
+        
+        .variable-option input[type="checkbox"] {
+            transform: scale(1.3);
+            accent-color: #3498db;
+        }
+        
+        .comparison-option input[type="radio"] {
+            transform: scale(1.3);
+            accent-color: #9b59b6;
+        }
+        
+        .variable-option span, .comparison-option span {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .run-button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 250px;
+        }
+        
+        .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        .run-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .hypothesis-button {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .hypothesis-button:hover {
+            box-shadow: 0 8px 15px rgba(155, 89, 182, 0.4);
+        }
+        
+        .results {
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .selection-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 15px 0;
+            color: #856404;
+            text-align: center;
+            font-weight: 500;
         }
         
         .case-content {
@@ -252,185 +455,6 @@
             border: 2px solid #dc3545;
             color: #721c24;
         }
-        
-        .analysis-section {
-            margin: 30px 0;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #3498db;
-        }
-        
-        .hypothesis-section {
-            margin: 30px 0;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #9b59b6;
-        }
-        
-        h2 {
-            color: #2980b9;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-        }
-        
-        .hypothesis-section h2 {
-            color: #8e44ad;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        
-        th {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .hypothesis-section th {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-        }
-        
-        .data-display th {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        
-        tr:hover {
-            background: #f1f2f6;
-            transition: background 0.3s ease;
-        }
-        
-        .numeric {
-            text-align: right;
-            font-family: 'Courier New', monospace;
-            font-weight: 500;
-        }
-        
-        .variable-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .comparison-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .variable-option, .comparison-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            border: 2px solid #ecf0f1;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .variable-option:hover {
-            border-color: #3498db;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
-        }
-        
-        .comparison-option:hover {
-            border-color: #9b59b6;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(155, 89, 182, 0.2);
-        }
-        
-        .variable-option input[type="checkbox"] {
-            transform: scale(1.3);
-            accent-color: #3498db;
-        }
-        
-        .comparison-option input[type="radio"] {
-            transform: scale(1.3);
-            accent-color: #9b59b6;
-        }
-        
-        .variable-option span, .comparison-option span {
-            font-weight: 500;
-            color: #2c3e50;
-        }
-        
-        .button-container {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0;
-        }
-        
-        .run-button {
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            min-width: 250px;
-        }
-        
-        .run-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(231, 76, 60, 0.4);
-        }
-        
-        .hypothesis-button {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-        }
-        
-        .hypothesis-button:hover {
-            box-shadow: 0 8px 15px rgba(155, 89, 182, 0.4);
-        }
-        
-        .results {
-            display: none;
-            animation: fadeIn 0.8s ease-in;
-        }
-        
-        .selection-info {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 10px;
-            margin: 15px 0;
-            color: #856404;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        #dataTable {
-            font-size: 0.9em;
-        }
     </style>
 </head>
 <body>
@@ -446,9 +470,15 @@
         </div>
         
         <div class="data-controls">
-            <button class="control-button" onclick="generateNewDataset()">🎲 Generate New Dataset</button>
-            <button class="control-button" onclick="toggleDataDisplay()">📊 <span id="dataToggleText">Show Data</span></button>
-            <button class="control-button" onclick="downloadCSV()">💾 Download CSV</button>
+            <button class="control-button" onclick="generateNewDataset()">
+                🎲 Generate New Dataset
+            </button>
+            <button class="control-button" onclick="toggleDataDisplay()">
+                📊 <span id="dataToggleText">Show Data</span>
+            </button>
+            <button class="control-button" onclick="downloadCSV()">
+                💾 Download CSV
+            </button>
         </div>
         
         <div id="dataDisplay" class="data-display" style="display: none;">
@@ -471,6 +501,7 @@
             </div>
         </div>
         
+        <!-- TABBED INTERFACE -->
         <div class="tabs-container">
             <div class="tabs">
                 <button class="tab-button active" onclick="showTab('case-questions')">The Case and the Questions</button>
@@ -478,6 +509,7 @@
                 <button class="tab-button" onclick="showTab('impact-analysis')">Impact Analysis of Various Factors</button>
             </div>
             
+            <!-- TAB 1: THE CASE AND THE QUESTIONS -->
             <div id="case-questions" class="tab-content active">
                 <div class="case-content">
                     <h2 style="color: #27ae60; margin-bottom: 20px;">The Case and the Questions</h2>
@@ -498,7 +530,7 @@
                             </label>
                         </div>
                         <div class="question-submit">
-                            <button class="submit-button" onclick="submitQ1()">Submit Answer</button>
+                            <button class="submit-button" onclick="submitQuestion1()">Submit Answer</button>
                         </div>
                         <div id="q1-feedback" class="feedback" style="display: none;"></div>
                     </div>
@@ -516,58 +548,14 @@
                             </label>
                         </div>
                         <div class="question-submit">
-                            <button class="submit-button" onclick="submitQ2()">Submit Answer</button>
+                            <button class="submit-button" onclick="submitQuestion2()">Submit Answer</button>
                         </div>
                         <div id="q2-feedback" class="feedback" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="question-section">
-                        <h3>Question 3: Which strategy increases ratings more - hiring stars or using reality-based plot-lines?</h3>
-                        <div class="question-options">
-                            <label class="question-option">
-                                <input type="radio" name="q3" value="stars">
-                                <span>Hiring stars increases ratings more than reality-based plot-lines</span>
-                            </label>
-                            <label class="question-option">
-                                <input type="radio" name="q3" value="fact">
-                                <span>Reality-based plot-lines increase ratings more than hiring stars</span>
-                            </label>
-                        </div>
-                        <div class="question-submit">
-                            <button class="submit-button" onclick="submitQ3()">Submit Answer</button>
-                        </div>
-                        <div id="q3-feedback" class="feedback" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="question-section">
-                        <h3>Question 4 [Advanced]: Which single factor should the network prioritize as their primary programming strategy?</h3>
-                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;"><em>Note: Due to two variables being binary (Stars, Fact) and two being continuous ratings (Previous Rating, Competition), additional considerations are necessary to evaluate them against each other.</em></p>
-                        <div class="question-options">
-                            <label class="question-option">
-                                <input type="radio" name="q4" value="stars">
-                                <span>Prioritize hiring stars for shows</span>
-                            </label>
-                            <label class="question-option">
-                                <input type="radio" name="q4" value="fact">
-                                <span>Prioritize reality-based plot-lines</span>
-                            </label>
-                            <label class="question-option">
-                                <input type="radio" name="q4" value="previousRating">
-                                <span>Prioritize pairing with high-rated lead-in shows</span>
-                            </label>
-                            <label class="question-option">
-                                <input type="radio" name="q4" value="competition">
-                                <span>Prioritize counter-programming against weak competition</span>
-                            </label>
-                        </div>
-                        <div class="question-submit">
-                            <button class="submit-button" onclick="submitQ4()">Submit Answer</button>
-                        </div>
-                        <div id="q4-feedback" class="feedback" style="display: none;"></div>
                     </div>
                 </div>
             </div>
             
+            <!-- TAB 2: A/B COMPARISONS -->
             <div id="ab-comparisons" class="tab-content">
                 <div class="hypothesis-section">
                     <h2>A/B Comparison using One-Tailed T-Tests</h2>
@@ -586,13 +574,16 @@
                     </div>
                     
                     <div class="button-container">
-                        <button class="run-button hypothesis-button" onclick="runTest()">Run One-Tailed T-Test</button>
+                        <button class="run-button hypothesis-button" onclick="runHypothesisTest()">
+                            Run One-Tailed T-Test
+                        </button>
                     </div>
                 </div>
                 
                 <div id="hypothesis-results" class="results"></div>
             </div>
             
+            <!-- TAB 3: IMPACT ANALYSIS -->
             <div id="impact-analysis" class="tab-content">
                 <div class="analysis-section">
                     <h2>Multiple Linear Regression Analysis</h2>
@@ -622,7 +613,9 @@
                     </div>
                     
                     <div class="button-container">
-                        <button class="run-button" onclick="runRegression()">Run Regression Analysis</button>
+                        <button class="run-button" onclick="runCustomRegression()" id="runButton">
+                            Run Regression Analysis
+                        </button>
                     </div>
                 </div>
                 
@@ -632,7 +625,7 @@
     </div>
 
     <script>
-        // CBC data with let for modification
+        // CBC data from the provided dataset
         let cbcData = [
             {month: 1, rating: 14, fact: 0, stars: 1, previousRating: 8.2, competition: 14.8},
             {month: 2, rating: 11.3, fact: 1, stars: 0, previousRating: 13, competition: 13.2},
@@ -665,19 +658,929 @@
             {month: 5, rating: 11.4, fact: 0, stars: 1, previousRating: 11.2, competition: 16.4},
             {month: 6, rating: 19.1, fact: 1, stars: 0, previousRating: 12.6, competition: 15.4}
         ];
-
+        
         let currentDataInfo = {
             isGenerated: false,
             correlatedFactors: [],
-            targetRSquared: 0
+            rSquaredTarget: 0
         };
 
-        // Helper functions defined first
-        function updateDataDisplay() {
-            const tbody = document.getElementById('dataTableBody');
-            tbody.innerHTML = '';
+        // Variable labels for display
+        const variableLabels = {
+            'fact': 'Fact (Documentary)',
+            'stars': 'Stars (Celebrity Cast)', 
+            'previousRating': 'Previous Rating',
+            'competition': 'Competition Rating'
+        };
+
+        // TAB FUNCTIONALITY
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
             
-            cbcData.forEach(row => {
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+        }
+
+        // Update selection info when checkboxes change
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectionInfo);
+            });
+            updateSelectionInfo(); // Initial update
+            updateDataDisplay(); // Initial data display update
+            
+            // Add event listeners for radio buttons to auto-update results
+            const radioButtons = document.querySelectorAll('input[name="comparison"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // If there are existing hypothesis results, re-run the test automatically
+                    const hypothesisResults = document.getElementById('hypothesis-results');
+                    if (hypothesisResults.style.display === 'block') {
+                        runHypothesisTest();
+                    }
+                });
+            });
+        });
+
+        function updateSelectionInfo() {
+            const selectedVariables = getSelectedVariables();
+            const selectionInfo = document.getElementById('selectionInfo');
+            const runButton = document.getElementById('runButton');
+            
+            if (selectedVariables.length === 0) {
+                selectionInfo.textContent = 'Please select at least one variable';
+                selectionInfo.style.background = '#f8d7da';
+                selectionInfo.style.borderColor = '#dc3545';
+                selectionInfo.style.color = '#721c24';
+                runButton.disabled = true;
+            } else {
+                const variableNames = selectedVariables.map(v => variableLabels[v]);
+                selectionInfo.textContent = `Currently selected: ${variableNames.join(', ')} (${selectedVariables.length} variables)`;
+                selectionInfo.style.background = '#fff3cd';
+                selectionInfo.style.borderColor = '#ffc107';
+                selectionInfo.style.color = '#856404';
+                runButton.disabled = false;
+            }
+        }
+
+        function getSelectedVariables() {
+            const selectedVariables = [];
+            const checkboxes = ['fact', 'stars', 'previousRating', 'competition'];
+            
+            checkboxes.forEach(variable => {
+                if (document.getElementById(variable).checked) {
+                    selectedVariables.push(variable);
+                }
+            });
+            
+            return selectedVariables;
+        }
+
+        function runCustomRegression() {
+            const selectedVariables = getSelectedVariables();
+            
+            if (selectedVariables.length === 0) {
+                alert('Please select at least one variable for the regression analysis.');
+                return;
+            }
+            
+            const modelTitle = `Custom Model (${selectedVariables.map(v => variableLabels[v]).join(', ')})`;
+            runRegression(selectedVariables, modelTitle);
+        }
+
+        function runRegression(variables, modelTitle) {
+            try {
+                // Prepare data for regression
+                const y = cbcData.map(d => d.rating);
+                
+                // Create independent variables matrix based on selected variables
+                const x = cbcData.map(d => {
+                    return variables.map(variable => d[variable]);
+                });
+                
+                // Calculate regression using appropriate method based on number of variables
+                let coefficients = [];
+                let tValues = [];
+                let rSquared = 0;
+                let standardErrors = [];
+                
+                if (variables.length === 1) {
+                    // Simple linear regression for 1 variable
+                    const result = calculateSimpleRegression(x.map(row => row[0]), y, variables[0]);
+                    coefficients = result.coefficients;
+                    rSquared = result.rSquared;
+                    tValues = result.tValues;
+                    standardErrors = result.standardErrors;
+                } else {
+                    // Multiple regression using CORRECTED matrix calculations
+                    const X = x.map(row => [1, ...row]); // Add intercept
+                    const result = calculateMultipleRegressionCorrected(X, y);
+                    coefficients = result.coefficients;
+                    rSquared = result.rSquared;
+                    tValues = result.tValues;
+                    standardErrors = result.standardErrors;
+                }
+                
+                const n = cbcData.length;
+                const yMean = ss.mean(y);
+                
+                // Calculate degrees of freedom and t-critical value
+                const degreesOfFreedom = n - variables.length - 1;
+                const tCritical = getTCritical(degreesOfFreedom, 0.05);
+                
+                // Create results HTML
+                let resultsHTML = `
+                    <div class="analysis-section">
+                        <h2>${modelTitle} - Summary Statistics</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Statistic</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Number of Observations</td>
+                                    <td class="numeric">${n}</td>
+                                </tr>
+                                <tr>
+                                    <td>Number of Variables</td>
+                                    <td class="numeric">${variables.length}</td>
+                                </tr>
+                                <tr>
+                                    <td>Degrees of Freedom</td>
+                                    <td class="numeric">${degreesOfFreedom}</td>
+                                </tr>
+                                <tr>
+                                    <td>T-Critical (α = 0.05)</td>
+                                    <td class="numeric">${tCritical.toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>R-Squared</td>
+                                    <td class="numeric">${rSquared.toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Average Rating</td>
+                                    <td class="numeric">${yMean.toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h2>${modelTitle} - Regression Coefficients</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Coefficient</th>
+                                    <th>Standard Error</th>
+                                    <th>T-Value</th>
+                                    <th>P-Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                // Calculate p-values
+                const pValues = tValues.map(t => calculatePValue(Math.abs(t), degreesOfFreedom));
+                
+                // Add intercept
+                resultsHTML += `
+                    <tr>
+                        <td>Intercept</td>
+                        <td class="numeric">${coefficients[0].toFixed(4)}</td>
+                        <td class="numeric">${standardErrors[0].toFixed(6)}</td>
+                        <td class="numeric">${tValues[0].toFixed(4)}</td>
+                        <td class="numeric">${pValues[0].toFixed(6)}</td>
+                    </tr>
+                `;
+                
+                // Add variable coefficients
+                variables.forEach((variable, i) => {
+                    resultsHTML += `
+                        <tr>
+                            <td>${variableLabels[variable]}</td>
+                            <td class="numeric">${coefficients[i + 1].toFixed(4)}</td>
+                            <td class="numeric">${standardErrors[i + 1].toFixed(6)}</td>
+                            <td class="numeric">${tValues[i + 1].toFixed(4)}</td>
+                            <td class="numeric">${pValues[i + 1].toFixed(6)}</td>
+                        </tr>
+                    `;
+                });
+                
+                resultsHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                // Update results
+                document.getElementById('results').innerHTML = resultsHTML;
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Error running regression analysis: ' + error.message);
+            }
+        }
+
+        // CORRECTED multiple regression function
+        function calculateMultipleRegressionCorrected(X, y) {
+            const n = X.length;
+            const k = X[0].length;
+            const yMean = ss.mean(y);
+            
+            // Step 1: Calculate X'X matrix with higher precision
+            const XtX = [];
+            for (let i = 0; i < k; i++) {
+                XtX[i] = [];
+                for (let j = 0; j < k; j++) {
+                    let sum = 0;
+                    for (let row = 0; row < n; row++) {
+                        sum += X[row][i] * X[row][j];
+                    }
+                    XtX[i][j] = sum;
+                }
+            }
+            
+            // Step 2: Calculate X'y vector
+            const Xty = [];
+            for (let i = 0; i < k; i++) {
+                let sum = 0;
+                for (let row = 0; row < n; row++) {
+                    sum += X[row][i] * y[row];
+                }
+                Xty[i] = sum;
+            }
+            
+            // Step 3: Solve for coefficients using LU decomposition
+            const coefficients = solveLU(XtX, Xty);
+            
+            // Step 4: Calculate predictions and residuals
+            const predictions = X.map(row => {
+                return coefficients.reduce((sum, coef, i) => sum + coef * row[i], 0);
+            });
+            
+            const residuals = y.map((yi, i) => yi - predictions[i]);
+            const residualSumSquares = residuals.reduce((sum, r) => sum + r * r, 0);
+            const totalSumSquares = y.reduce((sum, yi) => sum + Math.pow(yi - yMean, 2), 0);
+            const rSquared = 1 - (residualSumSquares / totalSumSquares);
+            
+            // Step 5: Calculate MSE
+            const degreesOfFreedom = n - k;
+            const mse = residualSumSquares / degreesOfFreedom;
+            
+            // Step 6: Calculate covariance matrix
+            const XtXInv = invertMatrixLU(XtX);
+            if (!XtXInv) {
+                throw new Error('Matrix is singular - cannot calculate standard errors');
+            }
+            
+            // Step 7: Standard errors = sqrt(MSE * diagonal elements of (X'X)^(-1))
+            const standardErrors = [];
+            for (let i = 0; i < k; i++) {
+                standardErrors[i] = Math.sqrt(mse * Math.abs(XtXInv[i][i]));
+            }
+            
+            const tValues = coefficients.map((coef, i) => coef / standardErrors[i]);
+            
+            return { coefficients, rSquared, tValues, standardErrors };
+        }
+        
+        // LU decomposition solver for better numerical stability
+        function solveLU(A, b) {
+            const n = A.length;
+            const L = [];
+            const U = [];
+            
+            // Initialize L and U matrices
+            for (let i = 0; i < n; i++) {
+                L[i] = [];
+                U[i] = [];
+                for (let j = 0; j < n; j++) {
+                    L[i][j] = 0;
+                    U[i][j] = 0;
+                }
+                L[i][i] = 1; // L has 1s on diagonal
+            }
+            
+            // LU decomposition using Doolittle's method
+            for (let i = 0; i < n; i++) {
+                // Upper triangular matrix U
+                for (let j = i; j < n; j++) {
+                    let sum = 0;
+                    for (let k = 0; k < i; k++) {
+                        sum += L[i][k] * U[k][j];
+                    }
+                    U[i][j] = A[i][j] - sum;
+                }
+                
+                // Lower triangular matrix L
+                for (let j = i + 1; j < n; j++) {
+                    let sum = 0;
+                    for (let k = 0; k < i; k++) {
+                        sum += L[j][k] * U[k][i];
+                    }
+                    if (Math.abs(U[i][i]) < 1e-12) {
+                        throw new Error('Matrix is singular in LU decomposition');
+                    }
+                    L[j][i] = (A[j][i] - sum) / U[i][i];
+                }
+            }
+            
+            // Forward substitution: solve Ly = b
+            const y = [];
+            for (let i = 0; i < n; i++) {
+                let sum = 0;
+                for (let j = 0; j < i; j++) {
+                    sum += L[i][j] * y[j];
+                }
+                y[i] = b[i] - sum;
+            }
+            
+            // Backward substitution: solve Ux = y
+            const x = [];
+            for (let i = n - 1; i >= 0; i--) {
+                let sum = 0;
+                for (let j = i + 1; j < n; j++) {
+                    sum += U[i][j] * x[j];
+                }
+                if (Math.abs(U[i][i]) < 1e-12) {
+                    throw new Error('Matrix is singular in back substitution');
+                }
+                x[i] = (y[i] - sum) / U[i][i];
+            }
+            
+            return x;
+        }
+        
+        // Matrix inversion using LU decomposition
+        function invertMatrixLU(matrix) {
+            const n = matrix.length;
+            const identity = [];
+            
+            // Create identity matrix
+            for (let i = 0; i < n; i++) {
+                identity[i] = [];
+                for (let j = 0; j < n; j++) {
+                    identity[i][j] = (i === j) ? 1 : 0;
+                }
+            }
+            
+            // Solve AX = I for each column of the inverse
+            const inverse = [];
+            for (let i = 0; i < n; i++) {
+                inverse[i] = [];
+            }
+            
+            try {
+                for (let col = 0; col < n; col++) {
+                    const column = identity.map(row => row[col]);
+                    const solution = solveLU(matrix, column);
+                    for (let row = 0; row < n; row++) {
+                        inverse[row][col] = solution[row];
+                    }
+                }
+                return inverse;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function calculateSimpleRegression(xValues, y, variableName) {
+            const n = xValues.length;
+            const xMean = ss.mean(xValues);
+            const yMean = ss.mean(y);
+            
+            // Calculate slope and intercept
+            const numerator = xValues.reduce((sum, xi, i) => sum + (xi - xMean) * (y[i] - yMean), 0);
+            const denominator = xValues.reduce((sum, xi) => sum + Math.pow(xi - xMean, 2), 0);
+            const slope = numerator / denominator;
+            const intercept = yMean - slope * xMean;
+            
+            const coefficients = [intercept, slope];
+            
+            // Calculate R-squared
+            const predictions = xValues.map(xi => intercept + slope * xi);
+            const totalSumSquares = y.reduce((sum, yi) => sum + Math.pow(yi - yMean, 2), 0);
+            const residualSumSquares = y.reduce((sum, yi, i) => sum + Math.pow(yi - predictions[i], 2), 0);
+            const rSquared = 1 - (residualSumSquares / totalSumSquares);
+            
+            // Calculate standard errors correctly
+            const mse = residualSumSquares / (n - 2);
+            const sxx = xValues.reduce((sum, xi) => sum + Math.pow(xi - xMean, 2), 0);
+            const seSlope = Math.sqrt(mse / sxx);
+            const seIntercept = Math.sqrt(mse * (1/n + Math.pow(xMean, 2) / sxx));
+            
+            const standardErrors = [seIntercept, seSlope];
+            const tValues = [
+                intercept / seIntercept,
+                slope / seSlope
+            ];
+            
+            return { coefficients, rSquared, tValues, standardErrors };
+        }
+
+        function runHypothesisTest() {
+            try {
+                // Get selected comparison type
+                const selectedComparison = document.querySelector('input[name="comparison"]:checked').value;
+                
+                let group1Data, group2Data, group1Label, group2Label, testTitle, testQuestion;
+                
+                if (selectedComparison === 'stars') {
+                    // Stars comparison - testing if WITH stars > WITHOUT stars
+                    group1Data = cbcData.filter(d => d.stars === 1).map(d => d.rating);
+                    group2Data = cbcData.filter(d => d.stars === 0).map(d => d.rating);
+                    group1Label = 'With Stars';
+                    group2Label = 'Without Stars';
+                    testTitle = 'Movies with Stars vs. Without Stars';
+                    testQuestion = 'Do movies with Stars get better ratings than those without Stars?';
+                } else {
+                    // Fact comparison - testing if FACT-BASED > FICTION
+                    group1Data = cbcData.filter(d => d.fact === 1).map(d => d.rating);
+                    group2Data = cbcData.filter(d => d.fact === 0).map(d => d.rating);
+                    group1Label = 'Fact-based';
+                    group2Label = 'Fiction';
+                    testTitle = 'Fact-based vs. Fiction Movies';
+                    testQuestion = 'Do Fact-based movies get better ratings than Fiction movies?';
+                }
+                
+                // Calculate descriptive statistics
+                const n1 = group1Data.length;
+                const n2 = group2Data.length;
+                const mean1 = ss.mean(group1Data);
+                const mean2 = ss.mean(group2Data);
+                const variance1 = ss.variance(group1Data);
+                const variance2 = ss.variance(group2Data);
+                const std1 = ss.standardDeviation(group1Data);
+                const std2 = ss.standardDeviation(group2Data);
+                
+                // Calculate pooled variance for equal variances t-test
+                const pooledVariance = ((n1 - 1) * variance1 + (n2 - 1) * variance2) / (n1 + n2 - 2);
+                const pooledStd = Math.sqrt(pooledVariance);
+                
+                // Calculate standard error of the difference
+                const standardError = pooledStd * Math.sqrt(1/n1 + 1/n2);
+                
+                // Calculate t-statistic (for one-tailed test: group1 > group2)
+                const tStatistic = (mean1 - mean2) / standardError;
+                
+                // Calculate degrees of freedom and p-value
+                const df = n1 + n2 - 2;
+                const tCriticalOneTailed = getTCriticalOneTailed(df, 0.05);
+                const pValueOneTailed = calculatePValueOneTailed(tStatistic, df);
+                
+                // Create results HTML
+                let hypothesisHTML = `
+                    <div class="hypothesis-section">
+                        <h2>One-Tailed T-Test: ${testTitle}</h2>
+                        <p><strong>Research Question:</strong> ${testQuestion}</p>
+                        <p><strong>Significance Level:</strong> α = 0.05 (one-tailed test, 95% confidence)</p>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Group</th>
+                                    <th>Sample Size</th>
+                                    <th>Mean Rating</th>
+                                    <th>Std Deviation</th>
+                                    <th>Variance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>${group1Label}</td>
+                                    <td class="numeric">${n1}</td>
+                                    <td class="numeric">${mean1.toFixed(4)}</td>
+                                    <td class="numeric">${std1.toFixed(4)}</td>
+                                    <td class="numeric">${variance1.toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>${group2Label}</td>
+                                    <td class="numeric">${n2}</td>
+                                    <td class="numeric">${mean2.toFixed(4)}</td>
+                                    <td class="numeric">${std2.toFixed(4)}</td>
+                                    <td class="numeric">${variance2.toFixed(4)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="hypothesis-section">
+                        <h2>One-Tailed T-Test Results</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Test Statistic</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Difference in Means (${group1Label} - ${group2Label})</td>
+                                    <td class="numeric">${(mean1 - mean2).toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pooled Standard Deviation</td>
+                                    <td class="numeric">${pooledStd.toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Standard Error of Difference</td>
+                                    <td class="numeric">${standardError.toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>T-Statistic</td>
+                                    <td class="numeric">${tStatistic.toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>Degrees of Freedom</td>
+                                    <td class="numeric">${df}</td>
+                                </tr>
+                                <tr>
+                                    <td>T-Critical (α = 0.05, one-tailed)</td>
+                                    <td class="numeric">${tCriticalOneTailed.toFixed(4)}</td>
+                                </tr>
+                                <tr>
+                                    <td>P-Value (one-tailed)</td>
+                                    <td class="numeric">${pValueOneTailed.toFixed(6)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                // Update results
+                document.getElementById('hypothesis-results').innerHTML = hypothesisHTML;
+                document.getElementById('hypothesis-results').style.display = 'block';
+                document.getElementById('hypothesis-results').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Error running hypothesis test. Please try again.');
+            }
+        }
+
+        // Function to calculate t-critical value for one-tailed test
+        function getTCriticalOneTailed(df, alpha) {
+            // T-critical values for α = 0.05 (one-tailed test, 95% confidence)
+            const tTable = {
+                1: 6.314, 2: 2.920, 3: 2.353, 4: 2.132, 5: 2.015,
+                6: 1.943, 7: 1.895, 8: 1.860, 9: 1.833, 10: 1.812,
+                11: 1.796, 12: 1.782, 13: 1.771, 14: 1.761, 15: 1.753,
+                16: 1.746, 17: 1.740, 18: 1.734, 19: 1.729, 20: 1.725,
+                21: 1.721, 22: 1.717, 23: 1.714, 24: 1.711, 25: 1.708,
+                26: 1.706, 27: 1.703, 28: 1.701, 29: 1.699, 30: 1.697
+            };
+            
+            // Return exact value if available, otherwise approximate for larger df
+            if (tTable[df]) {
+                return tTable[df];
+            } else if (df > 30) {
+                return 1.645; // Normal approximation for one-tailed
+            } else {
+                // Linear interpolation
+                const lowerDf = Math.floor(df);
+                const upperDf = Math.ceil(df);
+                if (lowerDf === upperDf) return tTable[lowerDf] || 1.645;
+                
+                const lowerT = tTable[lowerDf] || 1.645;
+                const upperT = tTable[upperDf] || 1.645;
+                return lowerT + (upperT - lowerT) * (df - lowerDf);
+            }
+        }
+
+        // Function to calculate t-critical value for two-tailed test (existing function)
+        function getTCritical(df, alpha) {
+            // T-critical values for α = 0.05 (two-tailed test, 95% confidence)
+            const tTable = {
+                1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571,
+                6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
+                11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131,
+                16: 2.120, 17: 2.110, 18: 2.101, 19: 2.093, 20: 2.086,
+                21: 2.080, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.060,
+                26: 2.056, 27: 2.052, 28: 2.048, 29: 2.045, 30: 2.042
+            };
+            
+            // Return exact value if available, otherwise approximate for larger df
+            if (tTable[df]) {
+                return tTable[df];
+            } else if (df > 30) {
+                return 1.96; // Normal approximation
+            } else {
+                // Linear interpolation
+                const lowerDf = Math.floor(df);
+                const upperDf = Math.ceil(df);
+                if (lowerDf === upperDf) return tTable[lowerDf] || 1.96;
+                
+                const lowerT = tTable[lowerDf] || 1.96;
+                const upperT = tTable[upperDf] || 1.96;
+                return lowerT + (upperT - lowerT) * (df - lowerDf);
+            }
+        }
+
+        // Function to calculate one-tailed p-value
+        function calculatePValueOneTailed(tStat, df) {
+            // Handle edge cases
+            if (Math.abs(tStat) < 1e-10) return 0.5;
+            if (df <= 0) return 0.5;
+            
+            // For large degrees of freedom, use normal approximation
+            if (df >= 100) {
+                const z = tStat;
+                const p = 1 - normalCDF(z);
+                return Math.max(1e-10, Math.min(1.0, p));
+            }
+            
+            // Use more accurate t-distribution calculation
+            const x = df / (df + tStat * tStat);
+            
+            // Calculate incomplete beta function more accurately
+            let betaValue;
+            if (df === 1) {
+                betaValue = 1 - (1 / Math.PI * Math.atan(tStat));
+            } else if (df === 2) {
+                betaValue = (1 - tStat / Math.sqrt(2 + tStat * tStat)) / 2;
+            } else {
+                // More accurate calculation using series expansion
+                betaValue = incompleteBeta(0.5, df / 2.0, x) / 2;
+            }
+            
+            const pValue = Math.max(1e-10, Math.min(1.0, betaValue));
+            return pValue;
+        }
+
+        // Function to calculate p-value for two-tailed t-test with better accuracy (existing function)
+        function calculatePValue(tStat, df) {
+            // Handle edge cases
+            if (Math.abs(tStat) < 1e-10) return 1.0;
+            if (df <= 0) return 0.5;
+            
+            const absTStat = Math.abs(tStat);
+            
+            // For large degrees of freedom, use normal approximation
+            if (df >= 100) {
+                const z = absTStat;
+                const p = 2 * (1 - normalCDF(z));
+                return Math.max(1e-10, Math.min(1.0, p));
+            }
+            
+            // Use more accurate t-distribution calculation
+            const x = df / (df + tStat * tStat);
+            
+            // Calculate incomplete beta function more accurately
+            let betaValue;
+            if (df === 1) {
+                betaValue = 2 / Math.PI * Math.atan(1 / absTStat);
+            } else if (df === 2) {
+                betaValue = absTStat / Math.sqrt(2 + tStat * tStat);
+            } else {
+                // More accurate calculation using series expansion
+                betaValue = incompleteBeta(0.5, df / 2.0, x);
+            }
+            
+            const pValue = Math.max(1e-10, Math.min(1.0, betaValue));
+            return pValue;
+        }
+        
+        // Improved incomplete beta function
+        function incompleteBeta(a, b, x) {
+            if (x <= 0) return 0;
+            if (x >= 1) return 1;
+            if (x > (a + 1) / (a + b + 2)) {
+                return 1 - incompleteBeta(b, a, 1 - x);
+            }
+            
+            // Use continued fraction expansion
+            const lnBeta = logGamma(a) + logGamma(b) - logGamma(a + b);
+            const front = Math.exp(Math.log(x) * a + Math.log(1 - x) * b - lnBeta) / a;
+            
+            let f = 1.0;
+            let c = 1.0;
+            let d = 0.0;
+            
+            for (let i = 1; i <= 100; i++) {
+                const m = Math.floor(i / 2);
+                let numerator, denominator;
+                
+                if (i % 2 === 0) {
+                    numerator = m * (b - m) * x / ((a + 2 * m - 1) * (a + 2 * m));
+                } else {
+                    numerator = -((a + m) * (a + b + m) * x) / ((a + 2 * m) * (a + 2 * m + 1));
+                }
+                
+                d = 1 + numerator * d;
+                if (Math.abs(d) < 1e-30) d = 1e-30;
+                c = 1 + numerator / c;
+                if (Math.abs(c) < 1e-30) c = 1e-30;
+                
+                d = 1.0 / d;
+                const h = d * c;
+                f *= h;
+                
+                if (Math.abs(h - 1.0) < 1e-10) break;
+            }
+            
+            return front * f;
+        }
+
+        // Helper function for normal CDF approximation
+        function normalCDF(x) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2);
+            let prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            
+            if (x > 0) {
+                prob = 1 - prob;
+            }
+            
+            return prob;
+        }
+
+        // Log gamma function approximation (improved)
+        function logGamma(x) {
+            if (x < 12) {
+                return logGamma(x + 1) - Math.log(x);
+            }
+            
+            const c = [76.18009172947146, -86.50532032941677, 24.01409824083091,
+                      -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+            
+            let ser = 1.000000000190015;
+            const xx = x;
+            let y = x;
+            let tmp = x + 5.5;
+            tmp -= (x + 0.5) * Math.log(tmp);
+            
+            for (let j = 0; j <= 5; j++) {
+                ser += c[j] / ++y;
+            }
+            
+            return -tmp + Math.log(2.5066282746310005 * ser / xx);
+        }
+        
+        // DATA GENERATION FUNCTIONS
+        function generateNewDataset() {
+            try {
+                // Step 1: Randomly determine how many factors will be correlated (0-4)
+                const numCorrelatedFactors = Math.floor(Math.random() * 5); // 0 to 4
+                
+                // Step 2: Randomly determine which factors will be correlated
+                const allFactors = ['fact', 'stars', 'previousRating', 'competition'];
+                const correlatedFactors = [];
+                
+                if (numCorrelatedFactors > 0) {
+                    const shuffledFactors = [...allFactors].sort(() => Math.random() - 0.5);
+                    for (let i = 0; i < numCorrelatedFactors; i++) {
+                        correlatedFactors.push(shuffledFactors[i]);
+                    }
+                }
+                
+                // Step 3: Generate target R-squared (0.3 to 0.8 for meaningful relationships)
+                const targetRSquared = numCorrelatedFactors > 0 ? 0.3 + Math.random() * 0.5 : 0.05 + Math.random() * 0.15;
+                
+                // Step 4: Generate data for all 12 months with 2-4 observations each
+                const newData = [];
+                
+                for (let month = 1; month <= 12; month++) {
+                    const observationsThisMonth = 2 + Math.floor(Math.random() * 3); // 2-4 observations
+                    
+                    for (let obs = 0; obs < observationsThisMonth; obs++) {
+                        const dataPoint = generateDataPoint(month, correlatedFactors, targetRSquared);
+                        newData.push(dataPoint);
+                    }
+                }
+                
+                // Update global data
+                cbcData = newData;
+                currentDataInfo = {
+                    isGenerated: true,
+                    correlatedFactors: correlatedFactors,
+                    rSquaredTarget: targetRSquared
+                };
+                
+                // Update UI
+                updateDataDisplay();
+                document.getElementById('observationCount').textContent = cbcData.length;
+                
+                // Clear any existing results
+                document.getElementById('results').style.display = 'none';
+                document.getElementById('hypothesis-results').style.display = 'none';
+                
+                // Reset questions
+                resetQuestions();
+                
+                // Show generation info
+                showGenerationInfo(correlatedFactors, targetRSquared, cbcData.length);
+                
+            } catch (error) {
+                alert('Error generating new dataset. Please try again.');
+            }
+        }
+        
+        function generateDataPoint(month, correlatedFactors, targetRSquared) {
+            // Base ranges from original data
+            const baseRating = 12 + Math.random() * 6; // 12-18 base range
+            
+            // Generate independent variables with realistic ranges
+            const fact = Math.random() < 0.5 ? 1 : 0;
+            const stars = Math.random() < 0.3 ? 1 : 0; // About 30% have stars
+            const previousRating = 5 + Math.random() * 12; // 5-17 range
+            const competition = 12 + Math.random() * 9; // 12-21 range
+            
+            // Calculate rating based on correlations
+            let rating = baseRating;
+            let totalEffect = 0;
+            
+            // Apply effects from correlated factors
+            if (correlatedFactors.includes('fact')) {
+                const factEffect = fact * (1 + Math.random() * 2); // 1-3 point boost
+                rating += factEffect;
+                totalEffect += Math.abs(factEffect);
+            }
+            
+            if (correlatedFactors.includes('stars')) {
+                const starsEffect = stars * (0.5 + Math.random() * 2.5); // 0.5-3 point boost
+                rating += starsEffect;
+                totalEffect += Math.abs(starsEffect);
+            }
+            
+            if (correlatedFactors.includes('previousRating')) {
+                const prevEffect = (previousRating - 11) * (0.1 + Math.random() * 0.3); // 0.1-0.4 coefficient
+                rating += prevEffect;
+                totalEffect += Math.abs(prevEffect);
+            }
+            
+            if (correlatedFactors.includes('competition')) {
+                const compEffect = (competition - 15) * (-0.05 - Math.random() * 0.15); // -0.05 to -0.2 coefficient (negative correlation)
+                rating += compEffect;
+                totalEffect += Math.abs(compEffect);
+            }
+            
+            // Add noise to achieve target R-squared
+            const noiseLevel = totalEffect * Math.sqrt((1 - targetRSquared) / targetRSquared);
+            const noise = (Math.random() - 0.5) * 2 * noiseLevel;
+            rating += noise;
+            
+            // Ensure rating stays within reasonable bounds (8-20)
+            rating = Math.max(8, Math.min(20, rating));
+            
+            return {
+                month: month,
+                rating: Math.round(rating * 10) / 10, // Round to 1 decimal place
+                fact: fact,
+                stars: stars,
+                previousRating: Math.round(previousRating * 10) / 10,
+                competition: Math.round(competition * 10) / 10
+            };
+        }
+        
+        function showGenerationInfo(correlatedFactors, targetRSquared, numObservations) {
+            let infoHTML = `
+                <div class="generation-info">
+                    <strong>New Dataset Generated!</strong><br>
+                    <strong>Observations:</strong> ${numObservations} (across all 12 months)<br>
+                    <strong>Target R²:</strong> ${targetRSquared.toFixed(3)}<br>
+            `;
+            
+            if (correlatedFactors.length > 0) {
+                const factorNames = correlatedFactors.map(f => variableLabels[f]);
+                infoHTML += `<strong>Correlated Factors:</strong> ${factorNames.join(', ')}<br>`;
+            } else {
+                infoHTML += `<strong>Correlated Factors:</strong> None (random data)<br>`;
+            }
+            
+            infoHTML += `</div>`;
+            
+            // Insert after data controls
+            const dataControls = document.querySelector('.data-controls');
+            const existingInfo = document.querySelector('.generation-info');
+            if (existingInfo) {
+                existingInfo.remove();
+            }
+            dataControls.insertAdjacentHTML('afterend', infoHTML);
+        }
+        
+        function updateDataDisplay() {
+            const tableBody = document.getElementById('dataTableBody');
+            tableBody.innerHTML = '';
+            
+            cbcData.forEach((row, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${row.month}</td>
@@ -687,362 +1590,222 @@
                     <td class="numeric">${row.previousRating}</td>
                     <td class="numeric">${row.competition}</td>
                 `;
-                tbody.appendChild(tr);
+                tableBody.appendChild(tr);
             });
         }
-
-        function generateDataPoint(month, correlatedFactors, targetRSquared) {
-            const baseRating = 12 + Math.random() * 6;
-            const fact = Math.random() < 0.5 ? 1 : 0;
-            const stars = Math.random() < 0.3 ? 1 : 0;
-            const previousRating = 5 + Math.random() * 12;
-            const competition = 12 + Math.random() * 9;
-            
-            let rating = baseRating;
-            let totalEffect = 0;
-            
-            if (correlatedFactors.includes('fact')) {
-                const effect = fact * (1 + Math.random() * 2);
-                rating += effect;
-                totalEffect += Math.abs(effect);
-            }
-            
-            if (correlatedFactors.includes('stars')) {
-                const effect = stars * (0.5 + Math.random() * 2.5);
-                rating += effect;
-                totalEffect += Math.abs(effect);
-            }
-            
-            if (correlatedFactors.includes('previousRating')) {
-                const effect = (previousRating - 11) * (0.1 + Math.random() * 0.3);
-                rating += effect;
-                totalEffect += Math.abs(effect);
-            }
-            
-            if (correlatedFactors.includes('competition')) {
-                const effect = (competition - 15) * (-0.05 - Math.random() * 0.15);
-                rating += effect;
-                totalEffect += Math.abs(effect);
-            }
-            
-            const noiseLevel = totalEffect * Math.sqrt((1 - targetRSquared) / targetRSquared);
-            const noise = (Math.random() - 0.5) * 2 * noiseLevel;
-            rating += noise;
-            rating = Math.max(8, Math.min(20, rating));
-            
-            return {
-                month: month,
-                rating: Math.round(rating * 10) / 10,
-                fact: fact,
-                stars: stars,
-                previousRating: Math.round(previousRating * 10) / 10,
-                competition: Math.round(competition * 10) / 10
-            };
-        }
-
-        function resetAllQuestions() {
-            ['q1', 'q2', 'q3', 'q4'].forEach(q => {
-                document.querySelectorAll(`input[name="${q}"]`).forEach(radio => radio.checked = false);
-                document.getElementById(`${q}-feedback`).style.display = 'none';
-            });
-            document.querySelectorAll('.submit-button').forEach(btn => btn.disabled = false);
-        }
-
-        function calculateTStat(group1, group2) {
-            const n1 = group1.length, n2 = group2.length;
-            const mean1 = ss.mean(group1), mean2 = ss.mean(group2);
-            const var1 = ss.variance(group1), var2 = ss.variance(group2);
-            const pooledVar = ((n1-1)*var1 + (n2-1)*var2) / (n1+n2-2);
-            const se = Math.sqrt(pooledVar * (1/n1 + 1/n2));
-            return (mean1 - mean2) / se;
-        }
-
-        function showFeedback(questionId, isCorrect, tStat, tCritical) {
-            const feedback = document.getElementById(`${questionId}-feedback`);
-            feedback.innerHTML = isCorrect ? 
-                `✓ <strong>Correct!</strong> T-statistic: ${tStat.toFixed(3)}, T-critical: ${tCritical}` :
-                `✗ <strong>Incorrect.</strong> T-statistic: ${tStat.toFixed(3)}, T-critical: ${tCritical}`;
-            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-            feedback.style.display = 'block';
-        }
-
-        function getSelected() {
-            return ['fact', 'stars', 'previousRating', 'competition'].filter(v => 
-                document.getElementById(v)?.checked
-            );
-        }
-
-        function updateInfo() {
-            const selected = getSelected();
-            const info = document.getElementById('selectionInfo');
-            const labels = {'fact': 'Fact', 'stars': 'Stars', 'previousRating': 'Previous Rating', 'competition': 'Competition'};
-            
-            if (selected.length === 0) {
-                info.textContent = 'Please select at least one variable';
-                info.style.background = '#f8d7da'; info.style.color = '#721c24';
-            } else {
-                info.textContent = `Selected: ${selected.map(v => labels[v]).join(', ')} (${selected.length} variables)`;
-                info.style.background = '#fff3cd'; info.style.color = '#856404';
-            }
-        }
-
-        // Main functions
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function generateNewDataset() {
-            const numCorrelatedFactors = Math.floor(Math.random() * 5);
-            const allFactors = ['fact', 'stars', 'previousRating', 'competition'];
-            const correlatedFactors = [];
-            
-            if (numCorrelatedFactors > 0) {
-                const shuffled = [...allFactors].sort(() => Math.random() - 0.5);
-                for (let i = 0; i < numCorrelatedFactors; i++) {
-                    correlatedFactors.push(shuffled[i]);
-                }
-            }
-            
-            const targetRSquared = numCorrelatedFactors > 0 ? 0.3 + Math.random() * 0.5 : 0.05 + Math.random() * 0.15;
-            
-            // Clear existing data and generate new
-            cbcData.length = 0;
-            
-            for (let month = 1; month <= 12; month++) {
-                const obsThisMonth = 2 + Math.floor(Math.random() * 3);
-                for (let obs = 0; obs < obsThisMonth; obs++) {
-                    cbcData.push(generateDataPoint(month, correlatedFactors, targetRSquared));
-                }
-            }
-            
-            currentDataInfo = {
-                isGenerated: true,
-                correlatedFactors: correlatedFactors,
-                targetRSquared: targetRSquared
-            };
-            
-            // Update displays
-            updateDataDisplay();
-            document.getElementById('observationCount').textContent = cbcData.length;
-            resetAllQuestions();
-            
-            // Clear any existing results
-            document.getElementById('results').style.display = 'none';
-            document.getElementById('hypothesis-results').style.display = 'none';
-        }
-
+        
         function toggleDataDisplay() {
-            const display = document.getElementById('dataDisplay');
+            const dataDisplay = document.getElementById('dataDisplay');
             const toggleText = document.getElementById('dataToggleText');
             
-            if (display.style.display === 'none') {
-                display.style.display = 'block';
+            if (dataDisplay.style.display === 'none') {
+                dataDisplay.style.display = 'block';
                 toggleText.textContent = 'Hide Data';
                 updateDataDisplay();
             } else {
-                display.style.display = 'none';
+                dataDisplay.style.display = 'none';
                 toggleText.textContent = 'Show Data';
             }
         }
-
+        
         function downloadCSV() {
-            let csv = 'Month,Rating,Fact,Stars,Previous_Rating,Competition\n';
-            cbcData.forEach(row => {
-                csv += `${row.month},${row.rating},${row.fact},${row.stars},${row.previousRating},${row.competition}\n`;
-            });
-            
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            
-            link.href = url;
-            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-            const filename = currentDataInfo.isGenerated ? 
-                `cbc_generated_data_${timestamp}.csv` : 
-                `cbc_original_data_${timestamp}.csv`;
-            link.download = filename;
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        }
-
-        // Question submission functions
-        function submitQ1() {
-            const selected = document.querySelector('input[name="q1"]:checked');
-            if (!selected) { alert('Please select an answer.'); return; }
-            
-            const withStars = cbcData.filter(d => d.stars === 1).map(d => d.rating);
-            const withoutStars = cbcData.filter(d => d.stars === 0).map(d => d.rating);
-            const tStat = calculateTStat(withStars, withoutStars);
-            const isSignificant = tStat > 1.7;
-            const correct = isSignificant ? 'yes' : 'no';
-            
-            showFeedback('q1', selected.value === correct, tStat, 1.7);
-            event.target.disabled = true;
-        }
-
-        function submitQ2() {
-            const selected = document.querySelector('input[name="q2"]:checked');
-            if (!selected) { alert('Please select an answer.'); return; }
-            
-            const factBased = cbcData.filter(d => d.fact === 1).map(d => d.rating);
-            const fiction = cbcData.filter(d => d.fact === 0).map(d => d.rating);
-            const tStat = calculateTStat(factBased, fiction);
-            const isSignificant = tStat > 1.7;
-            const correct = isSignificant ? 'yes' : 'no';
-            
-            showFeedback('q2', selected.value === correct, tStat, 1.7);
-            event.target.disabled = true;
-        }
-
-        function submitQ3() {
-            const selected = document.querySelector('input[name="q3"]:checked');
-            if (!selected) { alert('Please select an answer.'); return; }
-            
-            // Simplified coefficients - in real implementation would calculate from regression
-            const starsCoeff = 0.8;
-            const factCoeff = 1.2;
-            const correct = Math.abs(starsCoeff) > Math.abs(factCoeff) ? 'stars' : 'fact';
-            
-            const feedback = document.getElementById('q3-feedback');
-            const isCorrect = selected.value === correct;
-            feedback.innerHTML = isCorrect ? 
-                `✓ <strong>Correct!</strong> Stars coefficient: ${starsCoeff}, Fact coefficient: ${factCoeff}` :
-                `✗ <strong>Incorrect.</strong> Stars coefficient: ${starsCoeff}, Fact coefficient: ${factCoeff}`;
-            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-            feedback.style.display = 'block';
-            event.target.disabled = true;
-        }
-
-        function submitQ4() {
-            const selected = document.querySelector('input[name="q4"]:checked');
-            if (!selected) { alert('Please select an answer.'); return; }
-            
-            const correct = 'fact'; // Simplified - would be based on full regression analysis
-            const feedback = document.getElementById('q4-feedback');
-            const isCorrect = selected.value === correct;
-            feedback.innerHTML = isCorrect ? 
-                `✓ <strong>Correct!</strong> Based on regression analysis, fact-based content has the largest significant impact.` :
-                `✗ <strong>Incorrect.</strong> Based on regression analysis, fact-based content has the largest significant impact.`;
-            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-            feedback.style.display = 'block';
-            event.target.disabled = true;
-        }
-
-        function runTest() {
-            const selected = document.querySelector('input[name="comparison"]:checked').value;
-            let group1Data, group2Data, group1Label, group2Label, title;
-            
-            if (selected === 'stars') {
-                group1Data = cbcData.filter(d => d.stars === 1).map(d => d.rating);
-                group2Data = cbcData.filter(d => d.stars === 0).map(d => d.rating);
-                group1Label = 'With Stars'; group2Label = 'Without Stars';
-                title = 'Movies with Stars vs. Without Stars';
-            } else {
-                group1Data = cbcData.filter(d => d.fact === 1).map(d => d.rating);
-                group2Data = cbcData.filter(d => d.fact === 0).map(d => d.rating);
-                group1Label = 'Fact-based'; group2Label = 'Fiction';
-                title = 'Fact-based vs. Fiction Movies';
-            }
-            
-            const n1 = group1Data.length, n2 = group2Data.length;
-            const mean1 = ss.mean(group1Data), mean2 = ss.mean(group2Data);
-            const std1 = ss.standardDeviation(group1Data), std2 = ss.standardDeviation(group2Data);
-            const tStat = calculateTStat(group1Data, group2Data);
-            
-            document.getElementById('hypothesis-results').innerHTML = `
-                <div class="hypothesis-section">
-                    <h2>One-Tailed T-Test: ${title}</h2>
-                    <table>
-                        <thead><tr><th>Group</th><th>Size</th><th>Mean</th><th>Std Dev</th></tr></thead>
-                        <tbody>
-                            <tr><td>${group1Label}</td><td class="numeric">${n1}</td><td class="numeric">${mean1.toFixed(3)}</td><td class="numeric">${std1.toFixed(3)}</td></tr>
-                            <tr><td>${group2Label}</td><td class="numeric">${n2}</td><td class="numeric">${mean2.toFixed(3)}</td><td class="numeric">${std2.toFixed(3)}</td></tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <thead><tr><th>Test Statistic</th><th>Value</th></tr></thead>
-                        <tbody>
-                            <tr><td>T-Statistic</td><td class="numeric">${tStat.toFixed(4)}</td></tr>
-                            <tr><td>T-Critical</td><td class="numeric">1.7000</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            document.getElementById('hypothesis-results').style.display = 'block';
-        }
-
-        function runRegression() {
-            const selected = getSelected();
-            if (selected.length === 0) { alert('Select at least one variable.'); return; }
-            
             try {
-                const regression = calculateMultipleRegression(selected);
-                const tCritical = getTCritical(regression.degreesOfFreedom);
+                // Create CSV content
+                let csvContent = 'Month,Rating,Fact,Stars,Previous_Rating,Competition\n';
                 
-                const variableLabels = {
-                    'fact': 'Fact (Documentary)',
-                    'stars': 'Stars (Celebrity Cast)',
-                    'previousRating': 'Previous Rating',
-                    'competition': 'Competition Rating'
-                };
-                
-                let regressionTable = `
-                    <div class="analysis-section">
-                        <h2>Regression Analysis Results</h2>
-                        <table>
-                            <thead><tr><th>Statistic</th><th>Value</th></tr></thead>
-                            <tbody>
-                                <tr><td>Observations</td><td class="numeric">${cbcData.length}</td></tr>
-                                <tr><td>Variables</td><td class="numeric">${selected.length}</td></tr>
-                                <tr><td>Degrees of Freedom</td><td class="numeric">${regression.degreesOfFreedom}</td></tr>
-                                <tr><td>R-Squared</td><td class="numeric">${regression.rSquared.toFixed(4)}</td></tr>
-                                <tr><td>T-Critical (α = 0.05)</td><td class="numeric">${tCritical.toFixed(4)}</td></tr>
-                            </tbody>
-                        </table>
-                        <table>
-                            <thead><tr><th>Variable</th><th>Coefficient</th><th>Std Error</th><th>T-Value</th></tr></thead>
-                            <tbody>
-                                <tr><td>Intercept</td><td class="numeric">${regression.coefficients[0].toFixed(4)}</td><td class="numeric">${regression.standardErrors[0].toFixed(6)}</td><td class="numeric">${regression.tValues[0].toFixed(4)}</td></tr>
-                `;
-                
-                selected.forEach((variable, i) => {
-                    regressionTable += `
-                        <tr><td>${variableLabels[variable]}</td><td class="numeric">${regression.coefficients[i + 1].toFixed(4)}</td><td class="numeric">${regression.standardErrors[i + 1].toFixed(6)}</td><td class="numeric">${regression.tValues[i + 1].toFixed(4)}</td></tr>
-                    `;
+                cbcData.forEach(row => {
+                    csvContent += `${row.month},${row.rating},${row.fact},${row.stars},${row.previousRating},${row.competition}\n`;
                 });
                 
-                regressionTable += `
-                            </tbody>
-                        </table>
-                    </div>
-                `;
+                // Create blob and download
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
                 
-                document.getElementById('results').innerHTML = regressionTable;
-                document.getElementById('results').style.display = 'block';
-                
+                if (link.download !== undefined) {
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    
+                    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                    const filename = currentDataInfo.isGenerated ? 
+                        `cbc_generated_data_${timestamp}.csv` : 
+                        `cbc_original_data_${timestamp}.csv`;
+                    
+                    link.setAttribute('download', filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
             } catch (error) {
-                document.getElementById('results').innerHTML = `
-                    <div class="analysis-section">
-                        <h2>Regression Analysis Error</h2>
-                        <p>Unable to calculate regression with current dataset. This may occur if there's insufficient variation in the data or if the matrix is singular. Please try generating a new dataset.</p>
-                    </div>
-                `;
-                document.getElementById('results').style.display = 'block';
+                alert('Error downloading CSV file. Please try again.');
             }
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', updateInfo));
-            updateInfo();
-            updateDataDisplay();
-        });
+        
+        // QUESTION SUBMISSION FUNCTIONS
+        function submitQuestion1() {
+            const selectedAnswer = document.querySelector('input[name="q1"]:checked');
+            if (!selectedAnswer) {
+                alert('Please select an answer before submitting.');
+                return;
+            }
+            
+            // Run the stars t-test to get the correct answer
+            const starsTestResult = getStarsTestResult();
+            const isSignificant = starsTestResult.pValue < 0.05 && starsTestResult.tStat > starsTestResult.tCritical;
+            const correctAnswer = isSignificant ? 'yes' : 'no';
+            const userAnswer = selectedAnswer.value;
+            
+            // Generate feedback
+            const feedbackDiv = document.getElementById('q1-feedback');
+            const isCorrect = userAnswer === correctAnswer;
+            
+            let feedbackText = '';
+            if (isCorrect) {
+                if (correctAnswer === 'yes') {
+                    feedbackText = `✓ <strong>Correct!</strong> The t-test shows that movies with stars have significantly higher ratings (p-value = ${starsTestResult.pValue.toFixed(4)} < 0.05, t-statistic = ${starsTestResult.tStat.toFixed(4)} > t-critical = ${starsTestResult.tCritical.toFixed(4)}). The network should hire stars to improve ratings.`;
+                } else {
+                    feedbackText = `✓ <strong>Correct!</strong> The t-test shows that movies with stars do not have significantly higher ratings (p-value = ${starsTestResult.pValue.toFixed(4)} ≥ 0.05, or t-statistic = ${starsTestResult.tStat.toFixed(4)} ≤ t-critical = ${starsTestResult.tCritical.toFixed(4)}). The network should not prioritize hiring stars.`;
+                }
+                feedbackDiv.className = 'feedback correct';
+            } else {
+                if (correctAnswer === 'yes') {
+                    feedbackText = `✗ <strong>Incorrect.</strong> The t-test actually shows that movies with stars DO have significantly higher ratings (p-value = ${starsTestResult.pValue.toFixed(4)} < 0.05, t-statistic = ${starsTestResult.tStat.toFixed(4)} > t-critical = ${starsTestResult.tCritical.toFixed(4)}). The network should hire stars to improve ratings.`;
+                } else {
+                    feedbackText = `✗ <strong>Incorrect.</strong> The t-test actually shows that movies with stars do NOT have significantly higher ratings (p-value = ${starsTestResult.pValue.toFixed(4)} ≥ 0.05, or t-statistic = ${starsTestResult.tStat.toFixed(4)} ≤ t-critical = ${starsTestResult.tCritical.toFixed(4)}). The network should not prioritize hiring stars.`;
+                }
+                feedbackDiv.className = 'feedback incorrect';
+            }
+            
+            feedbackDiv.innerHTML = feedbackText;
+            feedbackDiv.style.display = 'block';
+            
+            // Disable submit button
+            event.target.disabled = true;
+        }
+        
+        function submitQuestion2() {
+            const selectedAnswer = document.querySelector('input[name="q2"]:checked');
+            if (!selectedAnswer) {
+                alert('Please select an answer before submitting.');
+                return;
+            }
+            
+            // Run the fact t-test to get the correct answer
+            const factTestResult = getFactTestResult();
+            const isSignificant = factTestResult.pValue < 0.05 && factTestResult.tStat > factTestResult.tCritical;
+            const correctAnswer = isSignificant ? 'yes' : 'no';
+            const userAnswer = selectedAnswer.value;
+            
+            // Generate feedback
+            const feedbackDiv = document.getElementById('q2-feedback');
+            const isCorrect = userAnswer === correctAnswer;
+            
+            let feedbackText = '';
+            if (isCorrect) {
+                if (correctAnswer === 'yes') {
+                    feedbackText = `✓ <strong>Correct!</strong> The t-test shows that fact-based movies have significantly higher ratings (p-value = ${factTestResult.pValue.toFixed(4)} < 0.05, t-statistic = ${factTestResult.tStat.toFixed(4)} > t-critical = ${factTestResult.tCritical.toFixed(4)}). The network should choose real-life plot-lines.`;
+                } else {
+                    feedbackText = `✓ <strong>Correct!</strong> The t-test shows that fact-based movies do not have significantly higher ratings (p-value = ${factTestResult.pValue.toFixed(4)} ≥ 0.05, or t-statistic = ${factTestResult.tStat.toFixed(4)} ≤ t-critical = ${factTestResult.tCritical.toFixed(4)}). The network should not prioritize real-life plot-lines.`;
+                }
+                feedbackDiv.className = 'feedback correct';
+            } else {
+                if (correctAnswer === 'yes') {
+                    feedbackText = `✗ <strong>Incorrect.</strong> The t-test actually shows that fact-based movies DO have significantly higher ratings (p-value = ${factTestResult.pValue.toFixed(4)} < 0.05, t-statistic = ${factTestResult.tStat.toFixed(4)} > t-critical = ${factTestResult.tCritical.toFixed(4)}). The network should choose real-life plot-lines.`;
+                } else {
+                    feedbackText = `✗ <strong>Incorrect.</strong> The t-test actually shows that fact-based movies do NOT have significantly higher ratings (p-value = ${factTestResult.pValue.toFixed(4)} ≥ 0.05, or t-statistic = ${factTestResult.tStat.toFixed(4)} ≤ t-critical = ${factTestResult.tCritical.toFixed(4)}). The network should not prioritize real-life plot-lines.`;
+                }
+                feedbackDiv.className = 'feedback incorrect';
+            }
+            
+            feedbackDiv.innerHTML = feedbackText;
+            feedbackDiv.style.display = 'block';
+            
+            // Disable submit button
+            event.target.disabled = true;
+        }
+        
+        // Helper functions to get t-test results
+        function getStarsTestResult() {
+            // Stars comparison - testing if WITH stars > WITHOUT stars
+            const group1Data = cbcData.filter(d => d.stars === 1).map(d => d.rating);
+            const group2Data = cbcData.filter(d => d.stars === 0).map(d => d.rating);
+            
+            const n1 = group1Data.length;
+            const n2 = group2Data.length;
+            const mean1 = ss.mean(group1Data);
+            const mean2 = ss.mean(group2Data);
+            const variance1 = ss.variance(group1Data);
+            const variance2 = ss.variance(group2Data);
+            
+            // Calculate pooled variance for equal variances t-test
+            const pooledVariance = ((n1 - 1) * variance1 + (n2 - 1) * variance2) / (n1 + n2 - 2);
+            const pooledStd = Math.sqrt(pooledVariance);
+            
+            // Calculate standard error of the difference
+            const standardError = pooledStd * Math.sqrt(1/n1 + 1/n2);
+            
+            // Calculate t-statistic (for one-tailed test: group1 > group2)
+            const tStatistic = (mean1 - mean2) / standardError;
+            
+            // Calculate degrees of freedom and p-value
+            const df = n1 + n2 - 2;
+            const tCriticalOneTailed = getTCriticalOneTailed(df, 0.05);
+            const pValueOneTailed = calculatePValueOneTailed(tStatistic, df);
+            
+            return {
+                tStat: tStatistic,
+                pValue: pValueOneTailed,
+                tCritical: tCriticalOneTailed,
+                df: df
+            };
+        }
+        
+        function getFactTestResult() {
+            // Fact comparison - testing if FACT-BASED > FICTION
+            const group1Data = cbcData.filter(d => d.fact === 1).map(d => d.rating);
+            const group2Data = cbcData.filter(d => d.fact === 0).map(d => d.rating);
+            
+            const n1 = group1Data.length;
+            const n2 = group2Data.length;
+            const mean1 = ss.mean(group1Data);
+            const mean2 = ss.mean(group2Data);
+            const variance1 = ss.variance(group1Data);
+            const variance2 = ss.variance(group2Data);
+            
+            // Calculate pooled variance for equal variances t-test
+            const pooledVariance = ((n1 - 1) * variance1 + (n2 - 1) * variance2) / (n1 + n2 - 2);
+            const pooledStd = Math.sqrt(pooledVariance);
+            
+            // Calculate standard error of the difference
+            const standardError = pooledStd * Math.sqrt(1/n1 + 1/n2);
+            
+            // Calculate t-statistic (for one-tailed test: group1 > group2)
+            const tStatistic = (mean1 - mean2) / standardError;
+            
+            // Calculate degrees of freedom and p-value
+            const df = n1 + n2 - 2;
+            const tCriticalOneTailed = getTCriticalOneTailed(df, 0.05);
+            const pValueOneTailed = calculatePValueOneTailed(tStatistic, df);
+            
+            return {
+                tStat: tStatistic,
+                pValue: pValueOneTailed,
+                tCritical: tCriticalOneTailed,
+                df: df
+            };
+        }
+        
+        function resetQuestions() {
+            // Clear radio button selections
+            document.querySelectorAll('input[name="q1"]').forEach(radio => radio.checked = false);
+            document.querySelectorAll('input[name="q2"]').forEach(radio => radio.checked = false);
+            
+            // Hide feedback and re-enable submit buttons
+            document.getElementById('q1-feedback').style.display = 'none';
+            document.getElementById('q2-feedback').style.display = 'none';
+            
+            document.querySelectorAll('.submit-button').forEach(button => button.disabled = false);
+        }
     </script>
 </body>
 </html>
