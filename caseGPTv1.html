@@ -659,7 +659,15 @@
         </div>`;
       nodes.hypoResults.style.display = 'block';
     }
-
+// Format p-values in standard notation with ~3 significant digits (no scientific notation)
+function formatP(p, sig = 3) {
+  if (!isFinite(p)) return '—';
+  p = Math.max(0, Math.min(1, p));        // clamp to [0,1]
+  if (p === 0) return '0.' + '0'.repeat(sig); // e.g., "0.000"
+  const magnitude = Math.floor(Math.log10(p)); // negative for 0<p<1
+  const decimals = Math.max(0, sig - 1 - magnitude);
+  return p.toFixed(Math.min(12, decimals));    // cap decimals to avoid super long strings
+}
     function onRunRegression(){
       const selected = getSelected();
       if (selected.length === 0){ alert('Select at least one variable.'); return; }
@@ -672,6 +680,7 @@
         const rows = cols.map((name, i)=>{
           const t = fit.t[i];
           const p = 2 * (1 - jStat.studentt.cdf(Math.abs(t), df)); // two-tailed p-value
+          const pStr = formatP(p, 3); // <- new formatting (standard notation, ~3 sig figs)
           return `
           <tr>
             <td>${name}</td>
