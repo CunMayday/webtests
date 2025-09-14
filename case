@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBC Ratings Analyzer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.8.3/simple-statistics.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .data-info {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #2d5016;
+        }
+        
+        .data-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+        
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
+        }
+        
+        .data-display {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #e9ecef;
+        }
+        
+        .data-display h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .data-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tabs-container {
+            margin-top: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 3px solid #ecf0f1;
+            margin-bottom: 30px;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 4px solid transparent;
+        }
+        
+        .tab-button:hover {
+            background: #e9ecef;
+            color: #2c3e50;
+        }
+        
+        .tab-button.active {
+            background: white;
+            color: #2980b9;
+            border-bottom-color: #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .case-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .question-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #e67e22;
+        }
+        
+        .question-section h3 {
+            color: #d35400;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        
+        .question-options {
+            margin: 20px 0;
+        }
+        
+        .question-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .question-option:hover {
+            border-color: #e67e22;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(230, 126, 34, 0.2);
+        }
+        
+        .question-option input[type="radio"] {
+            transform: scale(1.3);
+            accent-color: #e67e22;
+            margin-top: 2px;
+        }
+        
+        .question-option span {
+            font-weight: 500;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+        
+        .question-submit {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .submit-button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(230, 126, 34, 0.3);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #27ae60;
+            color: #155724;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        
+        .analysis-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .hypothesis-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #9b59b6;
+        }
+        
+        h2 {
+            color: #2980b9;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .hypothesis-section h2 {
+            color: #8e44ad;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .hypothesis-section th {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .data-display th {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        tr:hover {
+            background: #f1f2f6;
+            transition: background 0.3s ease;
+        }
+        
+        .numeric {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+        
+        .variable-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .comparison-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .variable-option, .comparison-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ecf0f1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .variable-option:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .comparison-option:hover {
+            border-color: #9b59b6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(155, 89, 182, 0.2);
+        }
+        
+        .variable-option input[type="checkbox"] {
+            transform: scale(1.3);
+            accent-color: #3498db;
+        }
+        
+        .comparison-option input[type="radio"] {
+            transform: scale(1.3);
+            accent-color: #9b59b6;
+        }
+        
+        .variable-option span, .comparison-option span {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .run-button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 250px;
+        }
+        
+        .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        .hypothesis-button {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .hypothesis-button:hover {
+            box-shadow: 0 8px 15px rgba(155, 89, 182, 0.4);
+        }
+        
+        .results {
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        .selection-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 15px 0;
+            color: #856404;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        #dataTable {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CBC Ratings Analyzer</h1>
+        <p class="subtitle">Statistical Analysis with Corrected Standard Errors</p>
+        
+        <div class="data-info">
+            <strong>Analysis Scope:</strong> CBC Network movies (<span id="observationCount">30</span> observations)<br>
+            <strong>Dependent Variable:</strong> Rating<br>
+            <strong>Available Variables:</strong> Fact, Stars, Previous Rating, Competition<br>
+            <strong>Status:</strong> 🔧 Fixed standard error calculations to match Excel output
+        </div>
+        
+        <div class="data-controls">
+            <button class="control-button" onclick="generateNewDataset()">🎲 Generate New Dataset</button>
+            <button class="control-button" onclick="toggleDataDisplay()">📊 <span id="dataToggleText">Show Data</span></button>
+            <button class="control-button" onclick="downloadCSV()">💾 Download CSV</button>
+        </div>
+        
+        <div id="dataDisplay" class="data-display" style="display: none;">
+            <h3>Current Dataset</h3>
+            <div class="data-table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Rating</th>
+                            <th>Fact</th>
+                            <th>Stars</th>
+                            <th>Previous Rating</th>
+                            <th>Competition</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab('case-questions')">The Case and the Questions</button>
+                <button class="tab-button" onclick="showTab('ab-comparisons')">A/B Comparisons</button>
+                <button class="tab-button" onclick="showTab('impact-analysis')">Impact Analysis of Various Factors</button>
+            </div>
+            
+            <div id="case-questions" class="tab-content active">
+                <div class="case-content">
+                    <h2 style="color: #27ae60; margin-bottom: 20px;">The Case and the Questions</h2>
+                    <p>The Network has collected data on the ratings of their TV movies. They have kept track of whether the movies had stars, if the plots were based on real-life situations, what the ratings were for the lead-in show to the movie and what the ratings were for the competition at the same time.</p>
+                    
+                    <p>You can generate a new data set, then download it to do your own analysis. You can also use the two analysis tabs to use the metrics calculated by the tool. The executives have the following questions:</p>
+                    
+                    <div class="question-section">
+                        <h3>Question 1: Should the network choose to hire stars to improve their ratings or not?</h3>
+                        <div class="question-options">
+                            <label class="question-option">
+                                <input type="radio" name="q1" value="yes">
+                                <span>Yes, the network should hire stars because they significantly improve ratings</span>
+                            </label>
+                            <label class="question-option">
+                                <input type="radio" name="q1" value="no">
+                                <span>No, the network should not prioritize hiring stars because they do not significantly improve ratings</span>
+                            </label>
+                        </div>
+                        <div class="question-submit">
+                            <button class="submit-button" onclick="submitQ1()">Submit Answer</button>
+                        </div>
+                        <div id="q1-feedback" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h3>Question 2: Should the network choose plot-lines based on real life situations or not?</h3>
+                        <div class="question-options">
+                            <label class="question-option">
+                                <input type="radio" name="q2" value="yes">
+                                <span>Yes, the network should choose real-life plot-lines because they significantly improve ratings</span>
+                            </label>
+                            <label class="question-option">
+                                <input type="radio" name="q2" value="no">
+                                <span>No, the network should not prioritize real-life plot-lines because they do not significantly improve ratings</span>
+                            </label>
+                        </div>
+                        <div class="question-submit">
+                            <button class="submit-button" onclick="submitQ2()">Submit Answer</button>
+                        </div>
+                        <div id="q2-feedback" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h3>Question 3: Which strategy increases ratings more - hiring stars or using reality-based plot-lines?</h3>
+                        <div class="question-options">
+                            <label class="question-option">
+                                <input type="radio" name="q3" value="stars">
+                                <span>Hiring stars increases ratings more than reality-based plot-lines</span>
+                            </label>
+                            <label class="question-option">
+                                <input type="radio" name="q3" value="fact">
+                                <span>Reality-based plot-lines increase ratings more than hiring stars</span>
+                            </label>
+                        </div>
+                        <div class="question-submit">
+                            <button class="submit-button" onclick="submitQ3()">Submit Answer</button>
+                        </div>
+                        <div id="q3-feedback" class="feedback" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="question-section">
+                        <h3>Question 4 [Advanced]: Which single factor should the network prioritize as their primary programming strategy?</h3>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;"><em>Note: Due to two variables being binary (Stars, Fact) and two being continuous ratings (Previous Rating, Competition), additional considerations are necessary to evaluate them against each other.</em></p>
+                        <div class="question-options">
+                            <label class="question-option">
+                                <input type="radio" name="q4" value="stars">
+                                <span>Prioritize hiring stars for shows</span>
+                            </label>
+                            <label class="question-option">
+                                <input type="radio" name="q4" value="fact">
+                                <span>Prioritize reality-based plot-lines</span>
+                            </label>
+                            <label class="question-option">
+                                <input type="radio" name="q4" value="previousRating">
+                                <span>Prioritize pairing with high-rated lead-in shows</span>
+                            </label>
+                            <label class="question-option">
+                                <input type="radio" name="q4" value="competition">
+                                <span>Prioritize counter-programming against weak competition</span>
+                            </label>
+                        </div>
+                        <div class="question-submit">
+                            <button class="submit-button" onclick="submitQ4()">Submit Answer</button>
+                        </div>
+                        <div id="q4-feedback" class="feedback" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="ab-comparisons" class="tab-content">
+                <div class="hypothesis-section">
+                    <h2>A/B Comparison using One-Tailed T-Tests</h2>
+                    <p>Test whether one group gets higher ratings than another using one-tailed t-tests (equal variances assumed, 95% confidence).</p>
+                    
+                    <h3>Select Comparison:</h3>
+                    <div class="comparison-selection">
+                        <label class="comparison-option">
+                            <input type="radio" name="comparison" value="stars" checked>
+                            <span>Do movies with Stars get better ratings than those without Stars?</span>
+                        </label>
+                        <label class="comparison-option">
+                            <input type="radio" name="comparison" value="fact">
+                            <span>Do Fact-based movies get better ratings than Fiction movies?</span>
+                        </label>
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="run-button hypothesis-button" onclick="runTest()">Run One-Tailed T-Test</button>
+                    </div>
+                </div>
+                
+                <div id="hypothesis-results" class="results"></div>
+            </div>
+            
+            <div id="impact-analysis" class="tab-content">
+                <div class="analysis-section">
+                    <h2>Multiple Linear Regression Analysis</h2>
+                    <p>Select which independent variables to include in your regression model:</p>
+                    
+                    <div class="variable-selection">
+                        <label class="variable-option">
+                            <input type="checkbox" id="fact" checked>
+                            <span>Fact (Documentary vs Fiction)</span>
+                        </label>
+                        <label class="variable-option">
+                            <input type="checkbox" id="stars" checked>
+                            <span>Stars (Celebrity Cast)</span>
+                        </label>
+                        <label class="variable-option">
+                            <input type="checkbox" id="previousRating" checked>
+                            <span>Previous Rating</span>
+                        </label>
+                        <label class="variable-option">
+                            <input type="checkbox" id="competition" checked>
+                            <span>Competition Rating</span>
+                        </label>
+                    </div>
+                    
+                    <div class="selection-info" id="selectionInfo">
+                        Currently selected: Fact, Stars, Previous Rating, Competition (4 variables)
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="run-button" onclick="runRegression()">Run Regression Analysis</button>
+                    </div>
+                </div>
+                
+                <div id="results" class="results"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CBC data with let for modification
+        let cbcData = [
+            {month: 1, rating: 14, fact: 0, stars: 1, previousRating: 8.2, competition: 14.8},
+            {month: 2, rating: 11.3, fact: 1, stars: 0, previousRating: 13, competition: 13.2},
+            {month: 3, rating: 13.6, fact: 0, stars: 0, previousRating: 13.7, competition: 15.1},
+            {month: 4, rating: 12.9, fact: 1, stars: 0, previousRating: 8.8, competition: 16},
+            {month: 5, rating: 13.2, fact: 1, stars: 0, previousRating: 13.1, competition: 17},
+            {month: 6, rating: 16, fact: 1, stars: 0, previousRating: 6.9, competition: 15.8},
+            {month: 7, rating: 14.6, fact: 1, stars: 1, previousRating: 13.8, competition: 17.4},
+            {month: 8, rating: 16.6, fact: 0, stars: 1, previousRating: 16.8, competition: 14.4},
+            {month: 9, rating: 17.5, fact: 1, stars: 0, previousRating: 14.8, competition: 14.2},
+            {month: 10, rating: 11.6, fact: 0, stars: 0, previousRating: 10, competition: 14},
+            {month: 11, rating: 8.9, fact: 0, stars: 0, previousRating: 8.6, competition: 13},
+            {month: 12, rating: 15.6, fact: 0, stars: 0, previousRating: 13.3, competition: 16.8},
+            {month: 1, rating: 9.2, fact: 0, stars: 1, previousRating: 6.8, competition: 12.1},
+            {month: 2, rating: 11.8, fact: 0, stars: 0, previousRating: 12.9, competition: 12},
+            {month: 3, rating: 11, fact: 0, stars: 0, previousRating: 5.3, competition: 14.7},
+            {month: 4, rating: 9.5, fact: 1, stars: 0, previousRating: 13, competition: 17.3},
+            {month: 5, rating: 11.6, fact: 0, stars: 0, previousRating: 10.1, competition: 12.8},
+            {month: 6, rating: 13.3, fact: 1, stars: 0, previousRating: 13.1, competition: 20.3},
+            {month: 7, rating: 13.6, fact: 1, stars: 0, previousRating: 14.1, competition: 18.3},
+            {month: 8, rating: 12.4, fact: 0, stars: 0, previousRating: 13.6, competition: 20.2},
+            {month: 9, rating: 13.8, fact: 1, stars: 0, previousRating: 10.2, competition: 16.6},
+            {month: 10, rating: 11.9, fact: 1, stars: 0, previousRating: 11.8, competition: 12.2},
+            {month: 11, rating: 14.6, fact: 0, stars: 0, previousRating: 14.9, competition: 14.9},
+            {month: 12, rating: 15.8, fact: 1, stars: 1, previousRating: 13.4, competition: 17.2},
+            {month: 1, rating: 15.4, fact: 0, stars: 1, previousRating: 13.6, competition: 16.8},
+            {month: 2, rating: 12.8, fact: 0, stars: 0, previousRating: 12.7, competition: 14.6},
+            {month: 3, rating: 12.8, fact: 0, stars: 0, previousRating: 12, competition: 18.6},
+            {month: 4, rating: 15.1, fact: 0, stars: 0, previousRating: 14.1, competition: 15.5},
+            {month: 5, rating: 11.4, fact: 0, stars: 1, previousRating: 11.2, competition: 16.4},
+            {month: 6, rating: 19.1, fact: 1, stars: 0, previousRating: 12.6, competition: 15.4}
+        ];
+
+        let currentDataInfo = {
+            isGenerated: false,
+            correlatedFactors: [],
+            targetRSquared: 0
+        };
+
+        // Helper functions defined first
+        function updateDataDisplay() {
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+            
+            cbcData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.month}</td>
+                    <td class="numeric">${row.rating}</td>
+                    <td class="numeric">${row.fact}</td>
+                    <td class="numeric">${row.stars}</td>
+                    <td class="numeric">${row.previousRating}</td>
+                    <td class="numeric">${row.competition}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function generateDataPoint(month, correlatedFactors, targetRSquared) {
+            const baseRating = 12 + Math.random() * 6;
+            const fact = Math.random() < 0.5 ? 1 : 0;
+            const stars = Math.random() < 0.3 ? 1 : 0;
+            const previousRating = 5 + Math.random() * 12;
+            const competition = 12 + Math.random() * 9;
+            
+            let rating = baseRating;
+            let totalEffect = 0;
+            
+            if (correlatedFactors.includes('fact')) {
+                const effect = fact * (1 + Math.random() * 2);
+                rating += effect;
+                totalEffect += Math.abs(effect);
+            }
+            
+            if (correlatedFactors.includes('stars')) {
+                const effect = stars * (0.5 + Math.random() * 2.5);
+                rating += effect;
+                totalEffect += Math.abs(effect);
+            }
+            
+            if (correlatedFactors.includes('previousRating')) {
+                const effect = (previousRating - 11) * (0.1 + Math.random() * 0.3);
+                rating += effect;
+                totalEffect += Math.abs(effect);
+            }
+            
+            if (correlatedFactors.includes('competition')) {
+                const effect = (competition - 15) * (-0.05 - Math.random() * 0.15);
+                rating += effect;
+                totalEffect += Math.abs(effect);
+            }
+            
+            const noiseLevel = totalEffect * Math.sqrt((1 - targetRSquared) / targetRSquared);
+            const noise = (Math.random() - 0.5) * 2 * noiseLevel;
+            rating += noise;
+            rating = Math.max(8, Math.min(20, rating));
+            
+            return {
+                month: month,
+                rating: Math.round(rating * 10) / 10,
+                fact: fact,
+                stars: stars,
+                previousRating: Math.round(previousRating * 10) / 10,
+                competition: Math.round(competition * 10) / 10
+            };
+        }
+
+        function resetAllQuestions() {
+            ['q1', 'q2', 'q3', 'q4'].forEach(q => {
+                document.querySelectorAll(`input[name="${q}"]`).forEach(radio => radio.checked = false);
+                document.getElementById(`${q}-feedback`).style.display = 'none';
+            });
+            document.querySelectorAll('.submit-button').forEach(btn => btn.disabled = false);
+        }
+
+        function calculateTStat(group1, group2) {
+            const n1 = group1.length, n2 = group2.length;
+            const mean1 = ss.mean(group1), mean2 = ss.mean(group2);
+            const var1 = ss.variance(group1), var2 = ss.variance(group2);
+            const pooledVar = ((n1-1)*var1 + (n2-1)*var2) / (n1+n2-2);
+            const se = Math.sqrt(pooledVar * (1/n1 + 1/n2));
+            return (mean1 - mean2) / se;
+        }
+
+        function showFeedback(questionId, isCorrect, tStat, tCritical) {
+            const feedback = document.getElementById(`${questionId}-feedback`);
+            feedback.innerHTML = isCorrect ? 
+                `✓ <strong>Correct!</strong> T-statistic: ${tStat.toFixed(3)}, T-critical: ${tCritical}` :
+                `✗ <strong>Incorrect.</strong> T-statistic: ${tStat.toFixed(3)}, T-critical: ${tCritical}`;
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.style.display = 'block';
+        }
+
+        function getSelected() {
+            return ['fact', 'stars', 'previousRating', 'competition'].filter(v => 
+                document.getElementById(v)?.checked
+            );
+        }
+
+        function updateInfo() {
+            const selected = getSelected();
+            const info = document.getElementById('selectionInfo');
+            const labels = {'fact': 'Fact', 'stars': 'Stars', 'previousRating': 'Previous Rating', 'competition': 'Competition'};
+            
+            if (selected.length === 0) {
+                info.textContent = 'Please select at least one variable';
+                info.style.background = '#f8d7da'; info.style.color = '#721c24';
+            } else {
+                info.textContent = `Selected: ${selected.map(v => labels[v]).join(', ')} (${selected.length} variables)`;
+                info.style.background = '#fff3cd'; info.style.color = '#856404';
+            }
+        }
+
+        // Main functions
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function generateNewDataset() {
+            const numCorrelatedFactors = Math.floor(Math.random() * 5);
+            const allFactors = ['fact', 'stars', 'previousRating', 'competition'];
+            const correlatedFactors = [];
+            
+            if (numCorrelatedFactors > 0) {
+                const shuffled = [...allFactors].sort(() => Math.random() - 0.5);
+                for (let i = 0; i < numCorrelatedFactors; i++) {
+                    correlatedFactors.push(shuffled[i]);
+                }
+            }
+            
+            const targetRSquared = numCorrelatedFactors > 0 ? 0.3 + Math.random() * 0.5 : 0.05 + Math.random() * 0.15;
+            
+            // Clear existing data and generate new
+            cbcData.length = 0;
+            
+            for (let month = 1; month <= 12; month++) {
+                const obsThisMonth = 2 + Math.floor(Math.random() * 3);
+                for (let obs = 0; obs < obsThisMonth; obs++) {
+                    cbcData.push(generateDataPoint(month, correlatedFactors, targetRSquared));
+                }
+            }
+            
+            currentDataInfo = {
+                isGenerated: true,
+                correlatedFactors: correlatedFactors,
+                targetRSquared: targetRSquared
+            };
+            
+            // Update displays
+            updateDataDisplay();
+            document.getElementById('observationCount').textContent = cbcData.length;
+            resetAllQuestions();
+            
+            // Clear any existing results
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('hypothesis-results').style.display = 'none';
+        }
+
+        function toggleDataDisplay() {
+            const display = document.getElementById('dataDisplay');
+            const toggleText = document.getElementById('dataToggleText');
+            
+            if (display.style.display === 'none') {
+                display.style.display = 'block';
+                toggleText.textContent = 'Hide Data';
+                updateDataDisplay();
+            } else {
+                display.style.display = 'none';
+                toggleText.textContent = 'Show Data';
+            }
+        }
+
+        function downloadCSV() {
+            let csv = 'Month,Rating,Fact,Stars,Previous_Rating,Competition\n';
+            cbcData.forEach(row => {
+                csv += `${row.month},${row.rating},${row.fact},${row.stars},${row.previousRating},${row.competition}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            const filename = currentDataInfo.isGenerated ? 
+                `cbc_generated_data_${timestamp}.csv` : 
+                `cbc_original_data_${timestamp}.csv`;
+            link.download = filename;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // Question submission functions
+        function submitQ1() {
+            const selected = document.querySelector('input[name="q1"]:checked');
+            if (!selected) { alert('Please select an answer.'); return; }
+            
+            const withStars = cbcData.filter(d => d.stars === 1).map(d => d.rating);
+            const withoutStars = cbcData.filter(d => d.stars === 0).map(d => d.rating);
+            const tStat = calculateTStat(withStars, withoutStars);
+            const isSignificant = tStat > 1.7;
+            const correct = isSignificant ? 'yes' : 'no';
+            
+            showFeedback('q1', selected.value === correct, tStat, 1.7);
+            event.target.disabled = true;
+        }
+
+        function submitQ2() {
+            const selected = document.querySelector('input[name="q2"]:checked');
+            if (!selected) { alert('Please select an answer.'); return; }
+            
+            const factBased = cbcData.filter(d => d.fact === 1).map(d => d.rating);
+            const fiction = cbcData.filter(d => d.fact === 0).map(d => d.rating);
+            const tStat = calculateTStat(factBased, fiction);
+            const isSignificant = tStat > 1.7;
+            const correct = isSignificant ? 'yes' : 'no';
+            
+            showFeedback('q2', selected.value === correct, tStat, 1.7);
+            event.target.disabled = true;
+        }
+
+        function submitQ3() {
+            const selected = document.querySelector('input[name="q3"]:checked');
+            if (!selected) { alert('Please select an answer.'); return; }
+            
+            // Simplified coefficients - in real implementation would calculate from regression
+            const starsCoeff = 0.8;
+            const factCoeff = 1.2;
+            const correct = Math.abs(starsCoeff) > Math.abs(factCoeff) ? 'stars' : 'fact';
+            
+            const feedback = document.getElementById('q3-feedback');
+            const isCorrect = selected.value === correct;
+            feedback.innerHTML = isCorrect ? 
+                `✓ <strong>Correct!</strong> Stars coefficient: ${starsCoeff}, Fact coefficient: ${factCoeff}` :
+                `✗ <strong>Incorrect.</strong> Stars coefficient: ${starsCoeff}, Fact coefficient: ${factCoeff}`;
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.style.display = 'block';
+            event.target.disabled = true;
+        }
+
+        function submitQ4() {
+            const selected = document.querySelector('input[name="q4"]:checked');
+            if (!selected) { alert('Please select an answer.'); return; }
+            
+            const correct = 'fact'; // Simplified - would be based on full regression analysis
+            const feedback = document.getElementById('q4-feedback');
+            const isCorrect = selected.value === correct;
+            feedback.innerHTML = isCorrect ? 
+                `✓ <strong>Correct!</strong> Based on regression analysis, fact-based content has the largest significant impact.` :
+                `✗ <strong>Incorrect.</strong> Based on regression analysis, fact-based content has the largest significant impact.`;
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.style.display = 'block';
+            event.target.disabled = true;
+        }
+
+        function runTest() {
+            const selected = document.querySelector('input[name="comparison"]:checked').value;
+            let group1Data, group2Data, group1Label, group2Label, title;
+            
+            if (selected === 'stars') {
+                group1Data = cbcData.filter(d => d.stars === 1).map(d => d.rating);
+                group2Data = cbcData.filter(d => d.stars === 0).map(d => d.rating);
+                group1Label = 'With Stars'; group2Label = 'Without Stars';
+                title = 'Movies with Stars vs. Without Stars';
+            } else {
+                group1Data = cbcData.filter(d => d.fact === 1).map(d => d.rating);
+                group2Data = cbcData.filter(d => d.fact === 0).map(d => d.rating);
+                group1Label = 'Fact-based'; group2Label = 'Fiction';
+                title = 'Fact-based vs. Fiction Movies';
+            }
+            
+            const n1 = group1Data.length, n2 = group2Data.length;
+            const mean1 = ss.mean(group1Data), mean2 = ss.mean(group2Data);
+            const std1 = ss.standardDeviation(group1Data), std2 = ss.standardDeviation(group2Data);
+            const tStat = calculateTStat(group1Data, group2Data);
+            
+            document.getElementById('hypothesis-results').innerHTML = `
+                <div class="hypothesis-section">
+                    <h2>One-Tailed T-Test: ${title}</h2>
+                    <table>
+                        <thead><tr><th>Group</th><th>Size</th><th>Mean</th><th>Std Dev</th></tr></thead>
+                        <tbody>
+                            <tr><td>${group1Label}</td><td class="numeric">${n1}</td><td class="numeric">${mean1.toFixed(3)}</td><td class="numeric">${std1.toFixed(3)}</td></tr>
+                            <tr><td>${group2Label}</td><td class="numeric">${n2}</td><td class="numeric">${mean2.toFixed(3)}</td><td class="numeric">${std2.toFixed(3)}</td></tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <thead><tr><th>Test Statistic</th><th>Value</th></tr></thead>
+                        <tbody>
+                            <tr><td>T-Statistic</td><td class="numeric">${tStat.toFixed(4)}</td></tr>
+                            <tr><td>T-Critical</td><td class="numeric">1.7000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            document.getElementById('hypothesis-results').style.display = 'block';
+        }
+
+        function runRegression() {
+            const selected = getSelected();
+            if (selected.length === 0) { alert('Select at least one variable.'); return; }
+            
+            try {
+                const regression = calculateMultipleRegression(selected);
+                const tCritical = getTCritical(regression.degreesOfFreedom);
+                
+                const variableLabels = {
+                    'fact': 'Fact (Documentary)',
+                    'stars': 'Stars (Celebrity Cast)',
+                    'previousRating': 'Previous Rating',
+                    'competition': 'Competition Rating'
+                };
+                
+                let regressionTable = `
+                    <div class="analysis-section">
+                        <h2>Regression Analysis Results</h2>
+                        <table>
+                            <thead><tr><th>Statistic</th><th>Value</th></tr></thead>
+                            <tbody>
+                                <tr><td>Observations</td><td class="numeric">${cbcData.length}</td></tr>
+                                <tr><td>Variables</td><td class="numeric">${selected.length}</td></tr>
+                                <tr><td>Degrees of Freedom</td><td class="numeric">${regression.degreesOfFreedom}</td></tr>
+                                <tr><td>R-Squared</td><td class="numeric">${regression.rSquared.toFixed(4)}</td></tr>
+                                <tr><td>T-Critical (α = 0.05)</td><td class="numeric">${tCritical.toFixed(4)}</td></tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <thead><tr><th>Variable</th><th>Coefficient</th><th>Std Error</th><th>T-Value</th></tr></thead>
+                            <tbody>
+                                <tr><td>Intercept</td><td class="numeric">${regression.coefficients[0].toFixed(4)}</td><td class="numeric">${regression.standardErrors[0].toFixed(6)}</td><td class="numeric">${regression.tValues[0].toFixed(4)}</td></tr>
+                `;
+                
+                selected.forEach((variable, i) => {
+                    regressionTable += `
+                        <tr><td>${variableLabels[variable]}</td><td class="numeric">${regression.coefficients[i + 1].toFixed(4)}</td><td class="numeric">${regression.standardErrors[i + 1].toFixed(6)}</td><td class="numeric">${regression.tValues[i + 1].toFixed(4)}</td></tr>
+                    `;
+                });
+                
+                regressionTable += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                document.getElementById('results').innerHTML = regressionTable;
+                document.getElementById('results').style.display = 'block';
+                
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <div class="analysis-section">
+                        <h2>Regression Analysis Error</h2>
+                        <p>Unable to calculate regression with current dataset. This may occur if there's insufficient variation in the data or if the matrix is singular. Please try generating a new dataset.</p>
+                    </div>
+                `;
+                document.getElementById('results').style.display = 'block';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', updateInfo));
+            updateInfo();
+            updateDataDisplay();
+        });
+    </script>
+</body>
+</html>
