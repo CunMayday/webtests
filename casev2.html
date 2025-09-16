@@ -280,6 +280,10 @@
                   <input type="radio" name="q4" value="competition"/>
                   <span>Prioritize counter-programming against weak competition</span>
                 </label>
+                <label class="question-option">
+                  <input type="radio" name="q4" value="None of the factors should be prioritized, look for other factors."/>
+                  <span>None of the variables are significant so programming strategy must target something else.</span>
+                </label>
               </fieldset>
               <div class="question-submit">
                 <button class="btn btn-orange" id="submitQ4">Submit Answer</button>
@@ -737,6 +741,7 @@
       let msg = '';
       try {
         const { best, removed } = evaluatePriorityVariable();
+        const noneValue = 'None of the factors should be prioritized, look for other factors.';
         if (best){
           const coeffStr = Number.isFinite(best.coeff) ? best.coeff.toFixed(3) : '—';
           const absT = Number.isFinite(best.t) ? Math.abs(best.t).toFixed(2) : '—';
@@ -754,8 +759,11 @@
           const removalNote = removed.length
             ? ` Removed ${removed.map(r => `<em>${r.label}</em> (coefficient ${Number.isFinite(r.coeff) ? r.coeff.toFixed(3) : '—'}, |t|≈${Number.isFinite(r.t) ? Math.abs(r.t).toFixed(2) : '—'} &lt; t-critical≈${Number.isFinite(r.tcrit) ? r.tcrit.toFixed(2) : '—'})`).join(', ')} during the step-down process.`
             : '';
-          msg = `⚠️ <strong>Result.</strong> None of the variables are significant so programming strategy must target something else.${removalNote}`;
-          nodes.q4Feedback.className = 'feedback incorrect';
+          const isCorrect = selected.value === noneValue;
+          msg = isCorrect
+            ? `✅ <strong>Correct.</strong> None of the variables are significant so programming strategy must target something else.${removalNote}`
+            : `⚠️ <strong>Incorrect.</strong> None of the variables are significant so programming strategy must target something else.${removalNote}`;
+          nodes.q4Feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         }
       } catch(err){
         msg = '⚠️ Regression failed (matrix not invertible). Try changing selected variables or generating a new dataset.';
