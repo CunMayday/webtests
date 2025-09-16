@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="color-scheme" content="light"/>
-  <title>TV Movie Ratings Case Study (g-1.2) — ADA Compliant</title>
+  <title>TV Movie Ratings Case Study (g-3)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/7.8.3/simple-statistics.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jstat/1.9.5/jstat.min.js"></script>
   <style>
@@ -141,7 +141,7 @@
   <a class="skip-link" href="#main">Skip to main content</a>
   <main id="main" role="main">
     <div class="container" role="region" aria-labelledby="page-title">
-      <h1 id="page-title">TV Movie Ratings Case Study (g-2)</h1>
+      <h1 id="page-title">TV Movie Ratings Case Study (g-3)</h1>
       <p class="subtitle">Statistical Analysis with p-values</p>
 
       <div class="data-info" role="note" aria-label="Analysis Scope">
@@ -252,7 +252,16 @@
 
             <div class="question-section" role="group" aria-labelledby="q4-legend" aria-describedby="q4-help">
               <h3 id="q4-legend">Question 4 [Advanced]: Which single factor should the network prioritize as their primary programming strategy?</h3>
-              <p id="q4-help" style="font-size:.95em;color:#374151;margin-bottom:15px;"><em>Note: Two variables are binary (Stars, Fact) and two are continuous (Previous Rating, Competition). The tool computes a proper multiple regression to compare their partial effects.</em></p>
+              <div id="q4-help" style="font-size:.95em;color:#374151;margin-bottom:15px;">
+                <p><em>Note: Two variables are binary (Stars, Fact) and two are continuous (Previous Rating, Competition). The tool computes a proper multiple regression to compare their partial effects.</em></p>
+                <ol style="margin:0 0 0 1.25rem; padding-left:0;">
+                  <li>Run the regression with all four variables using the “Impact Analysis of Various Factors” tab (Tab 3).</li>
+                  <li>Identify the independent variable with the largest coefficient and compare its t-statistic to the two-tailed 95% t-critical value.</li>
+                  <li>If that variable is significant (|t| ≥ t-critical) and has the highest coefficient, declare it the best choice and confirm it matches your answer.</li>
+                  <li>If the highest-coefficient variable is not significant, remove it, rerun the regression with the remaining variables, and repeat the comparison.</li>
+                  <li>Continue until a variable is both significant and has the highest coefficient among those left. If all independent variables are not significant, the answer should be “none of the variables are significant so programming strategy must target something else.”</li>
+                </ol>
+              </div>
               <fieldset>
                 <legend class="sr-only">Q4 options</legend>
                 <label class="question-option">
@@ -690,25 +699,64 @@
       e.currentTarget.type='button'; e.currentTarget.disabled = true;
     }
 
+    function evaluatePriorityVariable(){
+      const remaining = ['fact','stars','previousRating','competition'];
+      const removed = [];
+      while (remaining.length > 0){
+        const { X, y, cols } = buildDesignMatrix(remaining);
+        const fit = ols(y, X);
+        const df = fit.n - fit.p;
+        const tcrit = jStat.studentt.inv(0.975, df);
+        let best = null;
+        for (const key of remaining){
+          const label = LABELS[key];
+          const colIndex = cols.indexOf(label);
+          if (colIndex === -1) continue;
+          const coeff = fit.beta[colIndex];
+          const tVal = fit.t[colIndex];
+          if (!Number.isFinite(coeff) || !Number.isFinite(tVal)) continue;
+          if (!best || coeff > best.coeff){
+            best = { key, label, coeff, t: tVal, tcrit };
+          }
+        }
+        if (!best) break;
+        if (Math.abs(best.t) >= best.tcrit){
+          return { best, removed };
+        }
+        removed.push(best);
+        const idx = remaining.indexOf(best.key);
+        if (idx === -1) break;
+        remaining.splice(idx, 1);
+      }
+      return { best: null, removed };
+    }
+
     function onSubmitQ4(e){
       const selected = document.querySelector('input[name="q4"]:checked');
       if (!selected){ alert('Please select an answer.'); return; }
-      const selectedVars = ['fact','stars','previousRating','competition'];
-      const { X, y, cols } = buildDesignMatrix(selectedVars);
       let msg = '';
       try {
-        const fit = ols(y, X);
-        let best = { name:'', t:0, idx:-1 };
-        for (let i=1;i<cols.length;i++){
-          const tv = Math.abs(fit.t[i]);
-          if (tv > best.t){ best = { name: cols[i], t: tv, idx:i }; }
+        const { best, removed } = evaluatePriorityVariable();
+        if (best){
+          const coeffStr = Number.isFinite(best.coeff) ? best.coeff.toFixed(3) : '—';
+          const absT = Number.isFinite(best.t) ? Math.abs(best.t).toFixed(2) : '—';
+          const tcritStr = Number.isFinite(best.tcrit) ? best.tcrit.toFixed(2) : '—';
+          const correctKey = best.key;
+          const isCorrect = selected.value === correctKey;
+          const removalNote = removed.length
+            ? ` After removing ${removed.map(r => `<em>${r.label}</em> (coefficient ${Number.isFinite(r.coeff) ? r.coeff.toFixed(3) : '—'}, |t|≈${Number.isFinite(r.t) ? Math.abs(r.t).toFixed(2) : '—'} &lt; t-critical≈${Number.isFinite(r.tcrit) ? r.tcrit.toFixed(2) : '—'})`).join(', ')} for lacking significance, the regression was rerun with the remaining variables.`
+            : '';
+          msg = isCorrect
+            ? `✅ <strong>Correct.</strong> Following the coefficient-first check, <em>${best.label}</em> has the largest coefficient (${coeffStr}) and is significant because |t|≈${absT} exceeds t-critical≈${tcritStr}.${removalNote}`
+            : `⚠️ <strong>Incorrect.</strong> Following the coefficient-first check, <em>${best.label}</em> has the largest coefficient (${coeffStr}) and is significant because |t|≈${absT} exceeds t-critical≈${tcritStr}.${removalNote}`;
+          nodes.q4Feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        } else {
+          const removalNote = removed.length
+            ? ` Removed ${removed.map(r => `<em>${r.label}</em> (coefficient ${Number.isFinite(r.coeff) ? r.coeff.toFixed(3) : '—'}, |t|≈${Number.isFinite(r.t) ? Math.abs(r.t).toFixed(2) : '—'} &lt; t-critical≈${Number.isFinite(r.tcrit) ? r.tcrit.toFixed(2) : '—'})`).join(', ')} during the step-down process.`
+            : '';
+          msg = `⚠️ <strong>Result.</strong> None of the variables are significant so programming strategy must target something else.${removalNote}`;
+          nodes.q4Feedback.className = 'feedback incorrect';
         }
-        const correctKey = ({'Fact':'fact','Stars':'stars','Previous Rating':'previousRating','Competition':'competition'})[best.name] || 'fact';
-        const isCorrect = selected.value === correctKey;
-        msg = isCorrect
-          ? `✅ <strong>Correct.</strong> Based on OLS, <em>${best.name}</em> shows the strongest partial effect (t≈${fit.t[best.idx].toFixed(2)}).`
-          : `⚠️ <strong>Incorrect.</strong> OLS suggests prioritizing <em>${best.name}</em> (t≈${fit.t[best.idx].toFixed(2)}).`;
-        nodes.q4Feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
       } catch(err){
         msg = '⚠️ Regression failed (matrix not invertible). Try changing selected variables or generating a new dataset.';
         nodes.q4Feedback.className = 'feedback incorrect';
@@ -731,7 +779,7 @@
       const n1=g1.length, n2=g2.length;
       const mean1=ss.mean(g1), mean2=ss.mean(g2);
       const std1=ss.sampleStandardDeviation(g1), std2=ss.sampleStandardDeviation(g2);
-      const { t, df, tcrit, significant } = runOneTailedTest(g1,g2);
+      const { t, df, tcrit } = runOneTailedTest(g1,g2);
 
       nodes.hypoResults.innerHTML = `
         <div class="hypothesis-section">
@@ -749,7 +797,6 @@
               <tr><td>Degrees of Freedom</td><td class="numeric">${df}</td></tr>
               <tr><td>T-Statistic</td><td class="numeric">${t.toFixed(4)}</td></tr>
               <tr><td>T-Critical (95%, one-tailed)</td><td class="numeric">${tcrit.toFixed(3)}</td></tr>
-              <tr><td>Significant?</td><td class="numeric">${significant ? 'Yes' : 'No'}</td></tr>
             </tbody>
           </table>
         </div>`;
