@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efe's Monster Maze!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        #gameInfo {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #controls {
+            margin-bottom: 15px;
+        }
+
+        .control-btn {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #E55A2B;
+        }
+
+        .info-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background 0.3s;
+        }
+
+        .info-btn:hover {
+            background: #1976D2;
+        }
+
+        #gameCanvas {
+            border: 3px solid #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            background: #000;
+        }
+
+        #gameOver, #victory, #readyScreen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #fff;
+            display: none;
+        }
+
+        #victory {
+            background: rgba(0,100,0,0.9);
+        }
+
+        #readyScreen {
+            background: rgba(0,50,100,0.9);
+        }
+
+        .restart-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .restart-btn:hover {
+            background: #45a049;
+        }
+
+        #instructions {
+            margin-top: 20px;
+            max-width: 600px;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        #explosionEffect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Efe's Monster Maze! 💣</h1>
+    
+    <div id="gameInfo">
+        <div>Score: <span id="score">0</span></div>
+        <div>Level: <span id="level">1</span></div>
+        <div>Bomb: <span id="bombStatus">❌</span></div>
+    </div>
+
+    <div id="controls">
+        <button class="control-btn" onclick="regenerateMaze()">🎲 New Maze</button>
+        <button class="control-btn" onclick="restartGame()">🔄 Restart Game</button>
+        <button class="info-btn" onclick="showInstructions()">📖 Instructions</button>
+    </div>
+
+    <canvas id="gameCanvas" width="960" height="960"></canvas>
+    <canvas id="explosionEffect" width="960" height="960"></canvas>
+
+    <div id="gameOver">
+        <h2>💀 Game Over!</h2>
+        <p id="deathMessage">You have been caught!</p>
+        <button class="restart-btn" onclick="restartGame()">Try Again</button>
+    </div>
+
+    <div id="victory">
+        <h2>🎉 Level Complete!</h2>
+        <p>You escaped the maze!</p>
+        <button class="restart-btn" onclick="nextLevel()">Next Level</button>
+    </div>
+
+    <div id="readyScreen">
+        <h2>🎮 Get Ready!</h2>
+        <p>Welcome to Efe's Monster Maze!</p>
+        <p>Level <span id="readyLevel">1</span></p>
+        <p>Avoid the monsters and reach the edge to escape!</p>
+        <button class="restart-btn" onclick="startGame()">🚀 Ready!</button>
+    </div>
+
+    <div id="instructions">
+        <h2>📖 How to Play Efe's Monster Maze!</h2>
+        <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+            <p><strong>🎯 Objective:</strong> Escape the maze by reaching any edge!</p>
+            <p><strong>🕹️ Controls:</strong></p>
+            <ul>
+                <li>Use <strong>arrow keys</strong> to move your character</li>
+                <li>Press <strong>SPACE</strong> to detonate bombs</li>
+            </ul>
+            <p><strong>👹 Monsters:</strong></p>
+            <ul>
+                <li><strong>Flack (F)</strong> - Red monster</li>
+                <li><strong>DJ (D)</strong> - Pink monster</li>
+                <li><strong>Travis (T)</strong> - Purple monster</li>
+                <li><strong>Henry (H)</strong> - Deep purple monster</li>
+            </ul>
+            <p><strong>💣 Bombs:</strong></p>
+            <ul>
+                <li>Pick up bombs (💣) by running over them</li>
+                <li>You can only carry one bomb at a time</li>
+                <li>When you have a bomb, your circle turns white</li>
+                <li>Detonate to destroy monsters within 2 squares</li>
+                <li>Monsters respawn after 5 seconds</li>
+            </ul>
+            <p><strong>⚡ Tips:</strong> Monsters move at 70% of your speed, so you can outrun them! Use bombs strategically when surrounded.</p>
+        </div>
+        <button class="restart-btn" onclick="hideInstructions()">Got It!</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const explosionCanvas = document.getElementById('explosionEffect');
+        const explosionCtx = explosionCanvas.getContext('2d');
+        
+        // Position explosion canvas over game canvas
+        const canvasRect = canvas.getBoundingClientRect();
+        explosionCanvas.style.position = 'absolute';
+        explosionCanvas.style.left = canvasRect.left + 'px';
+        explosionCanvas.style.top = canvasRect.top + 'px';
+        
+        // Game state
+        let gameState = 'waiting'; // 'waiting', 'countdown', 'playing', 'gameOver', 'victory', 'instructions'
+        let score = 0;
+        let level = 1;
+        
+        // Countdown system
+        let countdownStartTime = 0;
+        let countdownValue = 3;
+        
+        // Maze settings
+        const CELL_SIZE = 32;
+        const MAZE_WIDTH = Math.floor(canvas.width / CELL_SIZE);
+        const MAZE_HEIGHT = Math.floor(canvas.height / CELL_SIZE);
+        
+        // Game objects
+        let maze = [];
+        let player = {};
+        let monsters = [];
+        let bombs = [];
+        let connectedCells = new Set();
+        let explosions = [];
+        
+        // Monster data
+        const MONSTER_NAMES = ['Flack', 'DJ', 'Travis', 'Henry'];
+        const MONSTER_INITIALS = ['F', 'D', 'T', 'H'];
+        const MONSTER_COLORS = ['#F44336', '#E91E63', '#9C27B0', '#673AB7'];
+        
+        // Player bomb system
+        let playerBomb = false;
+        
+        // Movement
+        const keys = {};
+        let lastMoveTime = 0;
+        let lastMonsterMoveTime = 0;
+        const PLAYER_MOVE_DELAY = 100;
+        const MONSTER_MOVE_DELAY = 143;
+
+        // Audio context for explosion sound
+        let audioContext;
+        
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+        
+        function playExplosionSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.3);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+        // Initialize game
+        function initGame() {
+            generateMaze();
+            initPlayer();
+            findConnectedCells();
+            initMonsters();
+            initBombs();
+            playerBomb = false;
+            explosions = [];
+            gameState = 'waiting';
+            updateDisplay();
+            showReadyScreen();
+        }
+
+        // Show ready screen
+        function showReadyScreen() {
+            document.getElementById('readyLevel').textContent = level;
+            document.getElementById('readyScreen').style.display = 'block';
+        }
+
+        // Start the game
+        function startGame() {
+            document.getElementById('readyScreen').style.display = 'none';
+            gameState = 'countdown';
+            countdownStartTime = Date.now();
+            countdownValue = 3;
+        }
+
+        // Maze generation using recursive backtracking
+        function generateMaze() {
+            maze = Array(MAZE_HEIGHT).fill().map(() => Array(MAZE_WIDTH).fill(1));
+            
+            const stack = [];
+            const startX = 1;
+            const startY = 1;
+            
+            maze[startY][startX] = 0;
+            stack.push([startX, startY]);
+            
+            const directions = [[0, 2], [2, 0], [0, -2], [-2, 0]];
+            
+            while (stack.length > 0) {
+                const [x, y] = stack[stack.length - 1];
+                const neighbors = [];
+                
+                for (const [dx, dy] of directions) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    
+                    if (nx > 0 && nx < MAZE_WIDTH - 1 && ny > 0 && ny < MAZE_HEIGHT - 1) {
+                        if (maze[ny][nx] === 1) {
+                            neighbors.push([nx, ny, x + dx/2, y + dy/2]);
+                        }
+                    }
+                }
+                
+                if (neighbors.length > 0) {
+                    const [nx, ny, wallX, wallY] = neighbors[Math.floor(Math.random() * neighbors.length)];
+                    maze[ny][nx] = 0;
+                    maze[wallY][wallX] = 0;
+                    stack.push([nx, ny]);
+                } else {
+                    stack.pop();
+                }
+            }
+            
+            // Ensure edges are accessible
+            for (let i = 0; i < MAZE_WIDTH; i++) {
+                if (maze[1][i] === 0) maze[0][i] = 0;
+                if (maze[MAZE_HEIGHT-2][i] === 0) maze[MAZE_HEIGHT-1][i] = 0;
+            }
+            for (let i = 0; i < MAZE_HEIGHT; i++) {
+                if (maze[i][1] === 0) maze[i][0] = 0;
+                if (maze[i][MAZE_WIDTH-2] === 0) maze[i][MAZE_WIDTH-1] = 0;
+            }
+        }
+
+        // Initialize player in center
+        function initPlayer() {
+            player = {
+                x: Math.floor(MAZE_WIDTH / 2),
+                y: Math.floor(MAZE_HEIGHT / 2)
+            };
+            
+            maze[player.y][player.x] = 0;
+        }
+
+        // Find all cells connected to the player using flood fill
+        function findConnectedCells() {
+            connectedCells.clear();
+            const queue = [[player.x, player.y]];
+            const visited = new Set();
+            
+            while (queue.length > 0) {
+                const [x, y] = queue.shift();
+                const key = x * MAZE_HEIGHT + y;
+                
+                if (visited.has(key)) continue;
+                visited.add(key);
+                connectedCells.add(key);
+                
+                const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+                for (const [dx, dy] of directions) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    
+                    if (nx >= 0 && nx < MAZE_WIDTH && ny >= 0 && ny < MAZE_HEIGHT) {
+                        if (maze[ny][nx] === 0 && !visited.has(nx * MAZE_HEIGHT + ny)) {
+                            queue.push([nx, ny]);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Initialize monsters in connected areas
+        function initMonsters() {
+            monsters = [];
+            const connectedCellsArray = Array.from(connectedCells).map(key => ({
+                x: Math.floor(key / MAZE_HEIGHT),
+                y: key % MAZE_HEIGHT
+            }));
+            
+            const validPositions = connectedCellsArray.filter(pos => {
+                const distance = Math.abs(pos.x - player.x) + Math.abs(pos.y - player.y);
+                return distance >= 5;
+            });
+            
+            for (let i = 0; i < 4 && validPositions.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * validPositions.length);
+                const position = validPositions.splice(randomIndex, 1)[0];
+                monsters.push({
+                    x: position.x,
+                    y: position.y,
+                    name: MONSTER_NAMES[i],
+                    initial: MONSTER_INITIALS[i],
+                    color: MONSTER_COLORS[i],
+                    alive: true,
+                    respawnTime: 0
+                });
+            }
+            
+            while (monsters.length < 4 && connectedCellsArray.length > 0) {
+                const randomIndex = Math.floor(Math.random() * connectedCellsArray.length);
+                const position = connectedCellsArray.splice(randomIndex, 1)[0];
+                
+                if (position.x !== player.x || position.y !== player.y) {
+                    const i = monsters.length;
+                    monsters.push({
+                        x: position.x,
+                        y: position.y,
+                        name: MONSTER_NAMES[i],
+                        initial: MONSTER_INITIALS[i],
+                        color: MONSTER_COLORS[i],
+                        alive: true,
+                        respawnTime: 0
+                    });
+                }
+            }
+        }
+
+        // Initialize bombs
+        function initBombs() {
+            bombs = [];
+            const connectedCellsArray = Array.from(connectedCells).map(key => ({
+                x: Math.floor(key / MAZE_HEIGHT),
+                y: key % MAZE_HEIGHT
+            }));
+            
+            const validPositions = connectedCellsArray.filter(pos => {
+                const distance = Math.abs(pos.x - player.x) + Math.abs(pos.y - player.y);
+                return distance >= 3;
+            });
+            
+            for (let i = 0; i < 4 && validPositions.length > 0; i++) {
+                const randomIndex = Math.floor(Math.random() * validPositions.length);
+                const position = validPositions.splice(randomIndex, 1)[0];
+                bombs.push({ x: position.x, y: position.y });
+            }
+        }
+
+        // Handle keyboard input
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+            
+            // Prevent default behavior for arrow keys to stop page scrolling
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
+            
+            if (e.key === ' ' || e.key === 'Space') {
+                e.preventDefault();
+                if (playerBomb && gameState === 'playing') {
+                    detonateBomb();
+                }
+            }
+            
+            // Start game with Enter key when on ready screen
+            if (e.key === 'Enter' && gameState === 'waiting') {
+                startGame();
+            }
+            
+            // Close instructions with Escape key
+            if (e.key === 'Escape' && gameState === 'instructions') {
+                hideInstructions();
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+            
+            // Prevent default behavior for arrow keys
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Detonate bomb
+        function detonateBomb() {
+            if (!playerBomb) return;
+            
+            playerBomb = false;
+            
+            // Create explosion effect
+            explosions.push({
+                x: player.x,
+                y: player.y,
+                radius: 0,
+                maxRadius: CELL_SIZE * 2.5,
+                duration: 30,
+                frame: 0
+            });
+            
+            // Play explosion sound
+            playExplosionSound();
+            
+            // Check which monsters are within 2 squares
+            const explosionRange = 2;
+            monsters.forEach(monster => {
+                if (monster.alive) {
+                    const distance = Math.abs(monster.x - player.x) + Math.abs(monster.y - player.y);
+                    if (distance <= explosionRange) {
+                        monster.alive = false;
+                        monster.respawnTime = Date.now() + 5000; // 5 seconds
+                    }
+                }
+            });
+            
+            updateDisplay();
+        }
+
+        // Find shortest path using BFS
+        function findPath(startX, startY, targetX, targetY) {
+            if (startX === targetX && startY === targetY) return null;
+            
+            const queue = [[startX, startY, []]];
+            const visited = new Set();
+            const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+            
+            while (queue.length > 0) {
+                const [x, y, path] = queue.shift();
+                const key = x * MAZE_HEIGHT + y;
+                
+                if (visited.has(key)) continue;
+                visited.add(key);
+                
+                if (x === targetX && y === targetY) {
+                    return path.length > 0 ? path[0] : null;
+                }
+                
+                for (const [dx, dy] of directions) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+                    const nKey = nx * MAZE_HEIGHT + ny;
+                    
+                    if (nx >= 0 && nx < MAZE_WIDTH && ny >= 0 && ny < MAZE_HEIGHT) {
+                        if (maze[ny][nx] === 0 && !visited.has(nKey)) {
+                            const newPath = path.length === 0 ? [{ x: nx, y: ny }] : [...path, { x: nx, y: ny }];
+                            queue.push([nx, ny, newPath]);
+                        }
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        // Move player
+        function movePlayer(currentTime) {
+            if (currentTime - lastMoveTime < PLAYER_MOVE_DELAY) return;
+            
+            let newX = player.x;
+            let newY = player.y;
+            
+            if (keys['ArrowUp']) newY--;
+            if (keys['ArrowDown']) newY++;
+            if (keys['ArrowLeft']) newX--;
+            if (keys['ArrowRight']) newX++;
+            
+            if (newX >= 0 && newX < MAZE_WIDTH && newY >= 0 && newY < MAZE_HEIGHT) {
+                if (maze[newY][newX] === 0) {
+                    player.x = newX;
+                    player.y = newY;
+                    lastMoveTime = currentTime;
+                    
+                    // Check for bomb pickup
+                    bombs = bombs.filter(bomb => {
+                        if (bomb.x === player.x && bomb.y === player.y && !playerBomb) {
+                            playerBomb = true;
+                            updateDisplay();
+                            return false;
+                        }
+                        return true;
+                    });
+                    
+                    // Check if player reached edge
+                    if (newX === 0 || newX === MAZE_WIDTH - 1 || newY === 0 || newY === MAZE_HEIGHT - 1) {
+                        victory();
+                    }
+                }
+            }
+        }
+
+        // Smart pathfinding for monsters using BFS
+        function moveMonsters(currentTime) {
+            if (currentTime - lastMonsterMoveTime < MONSTER_MOVE_DELAY) return;
+            
+            const now = Date.now();
+            
+            monsters.forEach(monster => {
+                // Handle respawning
+                if (!monster.alive && now >= monster.respawnTime) {
+                    respawnMonster(monster);
+                }
+                
+                if (!monster.alive) return;
+                
+                const nextStep = findPath(monster.x, monster.y, player.x, player.y);
+                
+                if (nextStep) {
+                    if (Math.random() < 0.9) {
+                        monster.x = nextStep.x;
+                        monster.y = nextStep.y;
+                    } else {
+                        const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+                        const validMoves = [];
+                        
+                        for (const [dx, dy] of directions) {
+                            const newX = monster.x + dx;
+                            const newY = monster.y + dy;
+                            
+                            if (newX >= 0 && newX < MAZE_WIDTH && newY >= 0 && newY < MAZE_HEIGHT) {
+                                if (maze[newY][newX] === 0) {
+                                    validMoves.push({ x: newX, y: newY });
+                                }
+                            }
+                        }
+                        
+                        if (validMoves.length > 0) {
+                            const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+                            monster.x = randomMove.x;
+                            monster.y = randomMove.y;
+                        }
+                    }
+                }
+            });
+            
+            lastMonsterMoveTime = currentTime;
+        }
+
+        // Respawn monster in a safe location
+        function respawnMonster(monster) {
+            const connectedCellsArray = Array.from(connectedCells).map(key => ({
+                x: Math.floor(key / MAZE_HEIGHT),
+                y: key % MAZE_HEIGHT
+            }));
+            
+            const validPositions = connectedCellsArray.filter(pos => {
+                const distance = Math.abs(pos.x - player.x) + Math.abs(pos.y - player.y);
+                return distance >= 8; // Spawn far from player
+            });
+            
+            if (validPositions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * validPositions.length);
+                const position = validPositions[randomIndex];
+                monster.x = position.x;
+                monster.y = position.y;
+                monster.alive = true;
+            }
+        }
+
+        // Check collisions
+        function checkCollisions() {
+            for (const monster of monsters) {
+                if (monster.alive && monster.x === player.x && monster.y === player.y) {
+                    gameOver(monster.name);
+                    return;
+                }
+            }
+        }
+
+        // Game over
+        function gameOver(monsterName) {
+            gameState = 'gameOver';
+            document.getElementById('deathMessage').textContent = `You have been caught and eaten by ${monsterName}!`;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+
+        // Victory
+        function victory() {
+            gameState = 'victory';
+            score++;
+            updateDisplay();
+            document.getElementById('victory').style.display = 'block';
+        }
+
+        // Restart game
+        function restartGame() {
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('victory').style.display = 'none';
+            document.getElementById('instructions').style.display = 'none';
+            document.getElementById('readyScreen').style.display = 'none';
+            score = 0;
+            level = 1;
+            initGame();
+        }
+
+        // Regenerate maze
+        function regenerateMaze() {
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('victory').style.display = 'none';
+            document.getElementById('instructions').style.display = 'none';
+            document.getElementById('readyScreen').style.display = 'none';
+            initGame();
+        }
+
+        // Next level
+        function nextLevel() {
+            document.getElementById('victory').style.display = 'none';
+            level++;
+            initGame();
+        }
+
+        // Show instructions
+        function showInstructions() {
+            gameState = 'instructions';
+            document.getElementById('instructions').style.display = 'block';
+        }
+
+        // Hide instructions
+        function hideInstructions() {
+            document.getElementById('instructions').style.display = 'none';
+            gameState = 'playing';
+        }
+
+        // Update display
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('level').textContent = level;
+            document.getElementById('bombStatus').textContent = playerBomb ? '💣' : '❌';
+        }
+
+        // Render game
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw maze
+            ctx.fillStyle = '#333';
+            for (let y = 0; y < MAZE_HEIGHT; y++) {
+                for (let x = 0; x < MAZE_WIDTH; x++) {
+                    if (maze[y][x] === 1) {
+                        ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                    }
+                }
+            }
+            
+            // Draw maze borders
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 1;
+            for (let y = 0; y <= MAZE_HEIGHT; y++) {
+                ctx.beginPath();
+                ctx.moveTo(0, y * CELL_SIZE);
+                ctx.lineTo(MAZE_WIDTH * CELL_SIZE, y * CELL_SIZE);
+                ctx.stroke();
+            }
+            for (let x = 0; x <= MAZE_WIDTH; x++) {
+                ctx.beginPath();
+                ctx.moveTo(x * CELL_SIZE, 0);
+                ctx.lineTo(x * CELL_SIZE, MAZE_HEIGHT * CELL_SIZE);
+                ctx.stroke();
+            }
+            
+            // Draw bombs
+            ctx.fillStyle = '#FFD700';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            bombs.forEach(bomb => {
+                ctx.fillText('💣', bomb.x * CELL_SIZE + CELL_SIZE / 2, bomb.y * CELL_SIZE + CELL_SIZE / 2 + 6);
+            });
+            
+            // Draw player (white if has bomb, green if not)
+            ctx.fillStyle = playerBomb ? '#FFFFFF' : '#4CAF50';
+            ctx.beginPath();
+            ctx.arc(
+                player.x * CELL_SIZE + CELL_SIZE / 2,
+                player.y * CELL_SIZE + CELL_SIZE / 2,
+                CELL_SIZE / 3,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
+            
+            // Draw monsters
+            monsters.forEach((monster, index) => {
+                if (monster.alive) {
+                    ctx.fillStyle = monster.color;
+                    ctx.beginPath();
+                    ctx.arc(
+                        monster.x * CELL_SIZE + CELL_SIZE / 2,
+                        monster.y * CELL_SIZE + CELL_SIZE / 2,
+                        CELL_SIZE / 3,
+                        0,
+                        Math.PI * 2
+                    );
+                    ctx.fill();
+                    
+                    // Draw initial
+                    ctx.fillStyle = '#FFF';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(
+                        monster.initial,
+                        monster.x * CELL_SIZE + CELL_SIZE / 2,
+                        monster.y * CELL_SIZE + CELL_SIZE / 2 + 5
+                    );
+                }
+            });
+            
+            // Update and draw explosions
+            explosionCtx.clearRect(0, 0, explosionCanvas.width, explosionCanvas.height);
+            explosions = explosions.filter(explosion => {
+                explosion.frame++;
+                explosion.radius = (explosion.frame / explosion.duration) * explosion.maxRadius;
+                
+                if (explosion.frame <= explosion.duration) {
+                    // Draw explosion effect
+                    const alpha = 1 - (explosion.frame / explosion.duration);
+                    explosionCtx.globalAlpha = alpha;
+                    
+                    // Multiple rings for effect
+                    for (let i = 0; i < 3; i++) {
+                        const ringRadius = Math.max(0, explosion.radius - i * 5);
+                        
+                        // Only draw ring if radius is positive
+                        if (ringRadius > 0) {
+                            explosionCtx.strokeStyle = `hsl(${i * 30}, 100%, ${50 + i * 20}%)`;
+                            explosionCtx.lineWidth = 3;
+                            explosionCtx.beginPath();
+                            explosionCtx.arc(
+                                explosion.x * CELL_SIZE + CELL_SIZE / 2,
+                                explosion.y * CELL_SIZE + CELL_SIZE / 2,
+                                ringRadius,
+                                0,
+                                Math.PI * 2
+                            );
+                            explosionCtx.stroke();
+                        }
+                    }
+                    
+                    explosionCtx.globalAlpha = 1;
+                    return true;
+                }
+                return false;
+            });
+            
+            // Draw countdown overlay
+            if (gameState === 'countdown') {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#FFD700';
+                ctx.font = 'bold 120px Arial';
+                ctx.textAlign = 'center';
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 4;
+                
+                const countdownText = countdownValue > 0 ? countdownValue.toString() : 'GO!';
+                const textX = canvas.width / 2;
+                const textY = canvas.height / 2 + 40;
+                
+                ctx.strokeText(countdownText, textX, textY);
+                ctx.fillText(countdownText, textX, textY);
+            }
+        }
+
+        // Game loop
+        function gameLoop(currentTime) {
+            // Handle countdown
+            if (gameState === 'countdown') {
+                const elapsed = Date.now() - countdownStartTime;
+                const newCountdownValue = Math.max(0, 3 - Math.floor(elapsed / 1000));
+                
+                if (newCountdownValue !== countdownValue) {
+                    countdownValue = newCountdownValue;
+                }
+                
+                // Start playing when countdown reaches 0
+                if (elapsed >= 3000) {
+                    gameState = 'playing';
+                }
+            }
+            
+            if (gameState === 'playing') {
+                movePlayer(currentTime);
+                moveMonsters(currentTime);
+                checkCollisions();
+            }
+            
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Initialize audio and start game
+        initAudio();
+        initGame();
+        requestAnimationFrame(gameLoop);
+        
+        // Handle user interaction to resume audio context
+        document.addEventListener('click', () => {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        });
+    </script>
+</body>
+</html>
