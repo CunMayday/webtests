@@ -75,6 +75,7 @@
     .btn-red{background:var(--p-black);color:#fff;border-color:var(--p-gold);min-width:260px;border-radius:14px;letter-spacing:.02em;text-transform:none}
 
     .data-display{background:var(--panel);border-radius:10px;padding:20px;margin:20px 0;border:2px solid #e5e7eb}
+    .data-display:focus{outline:3px solid var(--focus-ring);outline-offset:3px}
     .data-display h3{color:var(--ink);margin-bottom:15px;text-align:center}
     .data-table-container{max-height:400px;overflow-y:auto;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.06)}
 
@@ -119,8 +120,9 @@
     tr:hover{background:#f9fafb;transition:background .15s ease}
     .numeric{text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-weight:600}
 
-    .variable-selection{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:18px 0}
-    .comparison-selection{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:18px 0}
+    fieldset{border:0;margin:0;padding:0;min-inline-size:0}
+    .variable-selection{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:18px 0;border:0;padding:0}
+    .comparison-selection{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:18px 0;border:0;padding:0}
     .variable-option,.comparison-option{display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:10px;border:2px solid var(--line)}
 
     .selection-info{background:#fff;border:2px solid var(--p-dark);border-left:8px solid var(--p-gold);border-radius:10px;padding:12px;margin:15px 0;color:var(--ink);text-align:center;font-weight:800}
@@ -152,12 +154,14 @@
       </div>
 
       <div class="data-controls" role="group" aria-label="Data controls">
-        <button class="btn btn-green" id="btnNew"><span aria-hidden="true">🎲</span> Generate New Dataset</button>
-        <button class="btn btn-green" id="btnToggle" aria-expanded="false" aria-controls="dataDisplay"><span aria-hidden="true">📊</span> <span id="dataToggleText">Show Data</span></button>
-        <button class="btn btn-green" id="btnCSV"><span aria-hidden="true">💾</span> Download CSV</button>
+        <button class="btn btn-green" id="btnNew" type="button"><span aria-hidden="true">🎲</span> Generate New Dataset</button>
+        <button class="btn btn-green" id="btnToggle" type="button" aria-expanded="false" aria-controls="dataDisplay"><span aria-hidden="true">📊</span> <span id="dataToggleText">Show Data</span></button>
+        <button class="btn btn-green" id="btnCSV" type="button"><span aria-hidden="true">💾</span> Download CSV</button>
       </div>
 
-      <div id="dataDisplay" class="data-display" style="display:none;" aria-live="polite">
+      <div id="datasetStatus" class="sr-only" aria-live="polite"></div>
+
+      <div id="dataDisplay" class="data-display" aria-live="polite" hidden tabindex="-1">
         <h3>Current Dataset</h3>
         <div class="data-table-container">
           <table id="dataTable" aria-label="dataset table">
@@ -177,8 +181,8 @@
         </div>
       </div>
 
-      <div class="tabs-container" role="tablist" aria-label="Analysis Tabs">
-        <div class="tabs" id="tabs">
+      <div class="tabs-container" aria-label="Analysis Tabs">
+        <div class="tabs" id="tabs" role="tablist">
           <button class="tab-button" role="tab" aria-selected="true" aria-controls="case-questions" id="tab-case" tabindex="0">The Case and the Questions</button>
           <button class="tab-button" role="tab" aria-selected="false" aria-controls="ab-comparisons" id="tab-ab" tabindex="-1">A/B Comparisons</button>
           <button class="tab-button" role="tab" aria-selected="false" aria-controls="impact-analysis" id="tab-impact" tabindex="-1">Impact Analysis of Various Factors</button>
@@ -205,7 +209,7 @@
                 </label>
               </fieldset>
               <div class="question-submit">
-                <button class="btn btn-orange" id="submitQ1">Submit Answer</button>
+                <button class="btn btn-orange" id="submitQ1" type="button">Submit Answer</button>
               </div>
               <div id="q1-feedback" class="feedback" role="status" aria-live="polite" style="display:none;"></div>
             </div>
@@ -225,7 +229,7 @@
                 </label>
               </fieldset>
               <div class="question-submit">
-                <button class="btn btn-orange" id="submitQ2">Submit Answer</button>
+                <button class="btn btn-orange" id="submitQ2" type="button">Submit Answer</button>
               </div>
               <div id="q2-feedback" class="feedback" role="status" aria-live="polite" style="display:none;"></div>
             </div>
@@ -245,7 +249,7 @@
                 </label>
               </fieldset>
               <div class="question-submit">
-                <button class="btn btn-orange" id="submitQ3">Submit Answer</button>
+                <button class="btn btn-orange" id="submitQ3" type="button">Submit Answer</button>
               </div>
               <div id="q3-feedback" class="feedback" role="status" aria-live="polite" style="display:none;"></div>
             </div>
@@ -286,7 +290,7 @@
                 </label>
               </fieldset>
               <div class="question-submit">
-                <button class="btn btn-orange" id="submitQ4">Submit Answer</button>
+                <button class="btn btn-orange" id="submitQ4" type="button">Submit Answer</button>
               </div>
               <div id="q4-feedback" class="feedback" role="status" aria-live="polite" style="display:none;"></div>
             </div>
@@ -298,7 +302,8 @@
             <h2 id="ab-title">A/B Comparison using One-Tailed T-Tests</h2>
             <p>Test whether one group gets higher ratings than another using one-tailed t-tests (equal variances assumed, 95% confidence). Uses <strong>sample</strong> variances and df-based critical values.</p>
             <h3>Select Comparison:</h3>
-            <div class="comparison-selection" role="group" aria-label="Comparison options">
+            <fieldset class="comparison-selection" aria-labelledby="comparison-legend">
+              <legend id="comparison-legend" class="sr-only">Comparison options</legend>
               <label class="comparison-option">
                 <input type="radio" name="comparison" value="stars" checked/>
                 <span>Do movies with Stars get better ratings than those without Stars?</span>
@@ -307,19 +312,20 @@
                 <input type="radio" name="comparison" value="fact"/>
                 <span>Do Fact-based movies get better ratings than Fiction movies?</span>
               </label>
-            </div>
+            </fieldset>
             <div class="question-submit">
-              <button class="btn btn-purple" id="runTest">Run One-Tailed T-Test</button>
+              <button class="btn btn-purple" id="runTest" type="button" aria-controls="hypothesis-results">Run One-Tailed T-Test</button>
             </div>
           </div>
-          <div id="hypothesis-results" class="results" aria-live="polite"></div>
+          <div id="hypothesis-results" class="results" aria-live="polite" role="region" aria-label="Hypothesis test results"></div>
         </div>
 
         <div id="impact-analysis" class="tab-content" role="tabpanel" aria-labelledby="tab-impact">
           <div class="analysis-section" role="region" aria-labelledby="impact-title">
             <h2 id="impact-title">Multiple Linear Regression Analysis</h2>
             <p>Select which independent variables to include in your regression model:</p>
-            <div class="variable-selection" role="group" aria-label="Variable selection">
+            <fieldset class="variable-selection" aria-describedby="selectionInfo" aria-label="Variable selection">
+              <legend class="sr-only">Toggle variables for regression analysis</legend>
               <label class="variable-option">
                 <input type="checkbox" id="fact" checked/>
                 <span>Fact (Documentary vs Fiction)</span>
@@ -336,13 +342,13 @@
                 <input type="checkbox" id="competition" checked/>
                 <span>Competition Rating</span>
               </label>
-            </div>
+            </fieldset>
             <div class="selection-info" id="selectionInfo" aria-live="polite">Selected: Fact, Stars, Previous Rating, Competition (4 variables)</div>
             <div class="question-submit">
-              <button class="btn btn-red" id="runRegression">Run Regression Analysis</button>
+              <button class="btn btn-red" id="runRegression" type="button" aria-controls="results">Run Regression Analysis</button>
             </div>
           </div>
-          <div id="results" class="results" aria-live="polite"></div>
+          <div id="results" class="results" aria-live="polite" role="region" aria-label="Regression analysis results"></div>
         </div>
       </div>
     </div>
@@ -394,6 +400,7 @@
       avgRating: $('#avgRating'),
       dataDisplay: $('#dataDisplay'),
       dataToggleText: $('#dataToggleText'),
+      datasetStatus: $('#datasetStatus'),
       selectionInfo: $('#selectionInfo'),
       results: $('#results'),
       hypoResults: $('#hypothesis-results'),
@@ -438,6 +445,12 @@
       nodes.obsCount.textContent = cbcData.length;
       const avg = ss.mean(cbcData.map(r => r.rating));
       nodes.avgRating.textContent = isFinite(avg) ? avg.toFixed(2) : '—';
+    }
+
+    function announceDataset(message){
+      if (nodes.datasetStatus){
+        nodes.datasetStatus.textContent = message;
+      }
     }
 
     // ---------- Data generation ----------
@@ -503,8 +516,11 @@
       resetAllQuestions();
       nodes.results.style.display = 'none';
       nodes.hypoResults.style.display = 'none';
-      // announce
-      nodes.dataDisplay.setAttribute('aria-live','polite');
+      const correlatedLabels = correlated.map(f => LABELS[f] || f);
+      const factorText = correlatedLabels.length
+        ? `Correlated factors: ${correlatedLabels.join(', ')}.`
+        : 'No individual factors were emphasized in this sample.';
+      announceDataset(`New dataset generated with ${cbcData.length} observations. ${factorText} Target R-squared approximately ${targetR2.toFixed(2)}.`);
     }
 
     // ---------- CSV ----------
@@ -872,16 +888,18 @@
     }
 
     function toggleDataDisplay(){
-      const showing = nodes.dataDisplay.style.display !== 'none';
+      const toggleButton = document.getElementById('btnToggle');
+      const showing = !nodes.dataDisplay.hasAttribute('hidden');
       if (showing){
-        nodes.dataDisplay.style.display = 'none';
+        nodes.dataDisplay.setAttribute('hidden','');
         nodes.dataToggleText.textContent = 'Show Data';
-        document.getElementById('btnToggle').setAttribute('aria-expanded','false');
+        toggleButton.setAttribute('aria-expanded','false');
       } else {
         updateDataDisplay();
-        nodes.dataDisplay.style.display = 'block';
+        nodes.dataDisplay.removeAttribute('hidden');
+        setTimeout(() => nodes.dataDisplay.focus(), 0);
         nodes.dataToggleText.textContent = 'Hide Data';
-        document.getElementById('btnToggle').setAttribute('aria-expanded','true');
+        toggleButton.setAttribute('aria-expanded','true');
       }
     }
 
@@ -914,6 +932,8 @@
 
       // Set initial aria-expanded for data toggle
       document.getElementById('btnToggle').setAttribute('aria-expanded','false');
+
+      announceDataset(`Loaded original dataset with ${cbcData.length} observations. Use the controls above to review or download the data.`);
     });
   </script>
 </body>
