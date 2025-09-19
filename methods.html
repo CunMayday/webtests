@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Methodology Decision Tree - DBA Program</title>
+    <style>
+        /* Version 1.1 - Fixed decision tree flow logic and updated methodologies based on research guide document */
+        
+        /* Purdue Color Palette */
+        :root {
+            --campus-gold: #C28E0E;
+            --athletic-gold: #CEB888;
+            --purdue-black: #000000;
+            --gray: #9D968D;
+            --dark-gray: #373A36;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--white);
+            color: var(--purdue-black);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background-color: var(--purdue-black);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .progress-bar {
+            background-color: var(--gray);
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background-color: var(--campus-gold);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            background-color: var(--white);
+            border: 2px solid var(--athletic-gold);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card h2 {
+            color: var(--purdue-black);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .question-card p {
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            background-color: var(--white);
+            border: 2px solid var(--gray);
+            color: var(--purdue-black);
+            padding: 15px 20px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .option-button:hover {
+            background-color: var(--athletic-gold);
+            border-color: var(--campus-gold);
+            color: var(--purdue-black);
+        }
+
+        .option-button:focus {
+            outline: 3px solid var(--campus-gold);
+            outline-offset: 2px;
+        }
+
+        .result-card {
+            background-color: var(--athletic-gold);
+            border: 2px solid var(--campus-gold);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .result-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-card h2 {
+            color: var(--purdue-black);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .methodology-details {
+            background-color: var(--white);
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .methodology-details h3 {
+            color: var(--campus-gold);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .methodology-details ul {
+            margin-left: 20px;
+            color: var(--dark-gray);
+        }
+
+        .methodology-details li {
+            margin-bottom: 8px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-button {
+            background-color: var(--campus-gold);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: #A67309;
+        }
+
+        .nav-button:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .nav-button:focus {
+            outline: 3px solid var(--purdue-black);
+            outline-offset: 2px;
+        }
+
+        .restart-button {
+            background-color: var(--purdue-black);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .restart-button:hover {
+            background-color: var(--dark-gray);
+        }
+
+        .restart-button:focus {
+            outline: 3px solid var(--campus-gold);
+            outline-offset: 2px;
+        }
+
+        .examples {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--campus-gold);
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .examples h4 {
+            color: var(--purdue-black);
+            margin-bottom: 10px;
+        }
+
+        .path-summary {
+            background-color: var(--white);
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .path-summary h3 {
+            color: var(--campus-gold);
+            margin-bottom: 15px;
+        }
+
+        .path-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 3px;
+            border-left: 3px solid var(--athletic-gold);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+            }
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Research Methodology Decision Tree</h1>
+            <p>Find the right research approach for your DBA applied research project</p>
+        </header>
+
+        <main class="content">
+            <div class="progress-bar" role="progressbar" aria-label="Decision tree progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Question 1: Research Purpose -->
+            <div class="question-card active" id="question1">
+                <h2>What is your primary research purpose?</h2>
+                <p>Consider the main goal of your applied research project. DBA research typically focuses on solving real organizational problems.</p>
+                <div class="options" role="group" aria-labelledby="question1">
+                    <button class="option-button" onclick="nextQuestion(1, 'explore')" data-choice="Explore and understand a business problem or phenomenon">
+                        Explore and understand a business problem or phenomenon
+                    </button>
+                    <button class="option-button" onclick="nextQuestion(1, 'explain')" data-choice="Explain relationships between business variables">
+                        Explain relationships between business variables
+                    </button>
+                    <button class="option-button" onclick="nextQuestion(1, 'predict')" data-choice="Predict future outcomes or test interventions">
+                        Predict future outcomes or test interventions
+                    </button>
+                    <button class="option-button" onclick="nextQuestion(1, 'improve')" data-choice="Improve or change current business practices">
+                        Improve or change current business practices
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 2a: Data Nature (for explore path) -->
+            <div class="question-card" id="question2a">
+                <h2>What type of data best captures your business problem?</h2>
+                <p>Think about the nature of information you need to understand the problem deeply.</p>
+                <div class="options" role="group" aria-labelledby="question2a">
+                    <button class="option-button" onclick="nextQuestion('2a', 'words')" data-choice="Rich descriptions, experiences, and meanings (words, stories)">
+                        Rich descriptions, experiences, and meanings (words, stories)
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2a', 'numbers')" data-choice="Measurable patterns and trends (numbers, statistics)">
+                        Measurable patterns and trends (numbers, statistics)
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2a', 'both')" data-choice="Both detailed understanding AND measurable evidence">
+                        Both detailed understanding AND measurable evidence
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 2b: Relationship Type (for explain path) -->
+            <div class="question-card" id="question2b">
+                <h2>What type of relationships are you investigating?</h2>
+                <p>Consider whether you're looking at existing patterns or trying to establish cause-and-effect.</p>
+                <div class="options" role="group" aria-labelledby="question2b">
+                    <button class="option-button" onclick="nextQuestion('2b', 'correlational')" data-choice="Associations and correlations between variables">
+                        Associations and correlations between variables
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2b', 'causal')" data-choice="Cause-and-effect relationships">
+                        Cause-and-effect relationships
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2b', 'contextual')" data-choice="How context influences relationships">
+                        How context influences relationships
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 2c: Prediction Type (for predict path) -->
+            <div class="question-card" id="question2c">
+                <h2>What are you trying to predict or test?</h2>
+                <p>Consider the type of prediction or intervention you want to evaluate.</p>
+                <div class="options" role="group" aria-labelledby="question2c">
+                    <button class="option-button" onclick="nextQuestion('2c', 'outcomes')" data-choice="Future business outcomes based on current data">
+                        Future business outcomes based on current data
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2c', 'intervention')" data-choice="Effectiveness of a specific business intervention">
+                        Effectiveness of a specific business intervention
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2c', 'model')" data-choice="Validity of a business theory or model">
+                        Validity of a business theory or model
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 2d: Change Type (for improve path) -->
+            <div class="question-card" id="question2d">
+                <h2>What type of organizational change are you seeking?</h2>
+                <p>Consider how you want to approach creating change in the organization.</p>
+                <div class="options" role="group" aria-labelledby="question2d">
+                    <button class="option-button" onclick="nextQuestion('2d', 'collaborative')" data-choice="Collaborative change with stakeholder participation">
+                        Collaborative change with stakeholder participation
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2d', 'systematic')" data-choice="Systematic, evidence-based process improvement">
+                        Systematic, evidence-based process improvement
+                    </button>
+                    <button class="option-button" onclick="nextQuestion('2d', 'innovation')" data-choice="Innovation through design and prototyping">
+                        Innovation through design and prototyping
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 3: Sample Access -->
+            <div class="question-card" id="question3">
+                <h2>What is your access to research participants/data?</h2>
+                <p>Consider your practical constraints and available resources.</p>
+                <div class="options" role="group" aria-labelledby="question3">
+                    <button class="option-button" onclick="showResult()" data-choice="Limited access - small, focused sample">
+                        Limited access - small, focused sample
+                    </button>
+                    <button class="option-button" onclick="showResult()" data-choice="Moderate access - medium-sized sample from organization">
+                        Moderate access - medium-sized sample from organization
+                    </button>
+                    <button class="option-button" onclick="showResult()" data-choice="Broad access - large sample or multiple organizations">
+                        Broad access - large sample or multiple organizations
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="result-card" id="results">
+                <div class="path-summary">
+                    <h3>Your Decision Path</h3>
+                    <div id="pathSummary"></div>
+                </div>
+
+                <h2 id="recommendedMethod">Recommended Methodology</h2>
+                
+                <div class="methodology-details">
+                    <div id="methodologyContent"></div>
+                </div>
+
+                <div class="examples">
+                    <h4>Business Research Examples:</h4>
+                    <div id="exampleContent"></div>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-button" id="backButton" onclick="previousQuestion()" disabled>
+                    ← Back
+                </button>
+                <button class="restart-button" onclick="restart()">
+                    Start Over
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Decision tree state
+        let currentQuestion = 1;
+        let decisions = [];
+        let totalQuestions = 3; // Maximum depth
+
+        // Methodology database
+        const methodologies = {
+            'experimental_design': {
+                name: 'Experimental Research Design',
+                description: 'Systematic testing of business interventions through controlled manipulation of variables to establish causal relationships.',
+                when: 'When you need to prove that a specific business intervention causes measurable outcomes and can control variables in your research setting.',
+                methods: [
+                    'True experiments with random assignment to treatment/control groups',
+                    'Quasi-experiments without randomization but with comparison groups',
+                    'Field experiments conducted in natural business environments',
+                    'A/B testing of business processes or interventions',
+                    'Pre-post intervention comparisons with controls'
+                ],
+                advantages: [
+                    'Strongest evidence for causal relationships',
+                    'Clear measurement of intervention effects',
+                    'Reduces alternative explanations for outcomes',
+                    'Highly credible evidence for business stakeholders',
+                    'Enables precise measurement of business impact'
+                ],
+                considerations: [
+                    'May be difficult to implement in real business settings',
+                    'Requires 30-50 participants per group for basic comparisons',
+                    'Ethical considerations when manipulating business processes',
+                    'External validity challenges in controlled environments',
+                    'Need organizational support and adequate resources'
+                ],
+                examples: [
+                    'Testing impact of flexible work arrangements on employee productivity',
+                    'Comparing different customer service training approaches on satisfaction scores',
+                    'Evaluating effectiveness of leadership development programs on team performance',
+                    'Testing new performance management systems against traditional approaches'
+                ]
+            },
+            'survey_research': {
+                name: 'Survey Research Methodology',
+                description: 'Systematic collection of standardized data from large samples to identify patterns, relationships, and stakeholder perspectives.',
+                when: 'When you need to measure relationships between variables across broad populations or understand stakeholder perspectives at scale.',
+                methods: [
+                    'Online surveys for cost-effectiveness and broad reach',
+                    'Mixed-mode approaches (online, phone, mail) for better response rates',
+                    'Structured questionnaires with validated scales',
+                    'Longitudinal surveys to track changes over time',
+                    'Cross-sectional surveys for population snapshots'
+                ],
+                advantages: [
+                    'Efficient data collection from geographically dispersed populations',
+                    'Can measure multiple variables simultaneously',
+                    'Findings can generalize to larger populations',
+                    'Cost-effective for large sample sizes',
+                    'Enables statistical testing of relationships'
+                ],
+                considerations: [
+                    'Requires 300-500 participants for descriptive studies',
+                    'May miss important contextual factors',
+                    'Response bias and non-response issues',
+                    'Limited depth compared to qualitative approaches',
+                    'Need to balance comprehensiveness with respondent burden'
+                ],
+                examples: [
+                    'Employee engagement surveys across multiple departments',
+                    'Customer satisfaction assessments for service improvement',
+                    'Organizational culture measurement for change initiatives',
+                    'Market research for new product development decisions'
+                ]
+            },
+            'case_study': {
+                name: 'Case Study Research',
+                description: 'In-depth investigation of complex business phenomena within their natural organizational contexts using multiple data sources.',
+                when: 'When you need deep understanding of complex business problems, unique situations, or want to capture context and complexity.',
+                methods: [
+                    'Multiple data sources: interviews, observations, documents',
+                    'Single case studies for intensive analysis of unique situations',
+                    'Multiple case studies for comparative analysis',
+                    'Embedded case designs examining multiple units within organizations',
+                    'Systematic case study protocols and evidence chains'
+                ],
+                advantages: [
+                    'Rich, detailed insights into complex business problems',
+                    'Captures context and real-world complexity',
+                    'Flexible data collection methods',
+                    'Good for exceptional performers or innovative practices',
+                    'Generates actionable insights for similar contexts'
+                ],
+                considerations: [
+                    'Findings may not generalize to other organizations',
+                    'Time-intensive data collection and analysis',
+                    'Potential for researcher bias and subjectivity',
+                    'Requires access to organizational stakeholders',
+                    'Need systematic approaches to enhance credibility'
+                ],
+                examples: [
+                    'How a company successfully navigated digital transformation',
+                    'Why a merger failed to achieve expected synergies',
+                    'Factors contributing to exceptional organizational performance',
+                    'Implementation challenges in strategic change initiatives'
+                ]
+            },
+            'mixed_methods': {
+                name: 'Mixed Methods Research',
+                description: 'Strategic combination of quantitative and qualitative approaches to provide comprehensive understanding of complex business phenomena.',
+                when: 'When you need both statistical evidence and deep contextual understanding, or when one method alone is insufficient.',
+                methods: [
+                    'Convergent parallel: simultaneous quantitative and qualitative data collection',
+                    'Explanatory sequential: quantitative first, then qualitative explanation',
+                    'Exploratory sequential: qualitative exploration, then quantitative testing',
+                    'Transformative frameworks addressing equity and social responsibility',
+                    'Integration through joint displays and meta-inferences'
+                ],
+                advantages: [
+                    'Comprehensive view combining breadth and depth',
+                    'Validates findings across different data types',
+                    'Addresses limitations of single-method approaches',
+                    'Strong evidence base for business recommendations',
+                    'Triangulation enhances credibility'
+                ],
+                considerations: [
+                    'More complex design and analysis requirements',
+                    'Requires expertise in both quantitative and qualitative methods',
+                    'Longer timelines and more resource intensive',
+                    'Integration challenges require careful planning',
+                    'Need adequate sample sizes for both phases'
+                ],
+                examples: [
+                    'Survey employee attitudes then interview managers about implementation',
+                    'Analyze performance data and explore cultural factors through ethnography',
+                    'Measure customer satisfaction and conduct focus groups for deeper insights',
+                    'Test intervention effectiveness then study implementation processes'
+                ]
+            },
+            'action_research': {
+                name: 'Action Research',
+                description: 'Collaborative approach combining systematic inquiry with practical action to solve organizational problems while generating knowledge.',
+                when: 'When you want to create organizational change while studying the change process, and can work collaboratively with stakeholders.',
+                methods: [
+                    'Iterative cycles of planning, action, observation, and reflection',
+                    'Participatory action research with stakeholders as co-researchers',
+                    'Insider action research within your own organization',
+                    'Collaborative problem identification and solution development',
+                    'Real-time learning and adaptation throughout the process'
+                ],
+                advantages: [
+                    'Creates immediate organizational benefits',
+                    'High stakeholder buy-in and engagement',
+                    'Practical, actionable findings',
+                    'Builds internal organizational change capacity',
+                    'Addresses real business problems while conducting research'
+                ],
+                considerations: [
+                    'Researcher objectivity challenges due to involvement',
+                    'Difficult to generalize findings to other contexts',
+                    'Requires strong organizational partnerships',
+                    'Balancing academic rigor with practical action',
+                    'Managing dual roles as practitioner and researcher'
+                ],
+                examples: [
+                    'Improving employee retention through collaborative policy development',
+                    'Enhancing customer service through team-based problem solving',
+                    'Implementing sustainable business practices with employee participation',
+                    'Developing new performance management systems collaboratively'
+                ]
+            },
+            'design_science': {
+                name: 'Design Science Research',
+                description: 'Systematic creation and evaluation of innovative business solutions, tools, or processes that address identified organizational problems.',
+                when: 'When you need to develop new business solutions, tools, or methods that don\'t currently exist to address specific challenges.',
+                methods: [
+                    'Problem identification and solution motivation',
+                    'Systematic design and development of business artifacts',
+                    'Demonstration of artifact utility in business contexts',
+                    'Rigorous evaluation through multiple methods',
+                    'Iterative refinement based on evaluation feedback'
+                ],
+                advantages: [
+                    'Creates tangible, innovative business value',
+                    'Addresses practical organizational needs directly',
+                    'Combines creativity with rigorous evaluation',
+                    'Can generate intellectual property and competitive advantage',
+                    'Bridges academic research with practical innovation'
+                ],
+                considerations: [
+                    'Requires both technical and business domain expertise',
+                    'Time-intensive development and evaluation process',
+                    'May face organizational resistance to innovation',
+                    'Need resources for artifact development and testing',
+                    'Balancing innovation with proven business practices'
+                ],
+                examples: [
+                    'Developing new performance management frameworks',
+                    'Creating decision support tools for supply chain optimization',
+                    'Designing innovative customer experience systems',
+                    'Building business intelligence dashboards for strategic decision-making'
+                ]
+            }
+        };
+
+        function updateProgress() {
+            const progress = (decisions.length / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextQuestion(questionId, choice) {
+            // Store the decision
+            const questionText = document.querySelector(`#question${questionId} h2`).textContent;
+            const choiceText = event.target.getAttribute('data-choice');
+            
+            decisions.push({
+                question: questionText,
+                choice: choiceText,
+                value: choice
+            });
+
+            // Hide current question
+            document.querySelector('.question-card.active').classList.remove('active');
+
+            // Determine next question based on path
+            let nextQ = determineNextQuestion(questionId, choice);
+            
+            if (nextQ) {
+                document.getElementById(nextQ).classList.add('active');
+                currentQuestion = nextQ;
+            }
+
+            updateProgress();
+            updateBackButton();
+        }
+
+        function determineNextQuestion(questionId, choice) {
+            if (questionId === 1) {
+                // Route to appropriate second question
+                switch(choice) {
+                    case 'explore': return 'question2a';
+                    case 'explain': return 'question2b';
+                    case 'predict': return 'question2c';
+                    case 'improve': return 'question2d';
+                }
+            } else if (questionId.toString().startsWith('2')) {
+                return 'question3';
+            }
+            return null;
+        }
+
+        function showResult() {
+            // Store final decision
+            const questionText = document.querySelector('.question-card.active h2').textContent;
+            const choiceText = event.target.getAttribute('data-choice');
+            
+            decisions.push({
+                question: questionText,
+                choice: choiceText,
+                value: choiceText
+            });
+
+            // Hide current question
+            document.querySelector('.question-card.active').classList.remove('active');
+
+            // Determine methodology
+            const methodology = determineMethodology();
+            displayResult(methodology);
+
+            // Show results
+            document.getElementById('results').classList.add('active');
+            updateProgress();
+            updateBackButton();
+        }
+
+        function determineMethodology() {
+            const purpose = decisions[0].value;
+            const approach = decisions[1].value;
+
+            // Decision logic for DBA applied research based on the research guide
+            if (purpose === 'explore') {
+                if (approach === 'words') return 'case_study';
+                if (approach === 'numbers') return 'survey_research';
+                if (approach === 'both') return 'mixed_methods';
+            } else if (purpose === 'explain') {
+                if (approach === 'correlational') return 'survey_research';
+                if (approach === 'causal') return 'experimental_design';
+                if (approach === 'contextual') return 'mixed_methods';
+            } else if (purpose === 'predict') {
+                if (approach === 'outcomes') return 'survey_research';
+                if (approach === 'intervention') return 'experimental_design';
+                if (approach === 'model') return 'mixed_methods';
+            } else if (purpose === 'improve') {
+                if (approach === 'collaborative') return 'action_research';
+                if (approach === 'systematic') return 'mixed_methods';
+                if (approach === 'innovation') return 'design_science';
+            }
+
+            // Default fallback
+            return 'mixed_methods';
+        }
+
+        function displayResult(methodKey) {
+            const method = methodologies[methodKey];
+            
+            // Update path summary
+            let pathHtml = '';
+            decisions.forEach((decision, index) => {
+                pathHtml += `<div class="path-item">
+                    <strong>Step ${index + 1}:</strong> ${decision.question}<br>
+                    <em>Your choice:</em> ${decision.choice}
+                </div>`;
+            });
+            document.getElementById('pathSummary').innerHTML = pathHtml;
+
+            // Update methodology recommendation
+            document.getElementById('recommendedMethod').textContent = method.name;
+
+            // Create methodology content
+            const content = `
+                <h3>What is ${method.name}?</h3>
+                <p>${method.description}</p>
+
+                <h3>When to Use This Approach</h3>
+                <p>${method.when}</p>
+
+                <h3>Common Methods and Techniques</h3>
+                <ul>
+                    ${method.methods.map(m => `<li>${m}</li>`).join('')}
+                </ul>
+
+                <h3>Key Advantages</h3>
+                <ul>
+                    ${method.advantages.map(a => `<li>${a}</li>`).join('')}
+                </ul>
+
+                <h3>Important Considerations</h3>
+                <ul>
+                    ${method.considerations.map(c => `<li>${c}</li>`).join('')}
+                </ul>
+            `;
+
+            document.getElementById('methodologyContent').innerHTML = content;
+
+            // Add examples
+            const exampleHtml = method.examples.map(ex => `<li>${ex}</li>`).join('');
+            document.getElementById('exampleContent').innerHTML = `<ul>${exampleHtml}</ul>`;
+        }
+
+        function previousQuestion() {
+            if (decisions.length === 0) return;
+
+            // Remove last decision
+            decisions.pop();
+
+            // Hide current content
+            const activeElements = document.querySelectorAll('.active');
+            activeElements.forEach(el => el.classList.remove('active'));
+
+            // Determine previous question
+            if (decisions.length === 0) {
+                document.getElementById('question1').classList.add('active');
+                currentQuestion = 1;
+            } else if (decisions.length === 1) {
+                const purpose = decisions[0].value;
+                let questionId;
+                switch(purpose) {
+                    case 'explore': questionId = 'question2a'; break;
+                    case 'explain': questionId = 'question2b'; break;
+                    case 'predict': questionId = 'question2c'; break;
+                    case 'improve': questionId = 'question2d'; break;
+                }
+                document.getElementById(questionId).classList.add('active');
+                currentQuestion = questionId;
+            } else {
+                document.getElementById('question3').classList.add('active');
+                currentQuestion = 'question3';
+            }
+
+            updateProgress();
+            updateBackButton();
+        }
+
+        function updateBackButton() {
+            const backButton = document.getElementById('backButton');
+            backButton.disabled = decisions.length === 0;
+        }
+
+        function restart() {
+            decisions = [];
+            currentQuestion = 1;
+            
+            // Hide all questions and results
+            document.querySelectorAll('.question-card, .result-card').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show first question
+            document.getElementById('question1').classList.add('active');
+
+            updateProgress();
+            updateBackButton();
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Initialize
+        updateBackButton();
+    </script>
+</body>
+</html>
