@@ -1,3 +1,4 @@
+<!-- Version 2.1: Added file descriptions and updated to follow Purdue color guidelines and ADA compliance standards -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,39 +11,59 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: white;
+            color: #000000;
         }
         h1 {
-            color: #333;
+            color: #000000;
             text-align: center;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
+            border-bottom: 3px solid #C28E0E;
+            padding-bottom: 15px;
+            font-size: 2rem;
         }
         .file-list {
             background-color: white;
+            border: 2px solid #9D968D;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .file-item {
-            margin: 10px 0;
-            padding: 10px;
-            border-left: 4px solid #007bff;
-            background-color: #f8f9fa;
+            margin: 12px 0;
+            padding: 12px;
+            border-left: 5px solid #C28E0E;
+            background-color: #CEB888;
+            background-color: rgba(206, 184, 136, 0.2);
+            transition: background-color 0.2s ease;
+        }
+        .file-item:hover {
+            background-color: rgba(206, 184, 136, 0.4);
         }
         .file-item a {
             text-decoration: none;
-            color: #007bff;
+            color: #000000;
             font-weight: bold;
+            font-size: 1.1rem;
         }
         .file-item a:hover {
-            color: #0056b3;
+            color: #C28E0E;
             text-decoration: underline;
         }
+        .file-item a:focus {
+            outline: 2px solid #C28E0E;
+            outline-offset: 2px;
+            background-color: rgba(194, 142, 14, 0.1);
+        }
         .file-type {
-            color: #666;
+            color: #373A36;
             font-size: 0.9em;
             margin-left: 10px;
+        }
+        .file-description {
+            margin: 8px 0 0 0;
+            color: #373A36;
+            font-size: 0.95em;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -52,46 +73,57 @@
         <div class="file-item">
             <a href="agents.md">agents.md</a>
             <span class="file-type">(Markdown)</span>
+            <p class="file-description">Project guidelines for accessibility, Purdue branding, and development standards.</p>
         </div>
         <div class="file-item">
             <a href="case.html">case.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">TV movie ratings statistical analysis case study with Purdue-themed styling.</p>
         </div>
         <div class="file-item">
             <a href="caseada.html">caseada.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">ADA-compliant version of the TV movie ratings case study.</p>
         </div>
         <div class="file-item">
             <a href="caseGPT.html">caseGPT.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">CBC ratings analyzer with interactive statistical calculations.</p>
         </div>
         <div class="file-item">
             <a href="caseGPTv1.html">caseGPTv1.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">First version of the TV movie ratings case study with gradient styling.</p>
         </div>
         <div class="file-item">
             <a href="casev2.html">casev2.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">Enhanced TV movie ratings case study with improved Purdue branding and accessibility.</p>
         </div>
         <div class="file-item">
             <a href="hello.html">hello.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">Simple "Hello World" page with red text styling.</p>
         </div>
         <div class="file-item">
             <a href="index.html">index.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">Main welcome page with Purdue-themed accessible links hub.</p>
         </div>
         <div class="file-item">
             <a href="maze.html">maze.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">Interactive monster maze game called "Efe's Monster Maze!"</p>
         </div>
         <div class="file-item">
             <a href="methods.html">methods.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">Research methodology decision tree for DBA program with interactive wizard.</p>
         </div>
         <div class="file-item">
             <a href="normalcurve.html">normalcurve.html</a>
             <span class="file-type">(HTML)</span>
+            <p class="file-description">React-based normal distribution explorer with interactive statistical visualization.</p>
         </div>
     </div>
 </body>
