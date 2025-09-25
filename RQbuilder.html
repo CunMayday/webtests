@@ -1,4 +1,4 @@
-<!-- v1: Initial version introducing the research question builder wizard web app. -->
+<!-- v2: Align wizard with DBA handbook including 5 Whys, gap typing, frameworks, FINER, and roadmap. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,18 +52,18 @@
 
     header p {
       margin: 0.5rem 0 0;
-      max-width: 760px;
+      max-width: 800px;
     }
 
     main {
       padding: 1rem;
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto 3rem;
     }
 
     .wizard {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 290px 1fr;
       gap: 1.5rem;
     }
 
@@ -171,6 +171,124 @@
       resize: vertical;
     }
 
+    .five-whys {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .toggle-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .toggle-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--gray);
+      background-color: #fdf9f1;
+      cursor: pointer;
+    }
+
+    .toggle-group input[type="radio"] {
+      margin: 0;
+    }
+
+    .card {
+      background-color: #fdf9f1;
+      border-left: 4px solid var(--campus-gold);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .card strong {
+      display: block;
+      color: var(--purdue-black);
+    }
+
+    .card p {
+      margin: 0.35rem 0 0;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .summary-panel {
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      padding: 1.25rem;
+      background-color: #f7f7f5;
+      margin-top: 1rem;
+    }
+
+    .summary-panel h3 {
+      margin-top: 0;
+      color: var(--campus-gold);
+    }
+
+    .smart-criteria,
+    .finer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .smart-criteria article,
+    .finer-grid article {
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      padding: 1rem;
+      background-color: var(--white);
+      position: relative;
+    }
+
+    .smart-criteria h3,
+    .finer-grid h3 {
+      margin-top: 0;
+      color: var(--campus-gold);
+    }
+
+    .status {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-weight: 700;
+      color: var(--dark-gray);
+    }
+
+    .status.passed {
+      color: #1a7f37;
+    }
+
+    .status.flag {
+      color: #b32d2e;
+    }
+
+    .framework-fields {
+      display: none;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .framework-fields.active {
+      display: grid;
+    }
+
     .button-row {
       display: flex;
       justify-content: space-between;
@@ -203,100 +321,6 @@
       color: var(--white);
     }
 
-    .card {
-      background-color: #fdf9f1;
-      border-left: 4px solid var(--campus-gold);
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .two-column {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .smart-criteria {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-    }
-
-    .smart-criteria article {
-      border: 1px solid var(--gray);
-      border-radius: 10px;
-      padding: 1rem;
-      background-color: var(--white);
-      position: relative;
-    }
-
-    .smart-criteria article h3 {
-      margin-top: 0;
-      color: var(--campus-gold);
-    }
-
-    .status {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-weight: 700;
-      color: var(--dark-gray);
-    }
-
-    .status.passed {
-      color: #1a7f37;
-    }
-
-    .status.flag {
-      color: #b32d2e;
-    }
-
-    .examples {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .examples .strong {
-      border-left-color: #1a7f37;
-    }
-
-    .examples .weak {
-      border-left-color: #b32d2e;
-    }
-
-    .callout {
-      background-color: var(--athletic-gold);
-      border-radius: 10px;
-      padding: 1rem;
-      color: var(--purdue-black);
-      margin-top: 1.5rem;
-    }
-
-    .checklist {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .checklist li {
-      padding-left: 1.75rem;
-      position: relative;
-      margin-bottom: 0.5rem;
-    }
-
-    .checklist li::before {
-      content: "✔";
-      position: absolute;
-      left: 0.4rem;
-      color: var(--purdue-black);
-    }
-
-    .pitfalls li::before {
-      content: "⚠";
-      color: #b32d2e;
-    }
-
     .keywords {
       margin: 0.5rem 0 0;
       padding: 0;
@@ -314,17 +338,42 @@
       font-size: 0.9rem;
     }
 
-    .summary-panel {
-      border: 1px solid var(--gray);
+    .callout {
+      background-color: var(--athletic-gold);
       border-radius: 10px;
-      padding: 1.25rem;
-      background-color: #f7f7f5;
-      margin-top: 1rem;
+      padding: 1rem;
+      color: var(--purdue-black);
+      margin-top: 1.5rem;
     }
 
-    .summary-panel h3 {
-      margin-top: 0;
-      color: var(--campus-gold);
+    .roadmap {
+      list-style: none;
+      padding: 0;
+      margin: 0.75rem 0 0;
+      counter-reset: roadmap;
+    }
+
+    .roadmap li {
+      counter-increment: roadmap;
+      margin-bottom: 0.5rem;
+      padding-left: 1.75rem;
+      position: relative;
+    }
+
+    .roadmap li::before {
+      content: counter(roadmap) ".";
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+      color: var(--purdue-black);
+    }
+
+    details {
+      margin-top: 1rem;
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      background-color: #fdf9f1;
     }
 
     @media (max-width: 960px) {
@@ -342,8 +391,9 @@
   <header>
     <h1>DBA Research Question Builder</h1>
     <p>
-      Navigate through the Purdue Global DBA wizard to translate your business challenge into a strong, SMART, and feasible
-      research question ready for proposal development.
+      Your research question is the blueprint for translating a lived business headache into a scholarly, actionable study. Unlike
+      PhD work that pursues new theory, the DBA focuses on applied solutions built on existing scholarship. Use this wizard to move
+      systematically from the felt problem through frameworks, feasibility, and next steps.
     </p>
   </header>
   <main>
@@ -351,297 +401,389 @@
       <nav class="progress" aria-label="Wizard steps">
         <h2>Progress</h2>
         <ul>
-          <li class="active" data-step="0">1. Business Problem &amp; Context</li>
-          <li data-step="1">2. Research Purpose Template</li>
-          <li data-step="2">3. Variables &amp; Relationships</li>
-          <li data-step="3">4. SMART Refinement</li>
-          <li data-step="4">5. Feasibility Checks</li>
-          <li data-step="5">6. Refinement &amp; Next Steps</li>
+          <li class="active" data-step="0">1. Felt Problem &amp; 5 Whys</li>
+          <li data-step="1">2. Identify the Research Gap</li>
+          <li data-step="2">3. Select Question Type</li>
+          <li data-step="3">4. Build with PICO or SPIDER</li>
+          <li data-step="4">5. Evaluate with SMART &amp; FINER</li>
+          <li data-step="5">6. Feasibility &amp; Roadmap</li>
         </ul>
       </nav>
       <section class="steps">
         <form id="rq-form">
           <article class="step active" data-step="0" aria-labelledby="step1-title">
             <fieldset>
-              <legend id="step1-title">Clarify the Business Challenge</legend>
-              <label for="business-problem">Describe the organizational problem you want to solve <span aria-hidden="true">*</span></label>
-              <textarea id="business-problem" name="business-problem" aria-required="true" placeholder="Example: Employee turnover at our regional call centers has increased 20% in the past year, impacting customer satisfaction scores."></textarea>
+              <legend id="step1-title">Surface and Diagnose Your Felt Problem</legend>
+              <label for="felt-problem">What business headache is keeping you up at night? <span aria-hidden="true">*</span></label>
+              <textarea id="felt-problem" name="felt-problem" aria-required="true" placeholder="Example: Post-merger turnover among high-potential employees is disrupting strategic initiatives."></textarea>
+              <p class="card" role="note">
+                Use the "5 Whys" to uncover the root cause. Each answer should build from the previous one until you reveal the
+                specific organizational breakdown that needs scholarly attention.
+              </p>
+              <div class="five-whys" aria-describedby="why-help">
+                <div>
+                  <label for="why-1">Why is this problem happening? (Why #1)</label>
+                  <textarea id="why-1" name="why-1"></textarea>
+                </div>
+                <div>
+                  <label for="why-2">Dig deeper (Why #2)</label>
+                  <textarea id="why-2" name="why-2"></textarea>
+                </div>
+                <div>
+                  <label for="why-3">Keep probing (Why #3)</label>
+                  <textarea id="why-3" name="why-3"></textarea>
+                </div>
+                <div>
+                  <label for="why-4">What else contributes? (Why #4)</label>
+                  <textarea id="why-4" name="why-4"></textarea>
+                </div>
+                <div>
+                  <label for="why-5">What's the root cause? (Why #5)</label>
+                  <textarea id="why-5" name="why-5"></textarea>
+                </div>
+              </div>
+              <p id="why-help" class="sr-only">Answer each "why" to move from the surface symptom to the root cause.</p>
             </fieldset>
-            <fieldset class="two-column" aria-describedby="context-help">
-              <legend>Contextualize Your Environment</legend>
-              <div>
-                <label for="industry">Industry focus</label>
-                <select id="industry" name="industry">
-                  <option value="">Select an industry</option>
-                  <option>Healthcare</option>
-                  <option>Finance</option>
-                  <option>Technology</option>
-                  <option>Manufacturing</option>
-                  <option>Education</option>
-                  <option>Public Sector</option>
-                  <option>Retail &amp; Service</option>
-                </select>
-              </div>
-              <div>
-                <label for="org-level">Organizational level</label>
-                <select id="org-level" name="org-level">
-                  <option value="">Select a level</option>
-                  <option>Individual</option>
-                  <option>Team</option>
-                  <option>Department</option>
-                  <option>Business Unit</option>
-                  <option>Enterprise</option>
-                </select>
-              </div>
-              <div>
-                <label for="stakeholders">Primary stakeholders impacted</label>
-                <input type="text" id="stakeholders" name="stakeholders" placeholder="Employees, customers, suppliers, leadership" />
-              </div>
-              <div>
-                <label for="desired-outcome">Desired organizational outcome</label>
-                <input type="text" id="desired-outcome" name="desired-outcome" placeholder="Reduce turnover by 10%, improve CSAT, streamline onboarding" />
-              </div>
+            <fieldset>
+              <legend>Refined Problem Statement</legend>
+              <textarea id="refined-problem" name="refined-problem" aria-live="polite" placeholder="Your refined problem statement will summarize the root cause you uncovered."></textarea>
             </fieldset>
-            <p id="context-help" class="card" role="note">
-              The more specific you are about your context, the easier it will be to align your research purpose and methodology.
-              Consider organizational constraints, stakeholders, and measurable outcomes.
-            </p>
             <div class="button-row">
               <span aria-hidden="true"></span>
-              <button type="button" data-action="next">Next: Purpose Templates</button>
+              <button type="button" data-action="next">Next: Research Gap</button>
             </div>
           </article>
 
           <article class="step" data-step="1" aria-labelledby="step2-title">
             <fieldset>
-              <legend id="step2-title">Select the Research Purpose</legend>
+              <legend id="step2-title">Identify the Research Gap</legend>
               <p>
-                Choose the primary intent of your study. The builder will offer a template aligned with your choice and adapt to your
-                business context.
+                Connect your organizational problem to the scholarly conversation. Choose the gap that best reflects where your
+                project contributes.
               </p>
-              <div class="two-column" role="radiogroup" aria-labelledby="purpose-options">
+              <div class="choice-grid" role="radiogroup" aria-labelledby="gap-group">
                 <div class="card">
                   <label>
-                    <input type="radio" name="purpose" value="descriptive" />
-                    <strong>Descriptive</strong>
-                    <span class="sr-only">template</span>
+                    <input type="radio" name="gap-type" value="classic" />
+                    <strong>The Classic Gap</strong>
+                    Little to no research has examined this phenomenon.
                   </label>
-                  <p>Detail what is happening within a process, group, or environment.</p>
                 </div>
                 <div class="card">
                   <label>
-                    <input type="radio" name="purpose" value="relational" />
-                    <strong>Relational</strong>
+                    <input type="radio" name="gap-type" value="disagreement" />
+                    <strong>The Disagreement Gap</strong>
+                    Existing studies conflict and need clarification.
                   </label>
-                  <p>Explore correlations or associations between key variables.</p>
                 </div>
                 <div class="card">
                   <label>
-                    <input type="radio" name="purpose" value="causal" />
-                    <strong>Causal</strong>
+                    <input type="radio" name="gap-type" value="contextual" />
+                    <strong>The Contextual Gap</strong>
+                    Research exists elsewhere but not in your setting.
                   </label>
-                  <p>Investigate cause-and-effect relationships through interventions.</p>
                 </div>
                 <div class="card">
                   <label>
-                    <input type="radio" name="purpose" value="comparative" />
-                    <strong>Comparative</strong>
+                    <input type="radio" name="gap-type" value="methodological" />
+                    <strong>The Methodological Gap</strong>
+                    Scholars have not used the approach you propose.
                   </label>
-                  <p>Compare groups, programs, or time periods to uncover differences.</p>
                 </div>
               </div>
             </fieldset>
+            <fieldset>
+              <legend>Evidence from the Literature</legend>
+              <textarea id="gap-evidence" name="gap-evidence" placeholder="Note citations, limitations, or future research calls that justify your selected gap."></textarea>
+            </fieldset>
             <div class="summary-panel" aria-live="polite">
-              <h3>Purpose Template Guidance</h3>
-              <p id="purpose-template">Select a purpose to view a tailored question scaffold.</p>
-              <p id="purpose-considerations" class="dark-text"></p>
+              <h3>Gap Summary</h3>
+              <p id="gap-summary">Select a gap type and describe the supporting literature to focus your contribution.</p>
             </div>
             <div class="button-row">
               <button type="button" class="secondary" data-action="prev">Back</button>
-              <button type="button" data-action="next">Next: Variables</button>
+              <button type="button" data-action="next">Next: Question Type</button>
             </div>
           </article>
 
           <article class="step" data-step="2" aria-labelledby="step3-title">
             <fieldset>
-              <legend id="step3-title">Identify Key Variables &amp; Relationships</legend>
-              <p>
-                Clarify the elements you will study. This will help the builder generate precise, measurable question language and
-                connect you to suitable methods.
+              <legend id="step3-title">Select the Question Type and Matching Methods</legend>
+              <p id="gap-group">
+                Use the decision logic to match the wording of your question with methodological expectations. Exploratory paths
+                rely on qualitative insight, while descriptive, relational, comparative, and causal questions point to quantitative
+                or mixed methods.
               </p>
-              <div class="two-column">
-                <div>
-                  <label for="independent-variable">Independent variable(s)</label>
-                  <input type="text" id="independent-variable" name="independent-variable" placeholder="Leadership coaching frequency" />
+              <div class="choice-grid" role="radiogroup" aria-labelledby="question-type-group">
+                <div class="card">
+                  <label>
+                    <input type="radio" name="question-type" value="exploratory" />
+                    <strong>Exploratory (Qualitative)</strong>
+                    Understand how people experience or make sense of a phenomenon.
+                  </label>
                 </div>
-                <div>
-                  <label for="dependent-variable">Dependent variable(s)</label>
-                  <input type="text" id="dependent-variable" name="dependent-variable" placeholder="Employee turnover rate" />
+                <div class="card">
+                  <label>
+                    <input type="radio" name="question-type" value="descriptive" />
+                    <strong>Descriptive (Quantitative)</strong>
+                    Measure what is happening, how much, or how often.
+                  </label>
                 </div>
-                <div>
-                  <label for="mediators">Potential mediating variables</label>
-                  <input type="text" id="mediators" name="mediators" placeholder="Employee engagement levels" />
+                <div class="card">
+                  <label>
+                    <input type="radio" name="question-type" value="relational" />
+                    <strong>Relational (Quantitative)</strong>
+                    Explore associations or correlations between variables.
+                  </label>
                 </div>
-                <div>
-                  <label for="moderators">Potential moderating variables</label>
-                  <input type="text" id="moderators" name="moderators" placeholder="Tenure, location" />
+                <div class="card">
+                  <label>
+                    <input type="radio" name="question-type" value="comparative" />
+                    <strong>Comparative (Quantitative)</strong>
+                    Examine differences between groups, programs, or time periods.
+                  </label>
                 </div>
-                <div>
-                  <label for="controls">Control variables</label>
-                  <input type="text" id="controls" name="controls" placeholder="Shift schedule, department size" />
+                <div class="card">
+                  <label>
+                    <input type="radio" name="question-type" value="causal" />
+                    <strong>Causal (Experimental)</strong>
+                    Test whether an intervention or change drives outcomes.
+                  </label>
                 </div>
               </div>
             </fieldset>
             <div class="summary-panel" aria-live="polite">
-              <h3>Emerging Research Question Draft</h3>
-              <p id="draft-question">Complete the fields to see a draft research question.</p>
-              <p id="relationship-tip"></p>
-              <p>
-                <strong>Methodology suggestions:</strong> <span id="method-suggestion">Specify variables to view recommended designs.</span>
-              </p>
+              <h3>Method Guidance</h3>
+              <p id="method-guidance">Choose a question type to reveal suggested data collection and analysis strategies.</p>
+              <p id="framework-hint"></p>
             </div>
             <div class="button-row">
               <button type="button" class="secondary" data-action="prev">Back</button>
-              <button type="button" data-action="next">Next: SMART Check</button>
+              <button type="button" data-action="next">Next: Framework</button>
             </div>
           </article>
 
           <article class="step" data-step="3" aria-labelledby="step4-title">
             <fieldset>
-              <legend id="step4-title">Refine with SMART Criteria</legend>
+              <legend id="step4-title">Structure Your Question with PICO or SPIDER</legend>
+              <p>
+                Select the framework that best fits your question type. PICO shines for quantitative questions measuring change or
+                comparison; SPIDER supports qualitative explorations of experience.
+              </p>
+              <div class="toggle-group" role="radiogroup" aria-label="Question framework">
+                <label>
+                  <input type="radio" name="framework" value="pico" />
+                  <span><strong>PICO</strong> (Population, Intervention, Comparison, Outcome)</span>
+                </label>
+                <label>
+                  <input type="radio" name="framework" value="spider" />
+                  <span><strong>SPIDER</strong> (Sample, Phenomenon, Interest, Design, Evaluation, Research type)</span>
+                </label>
+              </div>
+              <div id="pico-fields" class="framework-fields two-column" aria-live="polite">
+                <div>
+                  <label for="pico-population">Population</label>
+                  <input type="text" id="pico-population" placeholder="Cross-functional product teams in consumer electronics" />
+                </div>
+                <div>
+                  <label for="pico-intervention">Intervention / Focus</label>
+                  <input type="text" id="pico-intervention" placeholder="Agile development methodology" />
+                </div>
+                <div>
+                  <label for="pico-comparison">Comparison</label>
+                  <input type="text" id="pico-comparison" placeholder="Traditional waterfall methodology" />
+                </div>
+                <div>
+                  <label for="pico-outcome">Outcome</label>
+                  <input type="text" id="pico-outcome" placeholder="On-time launch rates and first-year revenue" />
+                </div>
+              </div>
+              <div id="spider-fields" class="framework-fields" aria-live="polite">
+                <div class="two-column">
+                  <div>
+                    <label for="spider-sample">Sample</label>
+                    <input type="text" id="spider-sample" placeholder="Mid-level managers in regulated financial services" />
+                  </div>
+                  <div>
+                    <label for="spider-phenomenon">Phenomenon</label>
+                    <input type="text" id="spider-phenomenon" placeholder="Experiences of psychological safety" />
+                  </div>
+                  <div>
+                    <label for="spider-interest">Interest</label>
+                    <input type="text" id="spider-interest" placeholder="Leadership behaviors that support or inhibit safety" />
+                  </div>
+                  <div>
+                    <label for="spider-design">Design</label>
+                    <input type="text" id="spider-design" placeholder="Multiple case study with semi-structured interviews" />
+                  </div>
+                  <div>
+                    <label for="spider-evaluation">Evaluation</label>
+                    <input type="text" id="spider-evaluation" placeholder="Themes that describe perceived safety and trust" />
+                  </div>
+                  <div>
+                    <label for="spider-research">Research Type</label>
+                    <input type="text" id="spider-research" placeholder="Qualitative interpretive" />
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <div class="summary-panel" aria-live="polite">
+              <h3>Draft Question Preview</h3>
+              <p id="framework-preview">Complete the framework inputs to generate a draft question.</p>
+            </div>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="button" data-action="next">Next: Evaluate</button>
+            </div>
+          </article>
+
+          <article class="step" data-step="4" aria-labelledby="step5-title">
+            <fieldset>
+              <legend id="step5-title">Evaluate and Refine Your Question</legend>
               <label for="research-question">Working research question</label>
-              <textarea id="research-question" name="research-question" placeholder="How does leadership coaching frequency influence employee turnover rates within our call centers over the next fiscal year?"></textarea>
+              <textarea id="research-question" placeholder="Your draft question from the framework will appear here for refinement."></textarea>
             </fieldset>
             <section class="smart-criteria" aria-live="polite">
               <article>
                 <h3>Specific</h3>
-                <p class="status" id="specific-status">Pending</p>
-                <p>Is the question anchored to the stated problem, context, and stakeholders?</p>
                 <p id="specific-feedback"></p>
+                <span id="specific-status" class="status">Pending</span>
               </article>
               <article>
                 <h3>Measurable</h3>
-                <p class="status" id="measurable-status">Pending</p>
-                <p>Are the variables operationalized with quantifiable indicators?</p>
                 <p id="measurable-feedback"></p>
+                <span id="measurable-status" class="status">Pending</span>
               </article>
               <article>
                 <h3>Achievable</h3>
-                <p class="status" id="achievable-status">Pending</p>
-                <p>Can the research be executed within DBA resource constraints?</p>
                 <p id="achievable-feedback"></p>
+                <span id="achievable-status" class="status">Pending</span>
               </article>
               <article>
                 <h3>Relevant</h3>
-                <p class="status" id="relevant-status">Pending</p>
-                <p>Does it advance organizational outcomes and stakeholder value?</p>
                 <p id="relevant-feedback"></p>
+                <span id="relevant-status" class="status">Pending</span>
               </article>
               <article>
-                <h3>Time-bound</h3>
-                <p class="status" id="time-status">Pending</p>
-                <p>Is there a realistic timeframe aligned to doctoral milestones?</p>
+                <h3>Time-Bound</h3>
                 <p id="time-feedback"></p>
+                <span id="time-status" class="status">Pending</span>
               </article>
             </section>
-            <div class="callout" role="status" aria-live="polite" id="smart-summary">
-              Enter or adjust your question to view SMART feedback.
-            </div>
+            <section class="finer-grid" aria-live="polite">
+              <article>
+                <h3>Feasible</h3>
+                <p id="feasible-feedback"></p>
+                <span id="feasible-status" class="status">Pending</span>
+              </article>
+              <article>
+                <h3>Interesting</h3>
+                <p id="interesting-feedback"></p>
+                <span id="interesting-status" class="status">Pending</span>
+              </article>
+              <article>
+                <h3>Novel</h3>
+                <p id="novel-feedback"></p>
+                <span id="novel-status" class="status">Pending</span>
+              </article>
+              <article>
+                <h3>Ethical</h3>
+                <p id="ethical-feedback"></p>
+                <span id="ethical-status" class="status">Pending</span>
+              </article>
+              <article>
+                <h3>Relevant</h3>
+                <p id="finer-relevant-feedback"></p>
+                <span id="finer-relevant-status" class="status">Pending</span>
+              </article>
+            </section>
+            <fieldset>
+              <legend>Make the Case</legend>
+              <label for="so-what">Why does this question matter? ("So What?" Test)</label>
+              <textarea id="so-what" placeholder="Explain practitioner impact, scholarly contribution, and timeliness."></textarea>
+              <div class="two-column" style="margin-top: 1rem;">
+                <div>
+                  <label for="subquestion-1">Sub-question 1</label>
+                  <input type="text" id="subquestion-1" class="subquestion" placeholder="What are the organization's current digital capabilities?" />
+                </div>
+                <div>
+                  <label for="subquestion-2">Sub-question 2</label>
+                  <input type="text" id="subquestion-2" class="subquestion" placeholder="What barriers or enablers shape the phenomenon?" />
+                </div>
+                <div>
+                  <label for="subquestion-3">Sub-question 3</label>
+                  <input type="text" id="subquestion-3" class="subquestion" placeholder="What outcomes demonstrate progress?" />
+                </div>
+              </div>
+            </fieldset>
+            <p id="smart-summary" class="summary-panel" aria-live="polite">Enter or adjust your question to view SMART and FINER feedback.</p>
             <div class="button-row">
               <button type="button" class="secondary" data-action="prev">Back</button>
               <button type="button" data-action="next">Next: Feasibility</button>
             </div>
           </article>
 
-          <article class="step" data-step="4" aria-labelledby="step5-title">
+          <article class="step" data-step="5" aria-labelledby="step6-title">
             <fieldset>
-              <legend id="step5-title">Reality Checks &amp; Ethical Considerations</legend>
+              <legend id="step6-title">Confirm Feasibility and Plan Next Steps</legend>
               <div class="two-column">
                 <div>
                   <label for="sample-size">Estimated sample size or data points</label>
-                  <input type="number" id="sample-size" name="sample-size" min="0" placeholder="e.g., 150" />
+                  <input type="number" id="sample-size" min="0" placeholder="e.g., 60 managers" />
                 </div>
                 <div>
-                  <label for="data-access">Data access plan</label>
-                  <select id="data-access" name="data-access">
-                    <option value="">Select access level</option>
-                    <option>Internal records (available)</option>
-                    <option>Internal records (restricted)</option>
-                    <option>External datasets</option>
-                    <option>Primary data collection</option>
-                    <option>Mixed sources</option>
-                  </select>
+                  <label for="data-access">Data access strategy</label>
+                  <input type="text" id="data-access" placeholder="HRIS export with leadership approval" />
                 </div>
                 <div>
-                  <label for="timeline">Projected completion timeline (months)</label>
-                  <input type="number" id="timeline" name="timeline" min="1" max="36" placeholder="12" />
+                  <label for="timeline">Projected timeline (months)</label>
+                  <input type="number" id="timeline" min="0" placeholder="18" />
                 </div>
                 <div>
-                  <label for="sensitive-data">Sensitive populations or data?</label>
-                  <select id="sensitive-data" name="sensitive-data">
-                    <option value="">Select an option</option>
-                    <option>No sensitive data</option>
-                    <option>Yes - Personal health information</option>
-                    <option>Yes - Minors or vulnerable populations</option>
-                    <option>Yes - Proprietary corporate data</option>
-                  </select>
+                  <label for="sensitive-data">Ethical considerations</label>
+                  <input type="text" id="sensitive-data" placeholder="No direct reports; anonymized employee interviews" />
                 </div>
               </div>
             </fieldset>
             <div class="summary-panel" aria-live="polite">
-              <h3>Feasibility Snapshot</h3>
+              <h3>Feasibility Feedback</h3>
               <p id="feasibility-feedback">Provide estimates to receive feasibility guidance.</p>
-              <ul class="checklist" id="feasibility-tips"></ul>
+              <ul id="feasibility-tips"></ul>
             </div>
-            <div class="button-row">
-              <button type="button" class="secondary" data-action="prev">Back</button>
-              <button type="button" data-action="next">Next: Refinement Summary</button>
+            <div class="summary-panel" aria-live="polite">
+              <h3>Final Output</h3>
+              <p><strong>Refined Problem:</strong> <span id="final-problem">Complete earlier steps to summarize the problem.</span></p>
+              <p><strong>Main Research Question:</strong> <span id="final-question">Complete the framework to finalize your question.</span></p>
+              <p><strong>Gap Focus:</strong> <span id="final-gap">Select a gap type to describe your contribution.</span></p>
+              <p><strong>Suggested Methods:</strong> <span id="final-methods">Choose a question type to view method guidance.</span></p>
+              <p id="literature-keywords"></p>
+              <ul id="keyword-tags" class="keywords"></ul>
             </div>
-          </article>
-
-          <article class="step" data-step="5" aria-labelledby="step6-title">
-            <fieldset>
-              <legend id="step6-title">Refinement Summary &amp; Next Steps</legend>
-              <div class="summary-panel" aria-live="polite">
-                <h3>Your SMART Research Question</h3>
-                <p id="final-question">Complete the steps to see your finalized question.</p>
-                <p id="literature-keywords"></p>
-                <ul class="keywords" id="keyword-tags" aria-label="Suggested keywords"></ul>
-              </div>
-              <div class="examples" aria-live="polite">
-                <div class="card strong">
-                  <strong>Strong Example</strong>
-                  <p>
-                    To what extent does quarterly leadership coaching (independent variable) reduce voluntary turnover (dependent variable)
-                    among customer service teams (context) in a Midwest healthcare system over the next 12 months (time-bound)?
-                  </p>
-                </div>
-                <div class="card weak">
-                  <strong>Weak Example</strong>
-                  <p>How can we improve leadership in our company?</p>
-                  <p class="dark-text">This question lacks specificity, measurable variables, timeframe, and context.</p>
-                </div>
-              </div>
-              <section class="callout" aria-labelledby="pitfalls-heading">
-                <h3 id="pitfalls-heading">Common Pitfalls &amp; Fixes</h3>
-                <ul class="checklist pitfalls">
-                  <li>Too broad? Narrow the scope to a manageable unit (team, department, or timeframe).</li>
-                  <li>Unclear variables? Revisit Step 3 to sharpen independent, dependent, and control factors.</li>
-                  <li>Uncertain methods? Use the methodology suggestion link to align design with question type.</li>
-                  <li>Ethical flags? Consult DBA IRB guidance and mock application templates from Unit 5.</li>
-                </ul>
-              </section>
-              <section class="card" aria-live="polite">
-                <h3>Linking to Next Coursework</h3>
-                <p>
-                  Compare your research question to dissertation chapters in Unit 8 and consult the Purdue Global library resources for
-                  targeted literature searches. Review the DBA Dissertation Journey text for proposal expectations.
-                </p>
-                <p>
-                  <a href="https://purdueglobal.libguides.com/DBA" target="_blank" rel="noopener" style="color: var(--purdue-black); font-weight: 700;">Explore methodology decision tree</a>
-                </p>
-              </section>
-            </fieldset>
+            <div class="callout" role="note">
+              <h3>Quick Reference</h3>
+              <p>Template prompts from the handbook keep you aligned with scholarly expectations:</p>
+              <ul>
+                <li>Experiences: "What are the lived experiences of [population] when [phenomenon], and what [factors] influence [outcome]?"</li>
+                <li>Relationships: "What is the relationship between [X] and [Y] among [population] in [context]?"</li>
+                <li>Comparisons: "What is the difference in [outcome] between [Group A] and [Group B] among [population]?"</li>
+                <li>Interventions: "What is the effect of [intervention], compared to [alternative], on [outcome] among [population]?"</li>
+              </ul>
+              <p>Stay on track with the eight-step roadmap:</p>
+              <ol class="roadmap">
+                <li>Identify your felt problem.</li>
+                <li>Drill down with the 5 Whys.</li>
+                <li>Find and document the research gap.</li>
+                <li>Select your question type and methodology.</li>
+                <li>Structure the question with PICO or SPIDER.</li>
+                <li>Refine language for precision and impact.</li>
+                <li>Test with FINER and feasibility checks.</li>
+                <li>Develop supporting sub-questions and implementation plans.</li>
+              </ol>
+              <details>
+                <summary>Reminder: Avoid common pitfalls</summary>
+                <p>Prevent scope creep, align methods with question wording, and ensure the study matters beyond a single organization.</p>
+              </details>
+            </div>
             <div class="button-row">
               <button type="button" class="secondary" data-action="prev">Back</button>
               <button type="reset">Start Over</button>
@@ -651,29 +793,38 @@
       </section>
     </div>
   </main>
+
   <script>
-    const form = document.getElementById("rq-form");
     const steps = Array.from(document.querySelectorAll(".step"));
     const progressItems = Array.from(document.querySelectorAll(".progress li"));
+    const form = document.getElementById("rq-form");
     let currentStep = 0;
 
-    const businessProblem = document.getElementById("business-problem");
-    const industrySelect = document.getElementById("industry");
-    const orgLevel = document.getElementById("org-level");
-    const stakeholders = document.getElementById("stakeholders");
-    const desiredOutcome = document.getElementById("desired-outcome");
-    const purposeTemplate = document.getElementById("purpose-template");
-    const purposeConsiderations = document.getElementById("purpose-considerations");
-    const draftQuestion = document.getElementById("draft-question");
-    const relationshipTip = document.getElementById("relationship-tip");
-    const methodSuggestion = document.getElementById("method-suggestion");
+    const feltProblem = document.getElementById("felt-problem");
+    const whyInputs = [
+      document.getElementById("why-1"),
+      document.getElementById("why-2"),
+      document.getElementById("why-3"),
+      document.getElementById("why-4"),
+      document.getElementById("why-5"),
+    ];
+    const refinedProblem = document.getElementById("refined-problem");
+
+    const gapRadios = document.querySelectorAll("input[name='gap-type']");
+    const gapEvidence = document.getElementById("gap-evidence");
+    const gapSummary = document.getElementById("gap-summary");
+
+    const questionTypeRadios = document.querySelectorAll("input[name='question-type']");
+    const methodGuidance = document.getElementById("method-guidance");
+    const frameworkHint = document.getElementById("framework-hint");
+
+    const frameworkRadios = document.querySelectorAll("input[name='framework']");
+    const picoFields = document.getElementById("pico-fields");
+    const spiderFields = document.getElementById("spider-fields");
+    const frameworkPreview = document.getElementById("framework-preview");
+
     const researchQuestion = document.getElementById("research-question");
     const smartSummary = document.getElementById("smart-summary");
-    const finalQuestion = document.getElementById("final-question");
-    const literatureKeywords = document.getElementById("literature-keywords");
-    const keywordTags = document.getElementById("keyword-tags");
-    const feasibilityFeedback = document.getElementById("feasibility-feedback");
-    const feasibilityTips = document.getElementById("feasibility-tips");
 
     const smartStatuses = {
       specific: document.getElementById("specific-status"),
@@ -690,6 +841,39 @@
       relevant: document.getElementById("relevant-feedback"),
       time: document.getElementById("time-feedback"),
     };
+
+    const finerStatuses = {
+      feasible: document.getElementById("feasible-status"),
+      interesting: document.getElementById("interesting-status"),
+      novel: document.getElementById("novel-status"),
+      ethical: document.getElementById("ethical-status"),
+      relevant: document.getElementById("finer-relevant-status"),
+    };
+
+    const finerFeedback = {
+      feasible: document.getElementById("feasible-feedback"),
+      interesting: document.getElementById("interesting-feedback"),
+      novel: document.getElementById("novel-feedback"),
+      ethical: document.getElementById("ethical-feedback"),
+      relevant: document.getElementById("finer-relevant-feedback"),
+    };
+
+    const soWhat = document.getElementById("so-what");
+    const subQuestionInputs = Array.from(document.querySelectorAll(".subquestion"));
+
+    const sampleSizeInput = document.getElementById("sample-size");
+    const dataAccessInput = document.getElementById("data-access");
+    const timelineInput = document.getElementById("timeline");
+    const sensitivityInput = document.getElementById("sensitive-data");
+    const feasibilityFeedback = document.getElementById("feasibility-feedback");
+    const feasibilityTips = document.getElementById("feasibility-tips");
+
+    const finalProblem = document.getElementById("final-problem");
+    const finalQuestion = document.getElementById("final-question");
+    const finalGap = document.getElementById("final-gap");
+    const finalMethods = document.getElementById("final-methods");
+    const literatureKeywords = document.getElementById("literature-keywords");
+    const keywordTags = document.getElementById("keyword-tags");
 
     function updateStep(direction) {
       const newStep = currentStep + direction;
@@ -730,146 +914,214 @@
         item.classList.toggle("active", index === 0);
         item.classList.remove("completed");
       });
-      purposeTemplate.textContent = "Select a purpose to view a tailored question scaffold.";
-      purposeConsiderations.textContent = "";
-      draftQuestion.textContent = "Complete the fields to see a draft research question.";
-      relationshipTip.textContent = "";
-      methodSuggestion.textContent = "Specify variables to view recommended designs.";
+      refinedProblem.value = "";
+      gapSummary.textContent = "Select a gap type and describe the supporting literature to focus your contribution.";
+      methodGuidance.textContent = "Choose a question type to reveal suggested data collection and analysis strategies.";
+      frameworkHint.textContent = "";
+      frameworkPreview.textContent = "Complete the framework inputs to generate a draft question.";
       researchQuestion.value = "";
-      finalQuestion.textContent = "Complete the steps to see your finalized question.";
-      smartSummary.textContent = "Enter or adjust your question to view SMART feedback.";
-      literatureKeywords.textContent = "";
-      keywordTags.innerHTML = "";
+      smartSummary.textContent = "Enter or adjust your question to view SMART and FINER feedback.";
+      soWhat.value = "";
+      subQuestionInputs.forEach((input) => (input.value = ""));
       feasibilityFeedback.textContent = "Provide estimates to receive feasibility guidance.";
       feasibilityTips.innerHTML = "";
-      Object.keys(smartStatuses).forEach((key) => {
-        smartStatuses[key].textContent = "Pending";
-        smartStatuses[key].classList.remove("passed", "flag");
-        smartFeedback[key].textContent = "";
+      finalProblem.textContent = "Complete earlier steps to summarize the problem.";
+      finalQuestion.textContent = "Complete the framework to finalize your question.";
+      finalGap.textContent = "Select a gap type to describe your contribution.";
+      finalMethods.textContent = "Choose a question type to view method guidance.";
+      literatureKeywords.textContent = "";
+      keywordTags.innerHTML = "";
+      Object.values(smartStatuses).forEach((status) => {
+        status.textContent = "Pending";
+        status.classList.remove("passed", "flag");
+      });
+      Object.values(smartFeedback).forEach((feedback) => (feedback.textContent = ""));
+      Object.values(finerStatuses).forEach((status) => {
+        status.textContent = "Pending";
+        status.classList.remove("passed", "flag");
+      });
+      Object.values(finerFeedback).forEach((feedback) => (feedback.textContent = ""));
+    });
+
+    function updateRefinedProblem() {
+      const felt = feltProblem.value.trim();
+      const reasons = whyInputs.map((input) => input.value.trim()).filter(Boolean);
+      let summary = "";
+      if (felt) {
+        summary = felt.endsWith(".") ? felt : `${felt}.`;
+      }
+      if (reasons.length) {
+        const root = reasons[reasons.length - 1];
+        summary += ` Root cause focus: ${root}.`;
+      }
+      refinedProblem.value = summary.trim();
+      finalProblem.textContent = summary || "Complete earlier steps to summarize the problem.";
+      updateKeywords();
+    }
+
+    feltProblem.addEventListener("input", () => {
+      updateRefinedProblem();
+      feltProblem.removeAttribute("aria-invalid");
+    });
+    whyInputs.forEach((input) => input.addEventListener("input", updateRefinedProblem));
+
+    gapRadios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        const selected = document.querySelector("input[name='gap-type']:checked")?.value;
+        const descriptions = {
+          classic: "You are bringing attention to an underexplored phenomenon.",
+          disagreement: "Clarify conflicting findings by comparing conditions or explanations.",
+          contextual: "Translate established insights into your unique setting.",
+          methodological: "Introduce a new lens, data source, or approach to deepen understanding.",
+        };
+        gapSummary.textContent = descriptions[selected] || gapSummary.textContent;
+        finalGap.textContent = descriptions[selected] || "Select a gap type to describe your contribution.";
+        evaluateFINER();
+        updateKeywords();
       });
     });
 
-    const purposeRadios = document.querySelectorAll("input[name='purpose']");
-    const purposeDetails = {
+    gapEvidence.addEventListener("input", () => {
+      const summary = gapEvidence.value.trim();
+      if (summary) {
+        gapSummary.textContent = `Evidence noted: ${summary}`;
+      } else {
+        gapSummary.textContent = "Select a gap type and describe the supporting literature to focus your contribution.";
+      }
+      evaluateFINER();
+    });
+
+    const methodDetails = {
+      exploratory: {
+        guidance: "Use qualitative interviews, focus groups, or case studies with thematic analysis.",
+        framework: "SPIDER best supports qualitative exploration.",
+      },
       descriptive: {
-        template: "What is the current state of [dependent variable] among [population/context] within [timeframe]?",
-        considerations: "Consider observational or survey-based designs. Ensure operational definitions for the phenomena you describe.",
+        guidance: "Collect quantitative indicators via surveys, dashboards, or archival data.",
+        framework: "PICO helps specify the variables you will measure.",
       },
       relational: {
-        template: "To what extent is [independent variable] associated with [dependent variable] for [population/context] over [timeframe]?",
-        considerations: "Correlation, regression, or structural equation modeling may be appropriate. Gather sufficient sample sizes for statistical power.",
-      },
-      causal: {
-        template: "How does [independent variable or intervention] impact [dependent variable] for [population/context] during [timeframe]?",
-        considerations: "Consider quasi-experimental or experimental designs. Address ethical and feasibility concerns for manipulation.",
+        guidance: "Design correlational studies using regression, SEM, or time-series analysis.",
+        framework: "PICO or variable mapping will clarify independent and dependent variables.",
       },
       comparative: {
-        template: "How does [group/program A] compare to [group/program B] in terms of [dependent variable] within [timeframe]?",
-        considerations: "Ensure comparable groups and consider ANCOVA or matched samples to manage confounding factors.",
+        guidance: "Use quasi-experiments, matched samples, or ANOVA to compare groups or programs.",
+        framework: "PICO keeps your groups and outcomes explicit.",
+      },
+      causal: {
+        guidance: "Plan experimental or quasi-experimental approaches with control mechanisms.",
+        framework: "PICO defines interventions, comparisons, and outcomes for causal logic.",
       },
     };
 
-    purposeRadios.forEach((radio) => {
+    questionTypeRadios.forEach((radio) => {
       radio.addEventListener("change", (event) => {
         const selected = event.target.value;
-        const details = purposeDetails[selected];
-        purposeTemplate.textContent = details.template;
-        purposeConsiderations.textContent = details.considerations;
-        updateDraftQuestion();
+        const details = methodDetails[selected];
+        methodGuidance.textContent = details?.guidance || methodGuidance.textContent;
+        frameworkHint.textContent = details?.framework || "";
+        if (selected === "exploratory") {
+          document.querySelector("input[name='framework'][value='spider']").checked = true;
+          toggleFrameworkFields("spider");
+        } else {
+          document.querySelector("input[name='framework'][value='pico']").checked = true;
+          toggleFrameworkFields("pico");
+        }
+        finalMethods.textContent = details?.guidance || "Choose a question type to view method guidance.";
+        updateFrameworkPreview();
       });
     });
 
-    const variableInputs = [
-      document.getElementById("independent-variable"),
-      document.getElementById("dependent-variable"),
-      document.getElementById("mediators"),
-      document.getElementById("moderators"),
-      document.getElementById("controls"),
-    ];
-
-    variableInputs.forEach((input) => input.addEventListener("input", updateDraftQuestion));
-    [businessProblem, industrySelect, orgLevel, stakeholders, desiredOutcome].forEach((input) => {
-      input.addEventListener("input", updateDraftQuestion);
-      input.addEventListener("change", updateDraftQuestion);
+    frameworkRadios.forEach((radio) => {
+      radio.addEventListener("change", (event) => {
+        toggleFrameworkFields(event.target.value);
+        updateFrameworkPreview();
+      });
     });
 
-    function updateDraftQuestion() {
-      const problem = businessProblem.value.trim();
-      if (problem) {
-        businessProblem.removeAttribute("aria-invalid");
-      }
-      const industry = industrySelect.value;
-      const level = orgLevel.value;
-      const stakeholder = stakeholders.value.trim();
-      const outcome = desiredOutcome.value.trim();
-      const purpose = document.querySelector("input[name='purpose']:checked")?.value;
-      const iv = variableInputs[0].value.trim();
-      const dv = variableInputs[1].value.trim();
-      const mediator = variableInputs[2].value.trim();
-      const moderator = variableInputs[3].value.trim();
-      const control = variableInputs[4].value.trim();
+    function toggleFrameworkFields(selected) {
+      picoFields.classList.toggle("active", selected === "pico");
+      spiderFields.classList.toggle("active", selected === "spider");
+    }
 
-      if (!problem || !purpose || !iv || !dv) {
-        draftQuestion.textContent = "Complete the problem description, purpose, independent and dependent variables to view a draft.";
-        methodSuggestion.textContent = "Define core variables to view recommendations.";
-        relationshipTip.textContent = "";
+    ["pico-population", "pico-intervention", "pico-comparison", "pico-outcome"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", updateFrameworkPreview);
+    });
+    ["spider-sample", "spider-phenomenon", "spider-interest", "spider-design", "spider-evaluation", "spider-research"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", updateFrameworkPreview);
+    });
+
+    function updateFrameworkPreview() {
+      const selectedFramework = document.querySelector("input[name='framework']:checked")?.value;
+      const questionType = document.querySelector("input[name='question-type']:checked")?.value;
+      if (!selectedFramework || !questionType) {
+        frameworkPreview.textContent = "Choose a question type and framework to begin drafting.";
         return;
       }
 
-      const contextParts = [];
-      if (industry) contextParts.push(`${industry.toLowerCase()} sector`);
-      if (level) contextParts.push(`${level.toLowerCase()} level`);
-      if (stakeholder) contextParts.push(`impacting ${stakeholder}`);
-
-      const timeframe = outcome ? `over the period needed to ${outcome}` : "over the next 12 months";
       let question = "";
-      switch (purpose) {
-        case "descriptive":
-          question = `What is the current state of ${dv} among ${contextParts.join(" ") || "the target population"} ${timeframe}?`;
-          methodSuggestion.textContent = "Consider surveys, dashboards, or descriptive analytics to capture the current state.";
-          relationshipTip.textContent = "Clarify measurement instruments to describe the phenomenon.";
-          break;
-        case "relational":
-          question = `To what extent is ${iv} associated with ${dv} for ${contextParts.join(" ") || "the organization"} ${timeframe}?`;
-          methodSuggestion.textContent = "Regression, correlation, or SEM can test relational hypotheses.";
-          relationshipTip.textContent = mediator || moderator
-            ? "You identified mediators/moderators. Plan analyses (e.g., mediation, moderation) to test them."
-            : "Consider whether mediating or moderating factors influence the relationship.";
-          break;
-        case "causal":
-          question = `How does ${iv} impact ${dv} for ${contextParts.join(" ") || "the organization"} ${timeframe}?`;
-          methodSuggestion.textContent = "Quasi-experiments, experiments, or time-series analyses can infer causality.";
-          relationshipTip.textContent = "Detail intervention protocols and ethical safeguards for causal claims.";
-          break;
-        case "comparative":
-          question = `How does ${dv} differ between groups experiencing ${iv} versus those without it within ${contextParts.join(" ") || "the organization"} ${timeframe}?`;
-          methodSuggestion.textContent = "Comparative designs such as ANOVA, MANOVA, or matched-pair studies are suitable.";
-          relationshipTip.textContent = "Ensure comparable groups and identify control variables to strengthen comparisons.";
-          break;
+      if (selectedFramework === "pico") {
+        const population = document.getElementById("pico-population").value.trim();
+        const intervention = document.getElementById("pico-intervention").value.trim();
+        const comparison = document.getElementById("pico-comparison").value.trim();
+        const outcome = document.getElementById("pico-outcome").value.trim();
+        if (!population || !intervention || !outcome) {
+          frameworkPreview.textContent = "Populate the PICO fields to generate your question.";
+          return;
+        }
+        switch (questionType) {
+          case "descriptive":
+            question = `For ${population}, what is the current state of ${outcome} when ${intervention}${comparison ? ` compared to ${comparison}` : ""}?`;
+            break;
+          case "relational":
+            question = `Among ${population}, to what extent is ${intervention} associated with ${outcome}${comparison ? ` compared to ${comparison}` : ""}?`;
+            break;
+          case "comparative":
+            question = `Within ${population}, what is the difference in ${outcome} between ${intervention} and ${comparison || "an alternative approach"}?`;
+            break;
+          case "causal":
+            question = `For ${population}, what is the effect of ${intervention} compared to ${comparison || "current practice"} on ${outcome}?`;
+            break;
+          default:
+            question = `For ${population}, how does ${intervention} relate to ${outcome}${comparison ? ` compared to ${comparison}` : ""}?`;
+        }
+      } else {
+        const sample = document.getElementById("spider-sample").value.trim();
+        const phenomenon = document.getElementById("spider-phenomenon").value.trim();
+        const interest = document.getElementById("spider-interest").value.trim();
+        const evaluation = document.getElementById("spider-evaluation").value.trim();
+        const design = document.getElementById("spider-design").value.trim();
+        const researchType = document.getElementById("spider-research").value.trim();
+        if (!sample || !phenomenon || !interest) {
+          frameworkPreview.textContent = "Populate the SPIDER fields to generate your question.";
+          return;
+        }
+        question = `What are the lived experiences of ${sample} regarding ${phenomenon}, and how do ${interest} influence ${evaluation || "their outcomes"}? (${design || "Proposed design"}; ${researchType || "qualitative"})`;
       }
 
-      if (mediator) {
-        question += ` Additionally, does ${mediator} mediate the relationship?`;
-      }
-      if (moderator) {
-        question += ` Examine whether ${moderator} moderates the effect.`;
-      }
-      if (control) {
-        question += ` Control for ${control}.`;
-      }
-
-      draftQuestion.textContent = question;
+      frameworkPreview.textContent = question;
       if (!researchQuestion.value.trim()) {
         researchQuestion.value = question;
-        evaluateSMART();
       }
-      updateFinalSummary();
+      finalQuestion.textContent = researchQuestion.value.trim() || "Complete the framework to finalize your question.";
+      evaluateSMART();
+      evaluateFINER();
+      updateKeywords();
     }
 
     researchQuestion.addEventListener("input", () => {
       evaluateSMART();
-      updateFinalSummary();
+      evaluateFINER();
+      finalQuestion.textContent = researchQuestion.value.trim() || "Complete the framework to finalize your question.";
+      updateKeywords();
     });
+
+    soWhat.addEventListener("input", () => {
+      evaluateFINER();
+      updateKeywords();
+    });
+
+    subQuestionInputs.forEach((input) => input.addEventListener("input", updateKeywords));
 
     function evaluateSMART() {
       const question = researchQuestion.value.trim();
@@ -879,43 +1131,48 @@
           smartStatuses[key].classList.remove("passed", "flag");
           smartFeedback[key].textContent = "";
         });
-        smartSummary.textContent = "Enter or adjust your question to view SMART feedback.";
+        smartSummary.textContent = "Enter or adjust your question to view SMART and FINER feedback.";
         return;
       }
 
-      const problemKeywords = [businessProblem.value, stakeholders.value, desiredOutcome.value].filter(Boolean).join(" ").toLowerCase();
+      const contextKeywords = [feltProblem.value, refinedProblem.value, gapEvidence.value]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
       const hasTime = /(month|year|quarter|week|\d{4}|\d+\s*(day|month|year))/i.test(question);
-      const hasMeasure = /(rate|percentage|score|level|frequency|number|change)/i.test(question) || /\b(measure|assess|evaluate)\b/i.test(question);
-      const hasSpecific = problemKeywords.split(/\s+/).some((kw) => kw && question.toLowerCase().includes(kw));
-      const hasFeasibleSize = parseInt(document.getElementById("sample-size").value, 10) || 0;
+      const measurableTerms = /(rate|percentage|score|level|frequency|number|change|effect|difference|theme|perception)/i.test(question);
+      const specific = contextKeywords
+        .split(/\s+/)
+        .filter((kw) => kw.length > 4)
+        .some((kw) => question.toLowerCase().includes(kw));
 
-      setSmartStatus("specific", hasSpecific, hasSpecific
-        ? "The question references your defined context and stakeholders."
-        : "Tie the question language to your specific organization, stakeholders, or outcomes.");
+      setSmartStatus("specific", specific, specific
+        ? "The question draws on your defined context and stakeholders."
+        : "Tie the language to the specific organization, stakeholders, or outcomes you identified.");
 
-      setSmartStatus("measurable", hasMeasure && /\b(variable|rate|impact|extent|difference)\b/i.test(question),
-        hasMeasure
-          ? "Variables appear measurable; ensure you identify instruments in your proposal."
-          : "Clarify measurable indicators (rates, scores, frequencies) to satisfy measurable criteria.");
+      setSmartStatus("measurable", measurableTerms, measurableTerms
+        ? "Variables appear measurable; note instruments in your proposal."
+        : "Clarify quantitative or qualitative indicators (rates, themes, frequencies)."
+      );
 
-      const achievable = hasFeasibleSize >= 30 || question.length < 240;
+      const achievable = question.length < 260;
       setSmartStatus("achievable", achievable, achievable
         ? "Scope appears manageable for DBA timelines."
-        : "Adjust sample size or scope to remain achievable within DBA resources.");
+        : "Condense the focus or limit variables to maintain achievability.");
 
-      const relevant = /(business|organization|customer|employee|performance|strategy)/i.test(question) || problemKeywords.includes("performance");
+      const relevant = /(business|organization|customer|employee|performance|strategy|practice|impact|value)/i.test(question) || soWhat.value.trim().length > 40;
       setSmartStatus("relevant", relevant, relevant
-        ? "The question links directly to organizational value."
-        : "Highlight business impact or stakeholder value to reinforce relevance.");
+        ? "The question signals organizational value."
+        : "Highlight the business impact or practitioner importance.");
 
       setSmartStatus("time", hasTime, hasTime
-        ? "A timeframe is present; align it with program milestones."
-        : "Add a timeframe (e.g., next 12 months) to reinforce time-bound expectations.");
+        ? "A timeframe is present; align with program milestones."
+        : "Add a timeframe (e.g., within 12 months) or specify temporal scope.");
 
       const passedAll = Object.values(smartStatuses).every((status) => status.classList.contains("passed"));
       smartSummary.textContent = passedAll
-        ? "Excellent! Your research question satisfies SMART expectations."
-        : "Review the flagged criteria to strengthen your question.";
+        ? "Great work! Your question aligns with SMART expectations."
+        : "Review the criteria that still need attention.";
     }
 
     function setSmartStatus(criteria, isPassed, feedback) {
@@ -927,34 +1184,38 @@
       feedbackEl.textContent = feedback;
     }
 
-    [document.getElementById("sample-size"), document.getElementById("data-access"), document.getElementById("timeline"), document.getElementById("sensitive-data")]
-      .forEach((input) => input.addEventListener("input", updateFeasibility));
+    [sampleSizeInput, dataAccessInput, timelineInput, sensitivityInput].forEach((input) => {
+      input.addEventListener("input", () => {
+        updateFeasibility();
+        evaluateFINER();
+      });
+    });
 
     function updateFeasibility() {
-      const sampleSize = parseInt(document.getElementById("sample-size").value, 10);
-      const access = document.getElementById("data-access").value;
-      const timeline = parseInt(document.getElementById("timeline").value, 10);
-      const sensitivity = document.getElementById("sensitive-data").value;
+      const sampleSize = parseInt(sampleSizeInput.value, 10);
+      const access = dataAccessInput.value.trim();
+      const timeline = parseInt(timelineInput.value, 10);
+      const sensitivity = sensitivityInput.value.trim();
 
       const tips = [];
       let summary = "Feasibility inputs look solid. Align them with your methodology plan.";
 
       if (!sampleSize) {
-        summary = "Estimate sample size or data points to confirm statistical power.";
+        summary = "Estimate sample size or data points to confirm feasibility.";
         tips.push("Review methodology resources to determine minimum sample requirements.");
       } else if (sampleSize < 30) {
-        summary = "Sample size may be too small for robust analysis.";
-        tips.push("Consider widening the population or using qualitative/ mixed methods.");
+        summary = "Sample size may be limited for robust quantitative analysis.";
+        tips.push("Consider expanding the population or using qualitative/mixed methods.");
       } else {
         tips.push("Sample size aligns with many quantitative designs.");
       }
 
       if (!access) {
-        tips.push("Clarify how you will obtain the necessary data sources.");
-      } else if (access.includes("restricted")) {
-        tips.push("Secure leadership approvals early to mitigate access risks.");
-      } else if (access.includes("External")) {
-        tips.push("Check licensing and reliability of external datasets.");
+        tips.push("Clarify how you will obtain necessary data sources and permissions.");
+      } else if (/restricted|confidential/i.test(access)) {
+        tips.push("Secure approvals early to mitigate restricted data risks.");
+      } else {
+        tips.push("Document access steps in your project plan.");
       }
 
       if (!timeline) {
@@ -966,36 +1227,82 @@
         tips.push("Timeline fits within most doctoral completion plans.");
       }
 
-      if (sensitivity && !sensitivity.includes("No")) {
-        tips.push("Flag this topic for IRB consultation and integrate ethical safeguards.");
-        if (!summary.includes("IRB")) {
-          summary += " Be prepared for additional IRB review steps.";
+      if (sensitivity) {
+        if (/no/i.test(sensitivity) && !/risk|issue/i.test(sensitivity)) {
+          tips.push("Continue safeguarding participant confidentiality as described.");
+        } else {
+          tips.push("Flag this topic for IRB consultation and add confidentiality protections.");
         }
       }
 
       feasibilityFeedback.textContent = summary;
       feasibilityTips.innerHTML = tips.map((tip) => `<li>${tip}</li>`).join("");
-      evaluateSMART();
-      updateFinalSummary();
     }
 
-    function updateFinalSummary() {
+    function evaluateFINER() {
       const question = researchQuestion.value.trim();
-      if (!question) return;
-      finalQuestion.textContent = question;
+      const gapSelected = document.querySelector("input[name='gap-type']:checked")?.value;
+      const soWhatText = soWhat.value.trim();
+      const sampleSize = parseInt(sampleSizeInput.value, 10);
+      const timeline = parseInt(timelineInput.value, 10);
+      const access = dataAccessInput.value.trim();
+      const sensitivity = sensitivityInput.value.trim();
 
+      setFinerStatus("feasible", question && sampleSize && timeline && timeline <= 24 && !!access,
+        sampleSize && timeline && access
+          ? "Your scope, access, and timeline support completion."
+          : "Clarify sample, access, and timeline to prove feasibility.");
+
+      setFinerStatus("interesting", soWhatText.length > 40,
+        soWhatText.length > 40
+          ? "Compelling rationale documented."
+          : "Explain practitioner relevance and scholarly intrigue in the So What section.");
+
+      setFinerStatus("novel", Boolean(gapSelected),
+        gapSelected
+          ? "Gap selection signals a clear contribution."
+          : "Document the scholarly gap you plan to address.");
+
+      const ethicalOkay = sensitivity ? /no/i.test(sensitivity) && !/risk|issue/i.test(sensitivity) : false;
+      setFinerStatus("ethical", ethicalOkay,
+        ethicalOkay
+          ? "Ethical considerations appear manageable."
+          : "Clarify protections, permissions, and potential conflicts of interest.");
+
+      const relevanceMet = soWhatText.length > 20 || /(impact|performance|strategy|stakeholder|value)/i.test(question);
+      setFinerStatus("relevant", relevanceMet,
+        relevanceMet
+          ? "The study links to meaningful organizational impact."
+          : "Spell out how findings drive responsible management practices.");
+    }
+
+    function setFinerStatus(criteria, isPassed, feedback) {
+      const statusEl = finerStatuses[criteria];
+      const feedbackEl = finerFeedback[criteria];
+      statusEl.textContent = isPassed ? "Meets" : "Needs work";
+      statusEl.classList.toggle("passed", isPassed);
+      statusEl.classList.toggle("flag", !isPassed);
+      feedbackEl.textContent = feedback;
+    }
+
+    function updateKeywords() {
       const keywords = new Set();
-      const context = [industrySelect.value, orgLevel.value, stakeholders.value, desiredOutcome.value];
-      context.forEach((item) => {
-        item
-          .split(/,|;|\band\b/i)
-          .map((str) => str.trim())
-          .filter(Boolean)
-          .forEach((term) => keywords.add(term.toLowerCase()));
+      [feltProblem.value, refinedProblem.value, gapEvidence.value, researchQuestion.value, soWhat.value]
+        .filter(Boolean)
+        .forEach((text) => {
+          text
+            .toLowerCase()
+            .split(/[^a-z0-9]+/)
+            .filter((term) => term.length > 3 && !["what", "with", "this", "that", "have", "from"].includes(term))
+            .forEach((term) => keywords.add(term));
+        });
+      subQuestionInputs.forEach((input) => {
+        input.value
+          .toLowerCase()
+          .split(/[^a-z0-9]+/)
+          .filter((term) => term.length > 3)
+          .forEach((term) => keywords.add(term));
       });
-
-      const variables = variableInputs.map((input) => input.value.trim().toLowerCase()).filter(Boolean);
-      variables.forEach((term) => keywords.add(term));
 
       if (keywords.size) {
         literatureKeywords.textContent = "Use these focus areas to guide literature searches:";
@@ -1004,28 +1311,45 @@
       }
 
       keywordTags.innerHTML = Array.from(keywords)
-        .slice(0, 12)
+        .slice(0, 14)
         .map((term) => `<li>${term}</li>`)
         .join("");
     }
 
     function validateStep(stepIndex) {
-      if (stepIndex === 0 && !businessProblem.value.trim()) {
-        businessProblem.focus();
-        businessProblem.setAttribute("aria-invalid", "true");
+      if (stepIndex === 0 && !feltProblem.value.trim()) {
+        feltProblem.focus();
+        feltProblem.setAttribute("aria-invalid", "true");
         return false;
       }
-      if (stepIndex === 1 && !document.querySelector("input[name='purpose']:checked")) {
-        purposeTemplate.textContent = "Select a purpose to proceed.";
+      if (stepIndex === 1 && !document.querySelector("input[name='gap-type']:checked")) {
+        gapSummary.textContent = "Select a gap type to proceed.";
         return false;
       }
-      if (stepIndex === 2) {
-        const iv = variableInputs[0].value.trim();
-        const dv = variableInputs[1].value.trim();
-        if (!iv || !dv) {
-          relationshipTip.textContent = "Independent and dependent variables are required.";
+      if (stepIndex === 2 && !document.querySelector("input[name='question-type']:checked")) {
+        methodGuidance.textContent = "Select a question type to continue.";
+        return false;
+      }
+      if (stepIndex === 3) {
+        const framework = document.querySelector("input[name='framework']:checked")?.value;
+        if (!framework) {
+          frameworkPreview.textContent = "Choose PICO or SPIDER before proceeding.";
           return false;
         }
+        if (framework === "pico") {
+          if (!document.getElementById("pico-population").value.trim() || !document.getElementById("pico-intervention").value.trim() || !document.getElementById("pico-outcome").value.trim()) {
+            frameworkPreview.textContent = "Population, intervention, and outcome are required.";
+            return false;
+          }
+        } else if (!document.getElementById("spider-sample").value.trim() || !document.getElementById("spider-phenomenon").value.trim() || !document.getElementById("spider-interest").value.trim()) {
+          frameworkPreview.textContent = "Sample, phenomenon, and interest are required.";
+          return false;
+        }
+      }
+      if (stepIndex === 4 && !researchQuestion.value.trim()) {
+        smartSummary.textContent = "Capture your research question before continuing.";
+        researchQuestion.focus();
+        return false;
       }
       return true;
     }
