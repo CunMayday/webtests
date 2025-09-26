@@ -1,4 +1,4 @@
-<!-- v3: Reduced 5 Whys inputs to a single question while noting the full method for learning context. -->
+<!-- v4: Synced framework updates with the working question and added SMART/FINER suggestion helpers. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -261,6 +261,22 @@
     .finer-grid h3 {
       margin-top: 0;
       color: var(--campus-gold);
+    }
+
+    .suggestion-btn {
+      margin-top: 0.75rem;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+      border-radius: 999px;
+      background-color: var(--athletic-gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .suggestion-btn::before {
+      content: "💡";
+      font-size: 0.85rem;
     }
 
     .status {
@@ -636,26 +652,31 @@
                 <h3>Specific</h3>
                 <p id="specific-feedback"></p>
                 <span id="specific-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="specific" aria-label="Suggest wording to meet the Specific criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Measurable</h3>
                 <p id="measurable-feedback"></p>
                 <span id="measurable-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="measurable" aria-label="Suggest wording to meet the Measurable criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Achievable</h3>
                 <p id="achievable-feedback"></p>
                 <span id="achievable-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="achievable" aria-label="Suggest wording to meet the Achievable criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Relevant</h3>
                 <p id="relevant-feedback"></p>
                 <span id="relevant-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="relevant" aria-label="Suggest wording to meet the Relevant criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Time-Bound</h3>
                 <p id="time-feedback"></p>
                 <span id="time-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="time" aria-label="Suggest wording to meet the Time-Bound criterion">Suggestion</button>
               </article>
             </section>
             <section class="finer-grid" aria-live="polite">
@@ -663,26 +684,31 @@
                 <h3>Feasible</h3>
                 <p id="feasible-feedback"></p>
                 <span id="feasible-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="feasible" aria-label="Suggest wording to meet the Feasible criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Interesting</h3>
                 <p id="interesting-feedback"></p>
                 <span id="interesting-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="interesting" aria-label="Suggest wording to meet the Interesting criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Novel</h3>
                 <p id="novel-feedback"></p>
                 <span id="novel-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="novel" aria-label="Suggest wording to meet the Novel criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Ethical</h3>
                 <p id="ethical-feedback"></p>
                 <span id="ethical-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="ethical" aria-label="Suggest wording to meet the Ethical criterion">Suggestion</button>
               </article>
               <article>
                 <h3>Relevant</h3>
                 <p id="finer-relevant-feedback"></p>
                 <span id="finer-relevant-status" class="status">Pending</span>
+                <button type="button" class="suggestion-btn" data-criteria="finer-relevant" aria-label="Suggest wording to meet the FINER Relevant criterion">Suggestion</button>
               </article>
             </section>
             <fieldset>
@@ -806,6 +832,8 @@
     const frameworkPreview = document.getElementById("framework-preview");
 
     const researchQuestion = document.getElementById("research-question");
+    let lastFrameworkQuestion = "";
+    let questionManuallyEdited = false;
     const smartSummary = document.getElementById("smart-summary");
 
     const smartStatuses = {
@@ -839,6 +867,50 @@
       ethical: document.getElementById("ethical-feedback"),
       relevant: document.getElementById("finer-relevant-feedback"),
     };
+
+    const suggestionButtons = document.querySelectorAll(".suggestion-btn");
+    const suggestionPhrases = {
+      specific: [", within [specific organization or context]"],
+      measurable: [", as measured by [key performance indicator]"],
+      achievable: [", focusing on [single process or audience]"],
+      relevant: [", to inform [business outcome or decision]"],
+      time: [", over the next [timeframe]"],
+      feasible: [", using data available from [system or source]"],
+      interesting: [", to inform [stakeholder group] decisions"],
+      novel: [", addressing gaps noted in [industry] literature"],
+      ethical: [", while ensuring confidentiality for participants"],
+      "finer-relevant": [", to enhance [organizational goal]"],
+    };
+
+    suggestionButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const criteria = button.dataset.criteria;
+        const phrases = suggestionPhrases[criteria] || [];
+        if (!phrases.length) return;
+        const currentQuestion = researchQuestion.value.trim();
+        const normalizedQuestion = currentQuestion.toLowerCase();
+        const selectedPhrase =
+          phrases.find((phrase) => {
+            const lowerPhrase = phrase.toLowerCase().trim();
+            const cleanedPhrase = lowerPhrase.replace(/[\[\]]/g, "");
+            return !normalizedQuestion.includes(lowerPhrase) && !normalizedQuestion.includes(cleanedPhrase);
+          }) ||
+          phrases[0];
+
+        let ending = "";
+        let baseQuestion = currentQuestion;
+        if (/[\?\.!]$/.test(baseQuestion)) {
+          ending = baseQuestion.slice(-1);
+          baseQuestion = baseQuestion.slice(0, -1);
+        }
+
+        const cleanedPhrase = baseQuestion ? selectedPhrase : selectedPhrase.replace(/^,\s*/, "");
+        const updatedQuestion = `${baseQuestion}${cleanedPhrase}`.trim();
+        researchQuestion.value = `${updatedQuestion}${ending || "?"}`.trim();
+        questionManuallyEdited = true;
+        researchQuestion.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+    });
 
     const soWhat = document.getElementById("so-what");
     const subQuestionInputs = Array.from(document.querySelectorAll(".subquestion"));
@@ -902,6 +974,8 @@
       frameworkHint.textContent = "";
       frameworkPreview.textContent = "Complete the framework inputs to generate a draft question.";
       researchQuestion.value = "";
+      lastFrameworkQuestion = "";
+      questionManuallyEdited = false;
       smartSummary.textContent = "Enter or adjust your question to view SMART and FINER feedback.";
       soWhat.value = "";
       subQuestionInputs.forEach((input) => (input.value = ""));
@@ -1082,9 +1156,12 @@
       }
 
       frameworkPreview.textContent = question;
-      if (!researchQuestion.value.trim()) {
+      const currentWorking = researchQuestion.value.trim();
+      if (!questionManuallyEdited || !currentWorking || currentWorking === lastFrameworkQuestion) {
         researchQuestion.value = question;
+        questionManuallyEdited = false;
       }
+      lastFrameworkQuestion = question;
       finalQuestion.textContent = researchQuestion.value.trim() || "Complete the framework to finalize your question.";
       evaluateSMART();
       evaluateFINER();
@@ -1096,6 +1173,8 @@
       evaluateFINER();
       finalQuestion.textContent = researchQuestion.value.trim() || "Complete the framework to finalize your question.";
       updateKeywords();
+      const currentValue = researchQuestion.value.trim();
+      questionManuallyEdited = currentValue ? currentValue !== lastFrameworkQuestion : false;
     });
 
     soWhat.addEventListener("input", () => {
