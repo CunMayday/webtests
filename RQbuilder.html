@@ -1,4 +1,4 @@
-<!-- v2: Align wizard with DBA handbook including 5 Whys, gap typing, frameworks, FINER, and roadmap. -->
+<!-- v3: Reduced 5 Whys inputs to a single question while noting the full method for learning context. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -401,7 +401,7 @@
       <nav class="progress" aria-label="Wizard steps">
         <h2>Progress</h2>
         <ul>
-          <li class="active" data-step="0">1. Felt Problem &amp; 5 Whys</li>
+          <li class="active" data-step="0">1. Felt Problem &amp; Root Cause Why</li>
           <li data-step="1">2. Identify the Research Gap</li>
           <li data-step="2">3. Select Question Type</li>
           <li data-step="3">4. Build with PICO or SPIDER</li>
@@ -417,32 +417,20 @@
               <label for="felt-problem">What business headache is keeping you up at night? <span aria-hidden="true">*</span></label>
               <textarea id="felt-problem" name="felt-problem" aria-required="true" placeholder="Example: Post-merger turnover among high-potential employees is disrupting strategic initiatives."></textarea>
               <p class="card" role="note">
-                Use the "5 Whys" to uncover the root cause. Each answer should build from the previous one until you reveal the
-                specific organizational breakdown that needs scholarly attention.
+                Practitioners typically use the "5 Whys" technique to keep probing until the root cause emerges. Because this is
+                a learning activity, we will capture your first and most informed "Why" here, and note how to continue applying
+                the full method beyond this worksheet.
               </p>
               <div class="five-whys" aria-describedby="why-help">
                 <div>
-                  <label for="why-1">Why is this problem happening? (Why #1)</label>
+                  <label for="why-1">Why is this problem happening right now?</label>
                   <textarea id="why-1" name="why-1"></textarea>
                 </div>
-                <div>
-                  <label for="why-2">Dig deeper (Why #2)</label>
-                  <textarea id="why-2" name="why-2"></textarea>
-                </div>
-                <div>
-                  <label for="why-3">Keep probing (Why #3)</label>
-                  <textarea id="why-3" name="why-3"></textarea>
-                </div>
-                <div>
-                  <label for="why-4">What else contributes? (Why #4)</label>
-                  <textarea id="why-4" name="why-4"></textarea>
-                </div>
-                <div>
-                  <label for="why-5">What's the root cause? (Why #5)</label>
-                  <textarea id="why-5" name="why-5"></textarea>
-                </div>
               </div>
-              <p id="why-help" class="sr-only">Answer each "why" to move from the surface symptom to the root cause.</p>
+              <p id="why-help" class="sr-only">
+                Use your initial "why" to articulate the most visible cause, and remember that future iterations should continue
+                probing with additional whys until you reach the root cause.
+              </p>
             </fieldset>
             <fieldset>
               <legend>Refined Problem Statement</legend>
@@ -771,7 +759,7 @@
               <p>Stay on track with the eight-step roadmap:</p>
               <ol class="roadmap">
                 <li>Identify your felt problem.</li>
-                <li>Drill down with the 5 Whys.</li>
+                <li>Begin the 5 Whys analysis here and continue probing beyond this worksheet.</li>
                 <li>Find and document the research gap.</li>
                 <li>Select your question type and methodology.</li>
                 <li>Structure the question with PICO or SPIDER.</li>
@@ -801,13 +789,7 @@
     let currentStep = 0;
 
     const feltProblem = document.getElementById("felt-problem");
-    const whyInputs = [
-      document.getElementById("why-1"),
-      document.getElementById("why-2"),
-      document.getElementById("why-3"),
-      document.getElementById("why-4"),
-      document.getElementById("why-5"),
-    ];
+    const whyInputs = [document.getElementById("why-1")];
     const refinedProblem = document.getElementById("refined-problem");
 
     const gapRadios = document.querySelectorAll("input[name='gap-type']");
