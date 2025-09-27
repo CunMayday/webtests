@@ -1,4 +1,4 @@
-<!-- v1: Initial version introducing the research question builder wizard web app. -->
+<!-- v2: Removed ARIA misuse and aligned colors with the Purdue palette for accessibility compliance. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -192,7 +192,7 @@
 
     button:hover,
     button:focus {
-      background-color: #a9760b;
+      background-color: var(--athletic-gold);
       outline: 3px solid var(--purdue-black);
       outline-offset: 2px;
       transform: translateY(-1px);
@@ -204,7 +204,7 @@
     }
 
     .card {
-      background-color: #fdf9f1;
+      background-color: var(--white);
       border-left: 4px solid var(--campus-gold);
       padding: 1rem;
       border-radius: 8px;
@@ -244,12 +244,29 @@
       color: var(--dark-gray);
     }
 
+    .status::before {
+      content: "";
+      display: inline-block;
+    }
+
     .status.passed {
-      color: #1a7f37;
+      color: var(--purdue-black);
+    }
+
+    .status.passed::before {
+      content: "✔";
+      color: var(--campus-gold);
+      margin-right: 0.35rem;
     }
 
     .status.flag {
-      color: #b32d2e;
+      color: var(--dark-gray);
+    }
+
+    .status.flag::before {
+      content: "⚠";
+      color: var(--campus-gold);
+      margin-right: 0.35rem;
     }
 
     .examples {
@@ -258,11 +275,11 @@
     }
 
     .examples .strong {
-      border-left-color: #1a7f37;
+      border-left-color: var(--campus-gold);
     }
 
     .examples .weak {
-      border-left-color: #b32d2e;
+      border-left-color: var(--dark-gray);
     }
 
     .callout {
@@ -294,7 +311,7 @@
 
     .pitfalls li::before {
       content: "⚠";
-      color: #b32d2e;
+      color: var(--campus-gold);
     }
 
     .keywords {
@@ -318,7 +335,7 @@
       border: 1px solid var(--gray);
       border-radius: 10px;
       padding: 1.25rem;
-      background-color: #f7f7f5;
+      background-color: var(--white);
       margin-top: 1rem;
     }
 
@@ -347,7 +364,7 @@
     </p>
   </header>
   <main>
-    <div class="wizard" role="application">
+    <div class="wizard">
       <nav class="progress" aria-label="Wizard steps">
         <h2>Progress</h2>
         <ul>
@@ -419,6 +436,7 @@
                 Choose the primary intent of your study. The builder will offer a template aligned with your choice and adapt to your
                 business context.
               </p>
+              <h3 id="purpose-options" class="sr-only">Research purpose choices</h3>
               <div class="two-column" role="radiogroup" aria-labelledby="purpose-options">
                 <div class="card">
                   <label>
