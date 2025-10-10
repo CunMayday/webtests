@@ -1,4 +1,4 @@
-<!-- v2: Removed ARIA misuse and aligned colors with the Purdue palette for accessibility compliance. -->
+<!-- v3: Added information tooltips to explain variables in step 3 for better user guidance. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -344,6 +344,73 @@
       color: var(--campus-gold);
     }
 
+    .info-tooltip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      margin-left: 0.4rem;
+    }
+
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      background-color: var(--campus-gold);
+      color: var(--purdue-black);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: help;
+      transition: background-color 0.2s ease;
+    }
+
+    .info-icon:hover,
+    .info-icon:focus {
+      background-color: var(--athletic-gold);
+      outline: 2px solid var(--purdue-black);
+      outline-offset: 2px;
+    }
+
+    .tooltip-content {
+      visibility: hidden;
+      position: absolute;
+      z-index: 1000;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      background-color: var(--purdue-black);
+      color: var(--white);
+      text-align: left;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 400;
+      line-height: 1.5;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .tooltip-content::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: var(--purdue-black) transparent transparent transparent;
+    }
+
+    .info-tooltip:hover .tooltip-content,
+    .info-icon:focus + .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+    }
+
     @media (max-width: 960px) {
       .wizard {
         grid-template-columns: 1fr;
@@ -351,6 +418,10 @@
 
       .progress {
         position: static;
+      }
+
+      .tooltip-content {
+        width: 220px;
       }
     }
   </style>
@@ -489,23 +560,53 @@
               </p>
               <div class="two-column">
                 <div>
-                  <label for="independent-variable">Independent variable(s)</label>
+                  <label for="independent-variable">
+                    Independent variable(s)
+                    <span class="info-tooltip">
+                      <span class="info-icon" tabindex="0" role="button" aria-label="Information about independent variables">ⓘ</span>
+                      <span class="tooltip-content" role="tooltip">The variable you manipulate, change, or study as a potential cause or predictor. Example: training program frequency, leadership style, or technology adoption.</span>
+                    </span>
+                  </label>
                   <input type="text" id="independent-variable" name="independent-variable" placeholder="Leadership coaching frequency" />
                 </div>
                 <div>
-                  <label for="dependent-variable">Dependent variable(s)</label>
+                  <label for="dependent-variable">
+                    Dependent variable(s)
+                    <span class="info-tooltip">
+                      <span class="info-icon" tabindex="0" role="button" aria-label="Information about dependent variables">ⓘ</span>
+                      <span class="tooltip-content" role="tooltip">The outcome you measure or observe; what you expect to change based on the independent variable. Example: employee turnover rate, sales performance, or customer satisfaction.</span>
+                    </span>
+                  </label>
                   <input type="text" id="dependent-variable" name="dependent-variable" placeholder="Employee turnover rate" />
                 </div>
                 <div>
-                  <label for="mediators">Potential mediating variables</label>
+                  <label for="mediators">
+                    Potential mediating variables
+                    <span class="info-tooltip">
+                      <span class="info-icon" tabindex="0" role="button" aria-label="Information about mediating variables">ⓘ</span>
+                      <span class="tooltip-content" role="tooltip">Variables that explain HOW or WHY the independent variable affects the dependent variable. They lie on the causal pathway. Example: employee engagement mediates the relationship between leadership coaching and turnover.</span>
+                    </span>
+                  </label>
                   <input type="text" id="mediators" name="mediators" placeholder="Employee engagement levels" />
                 </div>
                 <div>
-                  <label for="moderators">Potential moderating variables</label>
+                  <label for="moderators">
+                    Potential moderating variables
+                    <span class="info-tooltip">
+                      <span class="info-icon" tabindex="0" role="button" aria-label="Information about moderating variables">ⓘ</span>
+                      <span class="tooltip-content" role="tooltip">Variables that affect the strength or direction of the relationship between independent and dependent variables. They answer WHEN or FOR WHOM the effect occurs. Example: tenure or location may moderate coaching effectiveness.</span>
+                    </span>
+                  </label>
                   <input type="text" id="moderators" name="moderators" placeholder="Tenure, location" />
                 </div>
                 <div>
-                  <label for="controls">Control variables</label>
+                  <label for="controls">
+                    Control variables
+                    <span class="info-tooltip">
+                      <span class="info-icon" tabindex="0" role="button" aria-label="Information about control variables">ⓘ</span>
+                      <span class="tooltip-content" role="tooltip">Variables you hold constant or statistically account for to isolate the relationship you're studying. They prevent confounding effects. Example: department size, shift schedule, or demographic factors.</span>
+                    </span>
+                  </label>
                   <input type="text" id="controls" name="controls" placeholder="Shift schedule, department size" />
                 </div>
               </div>
