@@ -1,4 +1,4 @@
-<!-- v1: Created ADA-compliant AI tools overview page following Purdue branding -->
+<!-- v2: Increased link contrast and emphasized link styling for ADA compliance -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +11,7 @@
       --purdue-black: #000000;
       --purdue-athletic-gold: #CEB888;
       --purdue-campus-gold: #C28E0E;
+      --purdue-link-gold: #8B7415;
       --purdue-gray: #9D968D;
       --purdue-dark-gray: #373A36;
       --purdue-white: #FFFFFF;
@@ -30,6 +31,19 @@
     }
 
     a {
+      color: var(--purdue-link-gold);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-thickness: 0.12em;
+      text-decoration-color: var(--purdue-link-gold);
+    }
+
+    a:visited {
+      color: var(--purdue-link-gold);
+    }
+
+    a:hover,
+    a:focus {
       color: var(--purdue-campus-gold);
     }
 
