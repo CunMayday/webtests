@@ -1,4 +1,4 @@
-﻿<!-- Version 1: Replaced index with a Purdue-themed accessible links hub. -->
+<!-- Version 3: Removed underlines from card descriptions and switched to white cards with gold frames. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,16 +98,36 @@
             margin-top: 2.75rem;
         }
 
-        .link-section h2 {
+        .link-section > h2 {
             font-size: 1.75rem;
             margin-bottom: 0.75rem;
             color: var(--purdue-black);
         }
 
-        .link-section p {
+        .link-section > p {
             margin: 0;
             color: var(--purdue-dark-gray);
             max-width: 640px;
+        }
+
+        .category {
+            margin-top: 2.5rem;
+        }
+
+        .category:first-of-type {
+            margin-top: 2rem;
+        }
+
+        .category h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--purdue-black);
+        }
+
+        .category-desc {
+            margin: 0;
+            color: var(--purdue-dark-gray);
+            max-width: 720px;
         }
 
         .link-grid {
@@ -120,21 +140,25 @@
         }
 
         .link-card a {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
             height: 100%;
-            background: linear-gradient(145deg, var(--athletic-gold), var(--campus-gold));
+            background-color: var(--purdue-white);
             color: var(--purdue-black);
             padding: 1.6rem 1.5rem;
             border-radius: 18px;
-            border: 2px solid transparent;
-            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+            border: 3px solid var(--athletic-gold);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            text-decoration: none;
         }
 
         .link-card a:hover,
         .link-card a:focus-visible {
             transform: translateY(-6px);
-            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.22);
+            box-shadow: 0 14px 24px rgba(0, 0, 0, 0.18);
+            border-color: var(--campus-gold);
         }
 
         .link-card a:focus-visible {
@@ -154,6 +178,16 @@
             font-weight: 700;
             margin-bottom: 0.5rem;
             letter-spacing: 0.02em;
+        }
+
+        .link-meta {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            color: var(--purdue-gray);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
 
         .link-desc {
@@ -209,73 +243,192 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header>
         <h1>Welcome to the testing area!</h1>
-        <p>Explore interactive demos, experiments, and prototypes built throughout this repository.</p>
+        <p>Browse every prototype, reference, and guideline maintained in this repository, all styled with Purdue colors and ADA-aware layout.</p>
     </header>
     <main id="main-content" role="main">
         <section class="intro" aria-labelledby="intro-heading">
             <h2 id="intro-heading">Start your exploration</h2>
-            <p>Select any page below to open it in your browser. Each card includes a short description so screen readers and sighted users alike can anticipate the experience.</p>
+            <p>Review the sections below to find tools, documentation, and study materials. Each card offers a two to three sentence description so screen reader and sighted users alike can understand why each file exists before opening it.</p>
         </section>
 
         <nav class="link-section" aria-labelledby="links-heading">
-            <h2 id="links-heading">Explore the test pages</h2>
-            <p>All links open in the current tab to keep navigation predictable. Use your browser's back button or bookmark favorite destinations.</p>
-            <ul class="link-grid">
-                <li class="link-card">
-                    <a href="case.html">
-                        <span class="link-title">Case Overview</span>
-                        <span class="link-desc">Summary page outlining the scenario behind several experiments.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="caseada.html">
-                        <span class="link-title">Case ADA Version</span>
-                        <span class="link-desc">Accessibility-forward presentation with inclusive interaction patterns.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="caseGPT.html">
-                        <span class="link-title">Case GPT Prototype</span>
-                        <span class="link-desc">A generative AI iteration showcasing automated content suggestions.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="caseGPTv1.html">
-                        <span class="link-title">Case GPT v1</span>
-                        <span class="link-desc">Early revision of the GPT-driven approach for comparison.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="casev2.html">
-                        <span class="link-title">Case Version 2</span>
-                        <span class="link-desc">Refined layout highlighting updated copy and visual tweaks.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="hello.html">
-                        <span class="link-title">Hello Sample Page</span>
-                        <span class="link-desc">Quick greeting page used for baseline rendering tests.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="maze.html">
-                        <span class="link-title">Maze Challenge</span>
-                        <span class="link-desc">Interactive puzzle that tests navigation and keyboard support.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="methods.html">
-                        <span class="link-title">Methods Reference</span>
-                        <span class="link-desc">Reference sheet outlining approaches and helper methods.</span>
-                    </a>
-                </li>
-                <li class="link-card">
-                    <a href="normalcurve.html">
-                        <span class="link-title">Normal Curve Demo</span>
-                        <span class="link-desc">Visualization of the normal distribution with interactive cues.</span>
-                    </a>
-                </li>
-            </ul>
+            <h2 id="links-heading">Explore the repository</h2>
+            <p>All links open in the current tab to keep navigation predictable. Use your browser's back button or bookmarks when you want to return here quickly.</p>
+
+            <section class="category" aria-labelledby="guidance-heading">
+                <h3 id="guidance-heading">Guidelines &amp; documentation</h3>
+                <p class="category-desc">Consult these resources for contribution standards and deep-dive reading.</p>
+                <ul class="link-grid">
+                    <li class="link-card">
+                        <a href="AGENTS.md">
+                            <span class="link-title">AGENTS.md</span>
+                            <span class="link-meta">Markdown</span>
+                            <span class="link-desc">AGENTS.md documents the repository-wide accessibility expectations, Purdue color palette, and tooling boundaries we must honor. It also mandates incremented version comments whenever any file changes, making it the primary governance reference.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="CLAUDE.md">
+                            <span class="link-title">CLAUDE.md</span>
+                            <span class="link-meta">Markdown</span>
+                            <span class="link-desc">CLAUDE.md mirrors the ADA and Purdue branding guidance for contributors working through Claude. It reiterates the ban on advanced frameworks and the requirement to annotate every change with updated version headers, reinforcing the shared standards.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="article.md">
+                            <span class="link-title">article.md</span>
+                            <span class="link-meta">Markdown</span>
+                            <span class="link-desc">article.md contains the “DBA Research Question Handbook,” walking readers from felt business problems to research-ready questions. It expands on frameworks like PICO and SPIDER with practical examples so learners can practice shaping their ideas.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="researchmethods.md">
+                            <span class="link-title">researchmethods.md</span>
+                            <span class="link-meta">Markdown</span>
+                            <span class="link-desc">researchmethods.md offers an in-depth overview of quantitative, qualitative, and mixed-method designs for applied studies. It emphasizes implementation considerations and real-world business applications so DBA students can select fitting approaches.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="toc.html">
+                            <span class="link-title">toc.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">toc.html provides a Purdue-branded table of contents with succinct file blurbs. It serves as a lightweight directory for quick navigation when you need a scannable alternative to this comprehensive page.</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category" aria-labelledby="rq-heading">
+                <h3 id="rq-heading">Research question builders</h3>
+                <p class="category-desc">Use these guided wizards to craft and iterate on doctoral-level research questions.</p>
+                <ul class="link-grid">
+                    <li class="link-card">
+                        <a href="RQv1.html">
+                            <span class="link-title">RQv1.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">RQv1.html is the earliest interactive research question builder, pairing a streamlined wizard with tooltip explanations for variable selection. It focuses on the foundational flow without the automation layers that appear in later versions.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="RQbuilder6steps.html">
+                            <span class="link-title">RQbuilder6steps.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">RQbuilder6steps.html expands the workflow into six stages that embed PICO and SPIDER templates directly on screen. It also adds SMART and FINER suggestion helpers so students can refine their drafts with structured prompts.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="RQbuilder7steps.html">
+                            <span class="link-title">RQbuilder7steps.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">RQbuilder7steps.html further extends the process into seven stages with context capture and variable mapping before synthesis. It auto-prefills framework fields from earlier answers, illustrating how the refined research question evolves.</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category" aria-labelledby="methods-heading">
+                <h3 id="methods-heading">Method selection tools</h3>
+                <p class="category-desc">Determine appropriate methodologies and supporting assistants for proposed studies.</p>
+                <ul class="link-grid">
+                    <li class="link-card">
+                        <a href="methods.html">
+                            <span class="link-title">methods.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">methods.html offers a wizard-like decision tree that recommends research methodologies after you answer diagnostic questions. It delivers concise guidance once the questionnaire ends, helping researchers converge on a suitable approach quickly.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="methods-cc.html">
+                            <span class="link-title">methods-cc.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">methods-cc.html is an enhanced edition of the decision tree with expanded methodology coverage and a more sophisticated scoring algorithm. It preserves the same accessible layout while surfacing a broader range of tailored recommendations.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="AItools.html">
+                            <span class="link-title">AItools.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">AItools.html lists Purdue Global AI assistants inside a responsive card grid, highlighting use cases and launch links. It emphasizes skip navigation, focus states, and brand-compliant colors to model an accessible resource catalog.</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category" aria-labelledby="case-heading">
+                <h3 id="case-heading">Case studies</h3>
+                <p class="category-desc">Analyze the CBC TV movie ratings scenario through different accessibility and statistical emphases.</p>
+                <ul class="link-grid">
+                    <li class="link-card">
+                        <a href="case.html">
+                            <span class="link-title">case.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">case.html hosts the primary TV movie ratings case study complete with dataset generation, hypothesis questions, and statistical calculators. It represents the original experience authored by Dr. Altinoz and balances instruction with guided analysis.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="caseada.html">
+                            <span class="link-title">caseada.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">caseada.html maintains the TV movie ratings scenario while prioritizing accessibility affordances like live regions, semantic controls, and Purdue-compliant styling. It is the go-to version for demonstrating ADA-aligned interactions without altering the core content.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="casev2.html">
+                            <span class="link-title">casev2.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">casev2.html labels the case study as the g-3 release and foregrounds p-value reporting alongside sample-variance t-tests. It keeps the interactive structure while surfacing more statistical context in the status panel for advanced comparisons.</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category" aria-labelledby="tools-heading">
+                <h3 id="tools-heading">Interactive tools &amp; simulations</h3>
+                <p class="category-desc">Experiment with statistical visualizations and gamified demos.</p>
+                <ul class="link-grid">
+                    <li class="link-card">
+                        <a href="samplesize.html">
+                            <span class="link-title">samplesize.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">samplesize.html renders a React-powered simulation that visualizes how sample size shapes hypothesis testing outcomes. It combines dynamic charts, conversion lift bands, and accessible summaries to make statistical power concepts tangible.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="normalcurve.html">
+                            <span class="link-title">normalcurve.html</span>
+                            <span class="link-meta">JavaScript</span>
+                            <span class="link-desc">normalcurve.html defines the NormalDistributionExplorer React component so users can adjust the mean, standard deviation, and raw scores. It layers keyboard navigation and live announcements over custom SVG plots of the normal curve.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="maze.html">
+                            <span class="link-title">maze.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">maze.html delivers “Efe's Monster Maze,” an arcade-style canvas game with scoring, bomb mechanics, and animated overlays. It supports keyboard controls, instruction dialogs, and multi-level progression for playtesting interactive features.</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="category" aria-labelledby="samples-heading">
+                <h3 id="samples-heading">Quick navigation &amp; samples</h3>
+                <p class="category-desc">Access simple starter pages and return to this directory as needed.</p>
+                <ul class="link-grid">
+                    <li class="link-card">
+                        <a href="hello.html">
+                            <span class="link-title">hello.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">hello.html is a minimal hello-world page that centers a red greeting for baseline rendering tests. It is useful for verifying deployment wiring without introducing the complexity of other demos.</span>
+                        </a>
+                    </li>
+                    <li class="link-card">
+                        <a href="index.html">
+                            <span class="link-title">index.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">index.html—the page you're reading—curates the complete repository directory with Purdue-themed styling. It now aggregates every asset with richer descriptions so contributors can spot the right starting point quickly.</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
         </nav>
 
         <footer>
