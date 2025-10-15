@@ -1,0 +1,481 @@
+<!-- v1: Initial creation of GB 513 AI Assistants webpage with elegant presentation of links and content summary. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GB 513 AI Assistants</title>
+  <style>
+    :root {
+      --campus-gold: #C28E0E;
+      --athletic-gold: #CEB888;
+      --purdue-black: #000000;
+      --gray: #9D968D;
+      --dark-gray: #373A36;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: var(--white);
+      color: var(--purdue-black);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--purdue-black), var(--campus-gold));
+      color: var(--white);
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+
+    header p {
+      margin: 1rem auto 0;
+      max-width: 800px;
+      font-size: 1.1rem;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .intro h2 {
+      color: var(--campus-gold);
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .intro p {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      color: var(--dark-gray);
+    }
+
+    .assistants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .assistant-card {
+      background-color: var(--white);
+      border: 2px solid var(--athletic-gold);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .assistant-card:hover,
+    .assistant-card:focus-within {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      border-color: var(--campus-gold);
+    }
+
+    .assistant-card h3 {
+      color: var(--campus-gold);
+      font-size: 1.5rem;
+      margin: 0 0 1rem 0;
+      border-bottom: 2px solid var(--athletic-gold);
+      padding-bottom: 0.5rem;
+    }
+
+    .assistant-card p {
+      color: var(--dark-gray);
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .link-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .assistant-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .assistant-link:focus {
+      outline: 3px solid var(--purdue-black);
+      outline-offset: 2px;
+    }
+
+    .link-chatgpt {
+      background-color: var(--campus-gold);
+      color: var(--purdue-black);
+    }
+
+    .link-chatgpt:hover,
+    .link-chatgpt:focus {
+      background-color: #B07E0C;
+      transform: translateX(4px);
+    }
+
+    .link-gemini {
+      background-color: var(--dark-gray);
+      color: var(--white);
+    }
+
+    .link-gemini:hover,
+    .link-gemini:focus {
+      background-color: var(--purdue-black);
+      transform: translateX(4px);
+    }
+
+    .link-icon {
+      margin-right: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .content-sections {
+      display: grid;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .content-section {
+      background-color: var(--white);
+      border-left: 4px solid var(--campus-gold);
+      border-radius: 8px;
+      padding: 1.75rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .content-section h2 {
+      color: var(--campus-gold);
+      font-size: 1.5rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+
+    .content-section h3 {
+      color: var(--dark-gray);
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .content-section p {
+      margin-bottom: 1rem;
+    }
+
+    .content-section ul {
+      margin: 0.5rem 0 1rem 1.5rem;
+      padding: 0;
+    }
+
+    .content-section li {
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-box {
+      background-color: var(--athletic-gold);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      border-left: 4px solid var(--campus-gold);
+    }
+
+    .highlight-box strong {
+      color: var(--purdue-black);
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .warning-box {
+      background-color: #FFF8E1;
+      border: 2px solid var(--campus-gold);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .warning-box h3 {
+      color: var(--campus-gold);
+      margin-top: 0;
+    }
+
+    .code-snippet {
+      background-color: var(--purdue-black);
+      color: var(--white);
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      margin: 1rem 0;
+      border-left: 4px solid var(--campus-gold);
+    }
+
+    .contact-info {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      background-color: var(--athletic-gold);
+      border-radius: 12px;
+    }
+
+    .contact-info a {
+      color: var(--purdue-black);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .contact-info a:hover,
+    .contact-info a:focus {
+      color: var(--dark-gray);
+      outline: 2px solid var(--purdue-black);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .assistants-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .assistant-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GB 513 AI Assistants</h1>
+    <p>
+      Specially trained AI assistants to support your learning in GB 513. Each assistant has unique knowledge
+      and focuses on different aspects of the course.
+    </p>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Choose Your Assistant</h2>
+      <p>
+        Three specialized AI assistants are available to help you succeed in this course. Each is available in both
+        ChatGPT and Google Gemini versions—try both and use whichever works best for you. All you need is a free
+        account to get started.
+      </p>
+    </section>
+
+    <div class="assistants-grid">
+      <!-- General Teaching Assistant -->
+      <article class="assistant-card">
+        <h3>General Teaching Assistant</h3>
+        <p>
+          A comprehensive assistant trained on course newsletters, discussion guidelines, policies, and additional
+          resources. Get help with general questions about GB 513.
+        </p>
+        <div class="link-group">
+          <a href="https://chatgpt.com/g/g-mzuZYrZTu-gb-513-teaching-assistant"
+             class="assistant-link link-chatgpt"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Open General TA in ChatGPT">
+            <span class="link-icon" aria-hidden="true">💬</span>
+            Open in ChatGPT
+          </a>
+          <a href="https://gemini.google.com/gem/1sLZNriiQYTIMqxUOyc0z3yb4Pl8k0Ju5?usp=sharing"
+             class="assistant-link link-gemini"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Open General TA in Gemini">
+            <span class="link-icon" aria-hidden="true">✨</span>
+            Open in Gemini
+          </a>
+        </div>
+      </article>
+
+      <!-- Discussion Assistant -->
+      <article class="assistant-card">
+        <h3>Discussion Assistant</h3>
+        <p>
+          Focused exclusively on discussion boards. Tell it which unit you're posting for, paste your discussion
+          response, and get targeted feedback to improve your contributions.
+        </p>
+        <div class="link-group">
+          <a href="https://chatgpt.com/g/g-DYV7WQbDI-gb-513-discussion-assistant"
+             class="assistant-link link-chatgpt"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Open Discussion Assistant in ChatGPT">
+            <span class="link-icon" aria-hidden="true">💬</span>
+            Open in ChatGPT
+          </a>
+          <a href="https://gemini.google.com/gem/1saIhpUFjk352fZgF1_V6Ttjtv84mUO9O?usp=sharing"
+             class="assistant-link link-gemini"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Open Discussion Assistant in Gemini">
+            <span class="link-icon" aria-hidden="true">✨</span>
+            Open in Gemini
+          </a>
+        </div>
+      </article>
+
+      <!-- Project Assistant -->
+      <article class="assistant-card">
+        <h3>Project Assistant</h3>
+        <p>
+          Dedicated to helping with your final project. Upload your project presentation and receive comprehensive
+          feedback to strengthen your work.
+        </p>
+        <div class="link-group">
+          <a href="https://chatgpt.com/g/g-2ZnMtAd1V-gb-513-project-assistant"
+             class="assistant-link link-chatgpt"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Open Project Assistant in ChatGPT">
+            <span class="link-icon" aria-hidden="true">💬</span>
+            Open in ChatGPT
+          </a>
+          <a href="https://gemini.google.com/gem/18rheUD-Hoq_KSBdfP7w4m1jOCHuNmYzp?usp=sharing"
+             class="assistant-link link-gemini"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Open Project Assistant in Gemini">
+            <span class="link-icon" aria-hidden="true">✨</span>
+            Open in Gemini
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Additional Content Sections -->
+    <div class="content-sections">
+      <!-- How to Use -->
+      <section class="content-section">
+        <h2>How to Use These Assistants</h2>
+
+        <h3>Discussion and Project Assistants</h3>
+        <p>
+          These specialized assistants focus solely on their respective areas. The Discussion Assistant knows only
+          about discussion boards, and the Project Assistant knows only about the final project.
+        </p>
+        <ul>
+          <li><strong>Discussion TA:</strong> Tell it which unit you're posting for and paste your discussion topic response—it will provide feedback.</li>
+          <li><strong>Project TA:</strong> Upload your project presentation and ask for feedback—that's all you need to do.</li>
+        </ul>
+
+        <div class="highlight-box">
+          <strong>Important Note:</strong>
+          These assistants will try to find recommendations every time you ask. If you revise and ask for a review
+          again, they may come up with different suggestions or even contradict previous ones. Use your judgment about
+          how seriously you want to act on their recommendations.
+        </div>
+
+        <h3>Handling Generic Responses</h3>
+        <p>
+          Sometimes the AI doesn't properly search its knowledge base and returns a generic, unhelpful response.
+          For example, if you ask "what are some videos I can watch in unit 2?" it might say "check your course's
+          multimedia section if it has one."
+        </p>
+        <p>When you get an unhelpful answer that is clearly not based on actual GB 513 information, simply say:</p>
+        <div class="code-snippet">
+          Search your knowledge and answer again
+        </div>
+        <p>
+          This will result in a proper check of the documents and a better response. Be insistent and make them give
+          a better answer if their initial response isn't helpful.
+        </p>
+
+        <h3>Managing Conversations</h3>
+        <p>
+          If you are having an extended conversation, the AI may start to forget things—it has limited "memory."
+          Start a new conversation before switching topics to maintain quality responses.
+        </p>
+      </section>
+
+      <!-- Important Reminders -->
+      <section class="content-section">
+        <div class="warning-box">
+          <h3>You Are Responsible for What You Do</h3>
+          <p>
+            This is AI—it can get things wrong. It may say "you did a good job with this part" when it was actually
+            lacking, or "your analysis was correct" when it wasn't. Just because it didn't find a mistake doesn't
+            mean there wasn't one. It may also suggest things that are not necessary.
+          </p>
+          <p>
+            <strong>It works most of the time but not all the time.</strong> Treat it as a fellow student who is
+            really good at the class but can still make mistakes. It's one tool to use as part of your work; it's not
+            the overriding judge of what's good.
+          </p>
+          <p>
+            Use your judgment. You still need to do your best and check your work. If you are not OK with the
+            responsibility this brings, don't use it.
+          </p>
+        </div>
+      </section>
+
+      <!-- Academic Integrity -->
+      <section class="content-section">
+        <h2>Do Not Use It to Cheat</h2>
+        <p>
+          Remember that these assistants are here to help you, not do your work. <strong>You must create what you
+          submit to the course.</strong>
+        </p>
+        <p>
+          AI assistants are not able to create Excel files with analysis using the Data Analysis Toolpak, which is
+          what you will need to do for the 250-point Final Project. If you don't learn how to do the work yourself,
+          you will have trouble when it matters most.
+        </p>
+        <div class="highlight-box">
+          <strong>Citation Requirement:</strong>
+          If you use these tools to generate content that you then submit to the course, you must cite it. It's the
+          same as copying content from somewhere else. Do not try to pass content you did not create as yours.
+        </div>
+      </section>
+
+      <!-- Feedback -->
+      <section class="content-section contact-info">
+        <h2>Help Us Improve</h2>
+        <p>
+          If you have thoughts on how well (or poorly) these assistants worked, and suggestions to make them better,
+          please email <a href="mailto:caltinoz@purdueglobal.edu">caltinoz@purdueglobal.edu</a>.
+        </p>
+        <p>
+          We won't know how to improve them if we don't hear from users about where they failed and where they
+          excelled.
+        </p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

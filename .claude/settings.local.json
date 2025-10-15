@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd explanatory tooltips to variable fields in step 3\n\nEnhanced the user experience by adding information icon tooltips to all variable input fields in step 3 (Variables & Relationships). Each tooltip provides clear explanations of independent, dependent, mediating, moderating, and control variables with practical examples.\n\nFeatures:\n- Accessible ⓘ icons with keyboard navigation (tabindex)\n- Tooltips appear on hover/focus with smooth transitions\n- Purdue-compliant colors (Campus Gold icons, black backgrounds)\n- Responsive design with smaller tooltips on mobile\n- ARIA labels for screen reader accessibility\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
