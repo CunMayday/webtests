@@ -1,4 +1,4 @@
-<!-- Version 3: Removed underlines from card descriptions and switched to white cards with gold frames. -->
+<!-- Version 4: Removed Markdown file cards from the listing and added guidance for accessing them separately. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,6 +116,16 @@
 
         .category:first-of-type {
             margin-top: 2rem;
+        }
+
+        .category-note {
+            margin-top: 1rem;
+            padding: 1.25rem 1.5rem;
+            background-color: var(--athletic-gold);
+            color: var(--purdue-black);
+            border-radius: 14px;
+            box-shadow: 0 8px 16px rgba(55, 58, 54, 0.15);
+            font-weight: 600;
         }
 
         .category h3 {
@@ -257,36 +267,8 @@
 
             <section class="category" aria-labelledby="guidance-heading">
                 <h3 id="guidance-heading">Guidelines &amp; documentation</h3>
-                <p class="category-desc">Consult these resources for contribution standards and deep-dive reading.</p>
+                <p class="category-desc">Consult these HTML resources for contribution standards and deep-dive reading. Markdown files remain available in the repository, but they are intentionally omitted from this listing.</p>
                 <ul class="link-grid">
-                    <li class="link-card">
-                        <a href="AGENTS.md">
-                            <span class="link-title">AGENTS.md</span>
-                            <span class="link-meta">Markdown</span>
-                            <span class="link-desc">AGENTS.md documents the repository-wide accessibility expectations, Purdue color palette, and tooling boundaries we must honor. It also mandates incremented version comments whenever any file changes, making it the primary governance reference.</span>
-                        </a>
-                    </li>
-                    <li class="link-card">
-                        <a href="CLAUDE.md">
-                            <span class="link-title">CLAUDE.md</span>
-                            <span class="link-meta">Markdown</span>
-                            <span class="link-desc">CLAUDE.md mirrors the ADA and Purdue branding guidance for contributors working through Claude. It reiterates the ban on advanced frameworks and the requirement to annotate every change with updated version headers, reinforcing the shared standards.</span>
-                        </a>
-                    </li>
-                    <li class="link-card">
-                        <a href="article.md">
-                            <span class="link-title">article.md</span>
-                            <span class="link-meta">Markdown</span>
-                            <span class="link-desc">article.md contains the “DBA Research Question Handbook,” walking readers from felt business problems to research-ready questions. It expands on frameworks like PICO and SPIDER with practical examples so learners can practice shaping their ideas.</span>
-                        </a>
-                    </li>
-                    <li class="link-card">
-                        <a href="researchmethods.md">
-                            <span class="link-title">researchmethods.md</span>
-                            <span class="link-meta">Markdown</span>
-                            <span class="link-desc">researchmethods.md offers an in-depth overview of quantitative, qualitative, and mixed-method designs for applied studies. It emphasizes implementation considerations and real-world business applications so DBA students can select fitting approaches.</span>
-                        </a>
-                    </li>
                     <li class="link-card">
                         <a href="toc.html">
                             <span class="link-title">toc.html</span>
@@ -294,7 +276,15 @@
                             <span class="link-desc">toc.html provides a Purdue-branded table of contents with succinct file blurbs. It serves as a lightweight directory for quick navigation when you need a scannable alternative to this comprehensive page.</span>
                         </a>
                     </li>
+                    <li class="link-card">
+                        <a href="AItools-cc.html">
+                            <span class="link-title">AItools-cc.html</span>
+                            <span class="link-meta">HTML</span>
+                            <span class="link-desc">AItools-cc.html pairs the Purdue-branded layout with curated AI assistant callouts and compliance notes, distilling the contribution standards into an easily shareable resource.</span>
+                        </a>
+                    </li>
                 </ul>
+                <p class="category-note" role="status">Need the Markdown guides? Open the repository root or toc.html to access every .md document directly.</p>
             </section>
 
             <section class="category" aria-labelledby="rq-heading">
