@@ -1,0 +1,1090 @@
+<!-- v1: Initial creation of hypothesis testing webapp guiding students through null and alternative hypothesis setup. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Interactive webapp to guide students through the process of setting up null and alternative hypotheses for hypothesis testing. Based on fundamental statistics principles with step-by-step guidance." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hypothesis Testing Guide</title>
+  <style>
+    :root {
+      --campus-gold: #C28E0E;
+      --athletic-gold: #CEB888;
+      --purdue-black: #000000;
+      --gray: #9D968D;
+      --dark-gray: #373A36;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: var(--white);
+      color: var(--purdue-black);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--purdue-black), var(--campus-gold));
+      color: var(--white);
+      padding: 1.5rem 1rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    header p {
+      margin: 0.5rem 0 0;
+      max-width: 900px;
+    }
+
+    main {
+      padding: 1rem;
+      max-width: 1140px;
+      margin: 0 auto 3rem;
+    }
+
+    .wizard {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      gap: 1.5rem;
+    }
+
+    .progress {
+      background: var(--athletic-gold);
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      position: sticky;
+      top: 1rem;
+      height: fit-content;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress h2 {
+      margin-top: 0;
+      color: var(--purdue-black);
+    }
+
+    .progress ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .progress li {
+      margin-bottom: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.4);
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--dark-gray);
+    }
+
+    .progress li.active {
+      border-color: var(--purdue-black);
+      background-color: var(--white);
+      color: var(--purdue-black);
+      font-weight: 600;
+    }
+
+    .progress li.completed::before {
+      content: "✔";
+      font-size: 0.9rem;
+      color: var(--campus-gold);
+    }
+
+    .progress li.active::before {
+      content: "▶";
+      font-size: 0.8rem;
+      color: var(--campus-gold);
+    }
+
+    .progress li::before {
+      content: "•";
+      font-size: 1.1rem;
+      color: var(--purdue-black);
+    }
+
+    .step {
+      display: none;
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--gray);
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0 0 1.5rem;
+    }
+
+    legend {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--campus-gold);
+      margin-bottom: 0.75rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      color: var(--dark-gray);
+      margin-bottom: 0.35rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      font-size: 1rem;
+      color: var(--purdue-black);
+      background-color: var(--white);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .info-box {
+      background-color: #fdf9f1;
+      border-left: 4px solid var(--campus-gold);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .info-box strong {
+      display: block;
+      color: var(--purdue-black);
+      margin-bottom: 0.5rem;
+    }
+
+    .info-box p {
+      margin: 0.35rem 0;
+    }
+
+    .info-box ul {
+      margin: 0.5rem 0;
+      padding-left: 1.5rem;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .choice-card {
+      background-color: #fdf9f1;
+      border: 2px solid var(--gray);
+      padding: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .choice-card:hover {
+      border-color: var(--campus-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .choice-card input[type="radio"] {
+      margin-right: 0.5rem;
+    }
+
+    .choice-card.selected {
+      border-color: var(--campus-gold);
+      background-color: var(--white);
+      box-shadow: 0 4px 12px rgba(194, 142, 14, 0.2);
+    }
+
+    .summary-panel {
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      padding: 1.25rem;
+      background-color: #f7f7f5;
+      margin: 1rem 0;
+    }
+
+    .summary-panel h3 {
+      margin-top: 0;
+      color: var(--campus-gold);
+    }
+
+    .hypothesis-display {
+      background-color: var(--white);
+      border: 2px solid var(--campus-gold);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    .hypothesis-display .symbol {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--campus-gold);
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
+
+    button {
+      background-color: var(--campus-gold);
+      color: var(--purdue-black);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    button:hover,
+    button:focus {
+      background-color: #a9760b;
+      outline: 3px solid var(--purdue-black);
+      outline-offset: 2px;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background-color: var(--gray);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button.secondary {
+      background-color: var(--dark-gray);
+      color: var(--white);
+    }
+
+    .warning-box {
+      background-color: #fff3cd;
+      border-left: 4px solid #856404;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .warning-box strong {
+      color: #856404;
+    }
+
+    .success-box {
+      background-color: #d4edda;
+      border-left: 4px solid #155724;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    .success-box strong {
+      color: #155724;
+    }
+
+    details {
+      margin-top: 1rem;
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      background-color: #fdf9f1;
+    }
+
+    summary {
+      font-weight: 600;
+      color: var(--campus-gold);
+      cursor: pointer;
+    }
+
+    .example-box {
+      background-color: var(--athletic-gold);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .example-box strong {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 960px) {
+      .wizard {
+        grid-template-columns: 1fr;
+      }
+
+      .progress {
+        position: static;
+      }
+
+      .choice-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hypothesis Testing Guide</h1>
+    <p>
+      Learning to write proper hypotheses is a fundamental skill in statistics. This interactive guide will walk you through the process
+      with clear steps, detailed explanations, and important reminders. Take your time with each section to build a solid foundation.
+    </p>
+  </header>
+  <main>
+    <div class="wizard" role="application">
+      <nav class="progress" aria-label="Wizard steps">
+        <h2>Progress</h2>
+        <ul>
+          <li class="active" data-step="0">1. Research Question</li>
+          <li data-step="1">2. Population Parameter</li>
+          <li data-step="2">3. Data Feasibility</li>
+          <li data-step="3">4. Null Hypothesis</li>
+          <li data-step="4">5. Alternative Hypothesis</li>
+          <li data-step="5">6. Test Type</li>
+          <li data-step="6">7. Significance Level</li>
+          <li data-step="7">8. Summary</li>
+        </ul>
+      </nav>
+      <section class="steps">
+        <form id="hypothesis-form">
+          <!-- Step 1: Research Question -->
+          <article class="step active" data-step="0" aria-labelledby="step1-title">
+            <fieldset>
+              <legend id="step1-title">Step 1: Identify Your Research Question</legend>
+              <p>Start by clearly stating what you want to investigate. Your question should be specific and focused on a single measurable characteristic of one group.</p>
+
+              <div class="info-box" role="note">
+                <strong>What Hypothesis Testing Does</strong>
+                <p>Hypothesis testing is a method for making decisions about a population based on a sample. It tells you whether your data is consistent or inconsistent with a particular claim about a population parameter.</p>
+                <p><strong>Important limitation:</strong> Basic hypothesis testing does NOT tell you:</p>
+                <ul>
+                  <li>Why the parameter has a certain value</li>
+                  <li>What causes the parameter to be what it is</li>
+                  <li>How one variable affects another variable</li>
+                  <li>Whether two variables are related to each other</li>
+                </ul>
+              </div>
+
+              <label for="research-question">Your Research Question <span aria-hidden="true">*</span></label>
+              <textarea id="research-question" name="research-question" aria-required="true" placeholder="Example: Is the average amount of sleep college students get equal to 7 hours per night?"></textarea>
+
+              <details>
+                <summary>Good vs. Bad Research Questions</summary>
+                <div class="success-box">
+                  <strong>Good research questions for beginners:</strong>
+                  <ul>
+                    <li>What is the average height of students at my university?</li>
+                    <li>What proportion of registered voters in my city support the new park proposal?</li>
+                    <li>Is the average amount of sleep college students get equal to 7 hours per night?</li>
+                  </ul>
+                  <p><strong>Why these are good:</strong> Each question focuses on describing ONE characteristic of ONE defined group.</p>
+                </div>
+                <div class="warning-box">
+                  <strong>Questions to avoid as a beginner:</strong>
+                  <ul>
+                    <li>Do students who study more get better grades? (implies a relationship between two variables)</li>
+                    <li>Does drinking coffee improve test performance? (implies causation)</li>
+                    <li>Are men taller than women? (compares two groups, requires different tests)</li>
+                  </ul>
+                </div>
+              </details>
+            </fieldset>
+            <div class="button-row">
+              <span aria-hidden="true"></span>
+              <button type="button" data-action="next">Next: Parameter</button>
+            </div>
+          </article>
+
+          <!-- Step 2: Population Parameter -->
+          <article class="step" data-step="1" aria-labelledby="step2-title">
+            <fieldset>
+              <legend id="step2-title">Step 2: Identify the Population Parameter</legend>
+              <p>A parameter is a numerical characteristic of an entire population. Select which parameter you're studying.</p>
+
+              <div class="choice-grid" role="radiogroup" aria-labelledby="parameter-type-label">
+                <label class="choice-card">
+                  <input type="radio" name="parameter-type" value="mean" />
+                  <strong>μ (mu) - Population Mean</strong>
+                  <p>The average value for an entire population. Use when your data is numerical and you're interested in the typical or average amount.</p>
+                  <p><em>Examples: average study hours, mean temperature, average price</em></p>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="parameter-type" value="proportion" />
+                  <strong>p - Population Proportion</strong>
+                  <p>The percentage or fraction of a population that has a certain characteristic. Use when your data is categorical (yes/no, success/failure).</p>
+                  <p><em>Examples: proportion of students who own a car, percentage of voters who support a candidate</em></p>
+                </label>
+              </div>
+
+              <div class="info-box">
+                <strong>How to choose:</strong>
+                <p>Ask yourself: "Am I calculating an average of numbers (mean) or counting how many have a certain characteristic (proportion)?"</p>
+              </div>
+
+              <label for="parameter-description">Describe your parameter:</label>
+              <input type="text" id="parameter-description" placeholder="Example: The average number of hours students study per week" />
+            </fieldset>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="button" data-action="next">Next: Data Feasibility</button>
+            </div>
+          </article>
+
+          <!-- Step 3: Data Feasibility -->
+          <article class="step" data-step="2" aria-labelledby="step3-title">
+            <fieldset>
+              <legend id="step3-title">Step 3: Check That Your Data Is Obtainable</legend>
+              <p>Before writing hypotheses, make sure you can realistically collect the data you need.</p>
+
+              <div class="info-box">
+                <strong>Ask yourself:</strong>
+                <ul>
+                  <li>Can I survey or measure a sample from this population?</li>
+                  <li>Is the information publicly available or can I access it?</li>
+                  <li>Do I have the time and resources needed?</li>
+                  <li>Is it ethical and legal to collect this data?</li>
+                  <li>Can the characteristic be measured objectively?</li>
+                </ul>
+              </div>
+
+              <label for="population">Define your population:</label>
+              <input type="text" id="population" placeholder="Example: College students at State University" />
+
+              <label for="data-collection">How will you collect the data?</label>
+              <textarea id="data-collection" placeholder="Example: Survey a random sample of 100 students in various classes"></textarea>
+
+              <label for="measurement">How will you measure this characteristic?</label>
+              <input type="text" id="measurement" placeholder="Example: Ask students to report average hours studied per week" />
+
+              <details>
+                <summary>Examples: Realistic vs. Unrealistic</summary>
+                <div class="success-box">
+                  <strong>Realistic examples for students:</strong>
+                  <ul>
+                    <li>Surveying students in your classes about their study habits</li>
+                    <li>Recording the prices of items at local stores</li>
+                    <li>Measuring the height of plants you're growing</li>
+                    <li>Counting how many of your friends prefer option A vs. option B</li>
+                  </ul>
+                </div>
+                <div class="warning-box">
+                  <strong>Unrealistic examples for students:</strong>
+                  <ul>
+                    <li>Accessing private medical records of hospital patients</li>
+                    <li>Surveying all residents of an entire state</li>
+                    <li>Data that requires expensive laboratory equipment</li>
+                    <li>Information that people are unlikely to answer honestly</li>
+                  </ul>
+                </div>
+              </details>
+            </fieldset>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="button" data-action="next">Next: Null Hypothesis</button>
+            </div>
+          </article>
+
+          <!-- Step 4: Null Hypothesis -->
+          <article class="step" data-step="3" aria-labelledby="step4-title">
+            <fieldset>
+              <legend id="step4-title">Step 4: Write the Null Hypothesis (H₀)</legend>
+              <p>The null hypothesis is your starting assumption. It states that a population parameter equals a specific value.</p>
+
+              <div class="info-box">
+                <strong>Key points about the null hypothesis:</strong>
+                <ul>
+                  <li><strong>It uses "equals" only:</strong> The null hypothesis ALWAYS uses an equals sign (=). Never use ≠, &lt;, or &gt; in a null hypothesis.</li>
+                  <li><strong>It represents the status quo:</strong> This is what you assume is true unless your data proves otherwise.</li>
+                  <li><strong>It must be specific:</strong> You need an exact number, not a range or vague statement.</li>
+                </ul>
+              </div>
+
+              <label for="null-value">What specific value do you want to test? <span aria-hidden="true">*</span></label>
+              <input type="number" id="null-value" step="any" placeholder="Example: 7 (for 7 hours of sleep)" aria-required="true" />
+
+              <label for="null-units">Units (optional but recommended):</label>
+              <input type="text" id="null-units" placeholder="Example: hours, inches, dollars, etc." />
+
+              <div class="info-box">
+                <strong>Where does the specific number come from?</strong>
+                <ul>
+                  <li>Previous research or historical data</li>
+                  <li>A claimed value (like a manufacturer's claim)</li>
+                  <li>A theoretical expectation</li>
+                  <li>A value representing "no effect" or "no preference" (like 0.50 for a 50-50 proportion)</li>
+                </ul>
+              </div>
+
+              <label for="null-justification">Why are you testing this specific value?</label>
+              <textarea id="null-justification" placeholder="Example: The CDC recommends 7 hours of sleep for adults"></textarea>
+
+              <div class="summary-panel" aria-live="polite">
+                <h3>Your Null Hypothesis</h3>
+                <div class="hypothesis-display" id="null-display">
+                  <p>Complete the fields above to see your null hypothesis</p>
+                </div>
+              </div>
+
+              <details>
+                <summary>Examples with Explanations</summary>
+                <div class="example-box">
+                  <strong>Example 1:</strong> H₀: μ = 30
+                  <p>Translation: "The population mean equals 30"</p>
+                  <p>What this means: We're assuming the true average in the entire population is exactly 30 (units depend on context: 30 minutes, 30 inches, 30 dollars, etc.)</p>
+                </div>
+                <div class="example-box">
+                  <strong>Example 2:</strong> H₀: p = 0.50
+                  <p>Translation: "The population proportion equals 0.50" or "50%"</p>
+                  <p>What this means: We're assuming that exactly half (50%) of the population has the characteristic we're studying</p>
+                </div>
+              </details>
+            </fieldset>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="button" data-action="next">Next: Alternative Hypothesis</button>
+            </div>
+          </article>
+
+          <!-- Step 5: Alternative Hypothesis -->
+          <article class="step" data-step="4" aria-labelledby="step5-title">
+            <fieldset>
+              <legend id="step5-title">Step 5: Write the Alternative Hypothesis (H₁ or Hₐ)</legend>
+              <p>The alternative hypothesis states what you're actually testing for. This is what you suspect might be true instead of the null hypothesis.</p>
+
+              <div class="info-box">
+                <strong>Important decision:</strong> When in doubt, use a two-tailed test (≠). Only use one-tailed tests when you have a strong reason to look in only one direction.
+              </div>
+
+              <div class="choice-grid" role="radiogroup" aria-labelledby="alternative-type-label">
+                <label class="choice-card">
+                  <input type="radio" name="alternative-type" value="two-tailed" checked />
+                  <strong>Two-tailed test (≠)</strong>
+                  <p>Tests whether the parameter is different from the null value in EITHER direction (higher OR lower).</p>
+                  <p><em>Most common for beginners - more conservative and flexible.</em></p>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="alternative-type" value="greater" />
+                  <strong>One-tailed test (&gt;)</strong>
+                  <p>Tests whether the parameter is GREATER than the null value.</p>
+                  <p><em>Use only when you specifically want to test if the value is HIGHER.</em></p>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="alternative-type" value="less" />
+                  <strong>One-tailed test (&lt;)</strong>
+                  <p>Tests whether the parameter is LESS than the null value.</p>
+                  <p><em>Use only when you specifically want to test if the value is LOWER.</em></p>
+                </label>
+              </div>
+
+              <label for="alternative-reasoning">Why did you choose this direction?</label>
+              <textarea id="alternative-reasoning" placeholder="Example: I want to detect any difference from 7 hours, whether students sleep more or less"></textarea>
+
+              <div class="summary-panel" aria-live="polite">
+                <h3>Your Alternative Hypothesis</h3>
+                <div class="hypothesis-display" id="alternative-display">
+                  <p>Select a test type to see your alternative hypothesis</p>
+                </div>
+              </div>
+
+              <details>
+                <summary>Examples and When to Use Each Type</summary>
+                <div class="example-box">
+                  <strong>Two-tailed example:</strong> H₁: μ ≠ 30
+                  <p>Translation: "The population mean is not equal to 30"</p>
+                  <p>When to use: When you want to detect ANY difference, whether it's above or below the null value</p>
+                </div>
+                <div class="example-box">
+                  <strong>Greater than example:</strong> H₁: μ &gt; 10
+                  <p>Translation: "The population mean is greater than 10"</p>
+                  <p>Example scenario: A company claims their battery lasts "more than 10 hours"</p>
+                </div>
+                <div class="example-box">
+                  <strong>Less than example:</strong> H₁: μ &lt; 200
+                  <p>Translation: "The population mean is less than 200"</p>
+                  <p>Example scenario: A new drug claims to reduce cholesterol "below 200"</p>
+                </div>
+              </details>
+            </fieldset>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="button" data-action="next">Next: Test Type</button>
+            </div>
+          </article>
+
+          <!-- Step 6: Test Type -->
+          <article class="step" data-step="5" aria-labelledby="step6-title">
+            <fieldset>
+              <legend id="step6-title">Step 6: Select the Appropriate Test Type</legend>
+              <p>Different research questions require different statistical tests. Based on your parameter selection, here's the recommended test:</p>
+
+              <div class="summary-panel" id="test-recommendation" aria-live="polite">
+                <h3>Recommended Test</h3>
+                <p id="test-type-display">Complete the previous steps to see the recommended test type</p>
+              </div>
+
+              <div class="info-box">
+                <strong>Quick decision guide:</strong>
+                <ul>
+                  <li><strong>Calculating an average of numbers?</strong> → Use t-test for means</li>
+                  <li><strong>Counting what percentage has a trait?</strong> → Use proportion test</li>
+                </ul>
+              </div>
+
+              <details>
+                <summary>Test Type Details</summary>
+                <div class="example-box">
+                  <strong>One-sample t-test (for means)</strong>
+                  <p>Use when:</p>
+                  <ul>
+                    <li>Your parameter is μ (a mean/average)</li>
+                    <li>You have numerical data (heights, times, prices, scores, etc.)</li>
+                    <li>You want to test if the population mean equals a specific value</li>
+                    <li>You're examining ONE group only</li>
+                  </ul>
+                  <p><strong>Example:</strong> Testing if the average study time of college students equals 5 hours per week</p>
+                </div>
+                <div class="example-box">
+                  <strong>One-sample proportion test</strong>
+                  <p>Use when:</p>
+                  <ul>
+                    <li>Your parameter is p (a proportion/percentage)</li>
+                    <li>Your data is categorical (yes/no, success/failure, category A or B)</li>
+                    <li>You want to test if the population proportion equals a specific value</li>
+                    <li>You're examining ONE group only</li>
+                  </ul>
+                  <p><strong>Example:</strong> Testing if 60% of students prefer online classes</p>
+                </div>
+              </details>
+            </fieldset>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="button" data-action="next">Next: Significance Level</button>
+            </div>
+          </article>
+
+          <!-- Step 7: Significance Level -->
+          <article class="step" data-step="6" aria-labelledby="step7-title">
+            <fieldset>
+              <legend id="step7-title">Step 7: Understanding Significance Level (α)</legend>
+              <p>The significance level is the probability of rejecting the null hypothesis when it's actually true. You must choose this BEFORE collecting data.</p>
+
+              <div class="info-box">
+                <strong>What α = 0.05 means in plain English:</strong>
+                <p>"I'm willing to accept a 5% chance of concluding the null hypothesis is false when it's actually true."</p>
+                <p>Or think of it this way: If you repeated your study 100 times and the null hypothesis was actually true every time, you'd expect to incorrectly reject it about 5 times just due to random chance.</p>
+              </div>
+
+              <div class="choice-grid" role="radiogroup" aria-labelledby="alpha-level-label">
+                <label class="choice-card">
+                  <input type="radio" name="alpha-level" value="0.05" checked />
+                  <strong>α = 0.05 (5%)</strong>
+                  <p>Most common choice. Use for standard classroom assignments or typical research where consequences of a wrong conclusion are moderate.</p>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="alpha-level" value="0.01" />
+                  <strong>α = 0.01 (1%)</strong>
+                  <p>More strict. Use when you want to be more certain before rejecting the null hypothesis, or when consequences of a false conclusion are serious (e.g., medical research).</p>
+                </label>
+                <label class="choice-card">
+                  <input type="radio" name="alpha-level" value="0.10" />
+                  <strong>α = 0.10 (10%)</strong>
+                  <p>More lenient. Use for exploratory research or when you're more worried about missing a real effect than making a false alarm.</p>
+                </label>
+              </div>
+
+              <label for="alpha-justification">Why did you choose this significance level?</label>
+              <textarea id="alpha-justification" placeholder="Example: I chose 0.05 because this is a standard classroom project with moderate consequences"></textarea>
+
+              <div class="info-box">
+                <strong>Decision rules (after you collect data and calculate a p-value):</strong>
+                <ul>
+                  <li><strong>If p-value ≤ α:</strong> Reject the null hypothesis (your data is unlikely if H₀ were true)</li>
+                  <li><strong>If p-value &gt; α:</strong> Fail to reject the null hypothesis (your data is reasonably consistent with H₀)</li>
+                </ul>
+              </div>
+
+              <div class="warning-box">
+                <strong>What the significance level does NOT mean:</strong>
+                <ul>
+                  <li>It is NOT the probability that the null hypothesis is true</li>
+                  <li>It is NOT the probability that your conclusion is wrong</li>
+                  <li>It does NOT tell you how important or large the effect is</li>
+                </ul>
+              </div>
+            </fieldset>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="button" data-action="next">Next: Summary</button>
+            </div>
+          </article>
+
+          <!-- Step 8: Summary -->
+          <article class="step" data-step="7" aria-labelledby="step8-title">
+            <fieldset>
+              <legend id="step8-title">Step 8: Summary and Final Checklist</legend>
+              <p>Review your complete hypothesis test setup:</p>
+
+              <div class="summary-panel">
+                <h3>Complete Hypothesis Test Setup</h3>
+
+                <p><strong>Research Question:</strong></p>
+                <p id="summary-question" class="hypothesis-display">Not provided</p>
+
+                <p><strong>Population:</strong></p>
+                <p id="summary-population">Not provided</p>
+
+                <p><strong>Parameter:</strong></p>
+                <p id="summary-parameter">Not selected</p>
+
+                <p><strong>Null Hypothesis (H₀):</strong></p>
+                <div class="hypothesis-display" id="summary-null">Not defined</div>
+
+                <p><strong>Alternative Hypothesis (H₁):</strong></p>
+                <div class="hypothesis-display" id="summary-alternative">Not defined</div>
+
+                <p><strong>Test Type:</strong></p>
+                <p id="summary-test">Not determined</p>
+
+                <p><strong>Significance Level:</strong></p>
+                <p id="summary-alpha">α = 0.05 (default)</p>
+              </div>
+
+              <div class="success-box">
+                <strong>Quick Checklist - Verify each item:</strong>
+                <ul id="checklist">
+                  <li>✓ Clear parameter: I've identified whether I'm testing μ (mean) or p (proportion)</li>
+                  <li>✓ Null uses equals: My null hypothesis uses = (not ≠, &lt;, or &gt;)</li>
+                  <li>✓ Alternative is appropriate: My alternative uses ≠, &lt;, or &gt; as appropriate</li>
+                  <li>✓ Single group: I'm describing ONE group, not comparing multiple groups</li>
+                  <li>✓ No causation language: I'm not using words like "causes," "affects," or "influences"</li>
+                  <li>✓ No relationship language: I'm not using words like "related to," "associated with," or "correlation"</li>
+                  <li>✓ Obtainable data: I can realistically collect the data I need</li>
+                  <li>✓ Correct test selected: I know whether to use a t-test (for means) or proportion test (for proportions)</li>
+                  <li>✓ Proper notation: I'm using Greek letters (μ, p) not sample statistics (x̄, p̂)</li>
+                  <li>✓ Specific values: I have exact numbers in my hypotheses, not vague terms</li>
+                  <li>✓ Significance level chosen: I've selected α before collecting data</li>
+                </ul>
+              </div>
+
+              <div class="info-box">
+                <strong>Critical Rules to Remember:</strong>
+                <ul>
+                  <li><strong>Avoid Implying Causation:</strong> Hypothesis testing describes what exists in a population but does NOT establish what causes it.</li>
+                  <li><strong>Avoid Implying Relationships:</strong> Basic hypothesis testing examines one variable at a time, not how two variables relate to each other.</li>
+                  <li><strong>Use Proper Notation:</strong> Hypotheses are always about populations (μ, p), not samples (x̄, p̂).</li>
+                  <li><strong>Be Specific and Testable:</strong> Use exact numbers, not words like "high," "low," "most," or "few."</li>
+                </ul>
+              </div>
+
+              <details>
+                <summary>Next Steps: Conducting Your Hypothesis Test</summary>
+                <div class="info-box">
+                  <strong>After formulating your hypotheses, you will:</strong>
+                  <ol>
+                    <li>Collect your sample data</li>
+                    <li>Calculate the appropriate test statistic</li>
+                    <li>Find the p-value</li>
+                    <li>Compare the p-value to your chosen α</li>
+                    <li>Make your decision: reject H₀ or fail to reject H₀</li>
+                    <li>State your conclusion in context</li>
+                  </ol>
+                </div>
+              </details>
+            </fieldset>
+            <div class="button-row">
+              <button type="button" class="secondary" data-action="prev">Back</button>
+              <button type="reset">Start Over</button>
+            </div>
+          </article>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const progressItems = Array.from(document.querySelectorAll(".progress li"));
+    const form = document.getElementById("hypothesis-form");
+    let currentStep = 0;
+
+    // Form elements
+    const researchQuestion = document.getElementById("research-question");
+    const parameterRadios = document.querySelectorAll("input[name='parameter-type']");
+    const parameterDescription = document.getElementById("parameter-description");
+    const population = document.getElementById("population");
+    const dataCollection = document.getElementById("data-collection");
+    const measurement = document.getElementById("measurement");
+    const nullValue = document.getElementById("null-value");
+    const nullUnits = document.getElementById("null-units");
+    const nullJustification = document.getElementById("null-justification");
+    const alternativeRadios = document.querySelectorAll("input[name='alternative-type']");
+    const alternativeReasoning = document.getElementById("alternative-reasoning");
+    const alphaRadios = document.querySelectorAll("input[name='alpha-level']");
+    const alphaJustification = document.getElementById("alpha-justification");
+
+    // Display elements
+    const nullDisplay = document.getElementById("null-display");
+    const alternativeDisplay = document.getElementById("alternative-display");
+    const testTypeDisplay = document.getElementById("test-type-display");
+
+    // Summary elements
+    const summaryQuestion = document.getElementById("summary-question");
+    const summaryPopulation = document.getElementById("summary-population");
+    const summaryParameter = document.getElementById("summary-parameter");
+    const summaryNull = document.getElementById("summary-null");
+    const summaryAlternative = document.getElementById("summary-alternative");
+    const summaryTest = document.getElementById("summary-test");
+    const summaryAlpha = document.getElementById("summary-alpha");
+
+    // Navigation
+    function updateStep(direction) {
+      const newStep = currentStep + direction;
+      if (newStep < 0 || newStep >= steps.length) return;
+
+      steps[currentStep].classList.remove("active");
+      progressItems[currentStep].classList.remove("active");
+      if (direction > 0) {
+        progressItems[currentStep].classList.add("completed");
+      }
+
+      currentStep = newStep;
+      steps[currentStep].classList.add("active");
+      progressItems[currentStep].classList.add("active");
+
+      // Update summary when moving to last step
+      if (currentStep === steps.length - 1) {
+        updateSummary();
+      }
+    }
+
+    document.querySelectorAll("button[data-action]").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        const action = event.currentTarget.getAttribute("data-action");
+        if (action === "next") {
+          updateStep(1);
+          setTimeout(() => steps[currentStep].querySelector("textarea, input")?.focus(), 100);
+        } else if (action === "prev") {
+          updateStep(-1);
+          setTimeout(() => steps[currentStep].querySelector("textarea, input")?.focus(), 100);
+        }
+      });
+    });
+
+    form.addEventListener("reset", () => {
+      currentStep = 0;
+      steps.forEach((step, index) => {
+        step.classList.toggle("active", index === 0);
+      });
+      progressItems.forEach((item, index) => {
+        item.classList.toggle("active", index === 0);
+        item.classList.remove("completed");
+      });
+      nullDisplay.innerHTML = "<p>Complete the fields above to see your null hypothesis</p>";
+      alternativeDisplay.innerHTML = "<p>Select a test type to see your alternative hypothesis</p>";
+      testTypeDisplay.textContent = "Complete the previous steps to see the recommended test type";
+    });
+
+    // Choice card selection highlighting
+    document.querySelectorAll(".choice-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const radio = card.querySelector("input[type='radio']");
+        if (radio) {
+          radio.checked = true;
+          // Remove selected class from siblings
+          card.parentElement.querySelectorAll(".choice-card").forEach((c) => {
+            c.classList.remove("selected");
+          });
+          card.classList.add("selected");
+          radio.dispatchEvent(new Event("change"));
+        }
+      });
+    });
+
+    // Update null hypothesis display
+    function updateNullDisplay() {
+      const paramType = document.querySelector("input[name='parameter-type']:checked")?.value;
+      const value = nullValue.value.trim();
+      const units = nullUnits.value.trim();
+
+      if (!paramType || !value) {
+        nullDisplay.innerHTML = "<p>Complete the fields above to see your null hypothesis</p>";
+        return;
+      }
+
+      const symbol = paramType === "mean" ? "μ" : "p";
+      const unitText = units ? ` ${units}` : "";
+
+      nullDisplay.innerHTML = `
+        <p><span class="symbol">H₀: ${symbol} = ${value}${unitText}</span></p>
+        <p style="font-size: 0.95rem; margin-top: 0.5rem;">
+          The population ${paramType === "mean" ? "mean" : "proportion"} equals ${value}${unitText}
+        </p>
+      `;
+
+      updateAlternativeDisplay();
+      updateTestType();
+    }
+
+    nullValue.addEventListener("input", updateNullDisplay);
+    nullUnits.addEventListener("input", updateNullDisplay);
+    parameterRadios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        updateNullDisplay();
+        updateTestType();
+      });
+    });
+
+    // Update alternative hypothesis display
+    function updateAlternativeDisplay() {
+      const paramType = document.querySelector("input[name='parameter-type']:checked")?.value;
+      const altType = document.querySelector("input[name='alternative-type']:checked")?.value;
+      const value = nullValue.value.trim();
+      const units = nullUnits.value.trim();
+
+      if (!paramType || !altType || !value) {
+        alternativeDisplay.innerHTML = "<p>Complete the previous steps to see your alternative hypothesis</p>";
+        return;
+      }
+
+      const symbol = paramType === "mean" ? "μ" : "p";
+      const unitText = units ? ` ${units}` : "";
+
+      let operator = "";
+      let description = "";
+
+      switch(altType) {
+        case "two-tailed":
+          operator = "≠";
+          description = `The population ${paramType === "mean" ? "mean" : "proportion"} is not equal to ${value}${unitText}`;
+          break;
+        case "greater":
+          operator = ">";
+          description = `The population ${paramType === "mean" ? "mean" : "proportion"} is greater than ${value}${unitText}`;
+          break;
+        case "less":
+          operator = "<";
+          description = `The population ${paramType === "mean" ? "mean" : "proportion"} is less than ${value}${unitText}`;
+          break;
+      }
+
+      alternativeDisplay.innerHTML = `
+        <p><span class="symbol">H₁: ${symbol} ${operator} ${value}${unitText}</span></p>
+        <p style="font-size: 0.95rem; margin-top: 0.5rem;">${description}</p>
+      `;
+    }
+
+    alternativeRadios.forEach((radio) => {
+      radio.addEventListener("change", updateAlternativeDisplay);
+    });
+
+    // Update test type recommendation
+    function updateTestType() {
+      const paramType = document.querySelector("input[name='parameter-type']:checked")?.value;
+
+      if (!paramType) {
+        testTypeDisplay.textContent = "Complete the previous steps to see the recommended test type";
+        return;
+      }
+
+      if (paramType === "mean") {
+        testTypeDisplay.innerHTML = `
+          <strong style="font-size: 1.1rem; color: var(--campus-gold);">One-sample t-test</strong>
+          <p style="margin-top: 0.5rem;">Since you're testing a population mean (μ), you should use a one-sample t-test. This test compares your sample mean to the hypothesized population mean.</p>
+        `;
+      } else {
+        testTypeDisplay.innerHTML = `
+          <strong style="font-size: 1.1rem; color: var(--campus-gold);">One-sample proportion test</strong>
+          <p style="margin-top: 0.5rem;">Since you're testing a population proportion (p), you should use a one-sample proportion test (also called a z-test for proportions). This test compares your sample proportion to the hypothesized population proportion.</p>
+        `;
+      }
+    }
+
+    // Update summary
+    function updateSummary() {
+      // Research question
+      summaryQuestion.textContent = researchQuestion.value.trim() || "Not provided";
+
+      // Population
+      summaryPopulation.textContent = population.value.trim() || "Not provided";
+
+      // Parameter
+      const paramType = document.querySelector("input[name='parameter-type']:checked")?.value;
+      if (paramType) {
+        const symbol = paramType === "mean" ? "μ (population mean)" : "p (population proportion)";
+        const desc = parameterDescription.value.trim();
+        summaryParameter.textContent = desc ? `${symbol} - ${desc}` : symbol;
+      } else {
+        summaryParameter.textContent = "Not selected";
+      }
+
+      // Null hypothesis
+      if (nullDisplay.querySelector(".symbol")) {
+        summaryNull.innerHTML = nullDisplay.innerHTML;
+      } else {
+        summaryNull.innerHTML = "<p>Not defined</p>";
+      }
+
+      // Alternative hypothesis
+      if (alternativeDisplay.querySelector(".symbol")) {
+        summaryAlternative.innerHTML = alternativeDisplay.innerHTML;
+      } else {
+        summaryAlternative.innerHTML = "<p>Not defined</p>";
+      }
+
+      // Test type
+      if (paramType) {
+        summaryTest.textContent = paramType === "mean" ? "One-sample t-test" : "One-sample proportion test";
+      } else {
+        summaryTest.textContent = "Not determined";
+      }
+
+      // Alpha
+      const alpha = document.querySelector("input[name='alpha-level']:checked")?.value || "0.05";
+      const alphaPercent = (parseFloat(alpha) * 100).toFixed(0);
+      summaryAlpha.textContent = `α = ${alpha} (${alphaPercent}% significance level)`;
+    }
+  </script>
+</body>
+</html>
