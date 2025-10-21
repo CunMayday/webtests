@@ -1,0 +1,434 @@
+<!-- v1: Created hypothesis setup guide for null and alternative hypotheses. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive guide to help students prepare null and alternative hypotheses for hypothesis testing." />
+  <title>Hypothesis Setup Companion</title>
+  <style>
+    :root {
+      --campus-gold: #C28E0E;
+      --athletic-gold: #CEB888;
+      --purdue-black: #000000;
+      --gray: #9D968D;
+      --dark-gray: #373A36;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: var(--white);
+      color: var(--purdue-black);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--purdue-black);
+      color: var(--white);
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      letter-spacing: 0.03em;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .intro {
+      background-color: var(--athletic-gold);
+      border-radius: 12px;
+      padding: 1.5rem;
+      color: var(--purdue-black);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .intro p {
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+    }
+
+    .step {
+      margin-top: 2rem;
+      border: 2px solid var(--gray);
+      border-radius: 14px;
+      padding: 1.75rem;
+      background-color: var(--white);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .step h2 {
+      margin-top: 0;
+      color: var(--campus-gold);
+      font-size: 1.4rem;
+    }
+
+    .step p,
+    .step li {
+      color: var(--dark-gray);
+    }
+
+    fieldset {
+      border: 2px solid var(--campus-gold);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    legend {
+      font-weight: 600;
+      color: var(--purdue-black);
+      padding: 0 0.5rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+      color: var(--purdue-black);
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--gray);
+      font-size: 1rem;
+      background-color: var(--white);
+    }
+
+    input[type="radio"],
+    input[type="number"] {
+      accent-color: var(--campus-gold);
+    }
+
+    .helper {
+      background-color: var(--gray);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .helper strong {
+      color: var(--white);
+    }
+
+    .tips {
+      background-color: var(--white);
+      border-left: 6px solid var(--campus-gold);
+      padding: 1rem 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .tips h3 {
+      margin-top: 0;
+      font-size: 1.1rem;
+      color: var(--purdue-black);
+    }
+
+    .output-card {
+      background-color: var(--campus-gold);
+      color: var(--purdue-black);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .output-card h2 {
+      margin-top: 0;
+      color: var(--purdue-black);
+    }
+
+    .output-card p {
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+
+    button {
+      background-color: var(--purdue-black);
+      color: var(--white);
+      padding: 0.85rem 1.4rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+    }
+
+    button:focus,
+    button:hover {
+      background-color: var(--campus-gold);
+      color: var(--purdue-black);
+      outline: 3px solid var(--athletic-gold);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.45rem;
+      }
+
+      .step {
+        padding: 1.25rem;
+      }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hypothesis Testing Setup Companion</h1>
+    <p role="doc-subtitle">Follow the guided steps to prepare valid null and alternative hypotheses.</p>
+  </header>
+  <main>
+    <section class="intro" aria-label="Purpose of this guide">
+      <h2>How to Use This Companion</h2>
+      <p>
+        Hypothesis testing begins with clearly defined hypotheses. This guided worksheet will walk you through clarifying your
+        research question, identifying the correct population parameter, and crafting compliant null and alternative
+        hypotheses. Each step summarizes key reminders from the hypothesis testing handbook so you can stay aligned with best
+        practices.
+      </p>
+    </section>
+
+    <form aria-describedby="summary" id="hypothesis-form">
+      <section class="step" aria-labelledby="step1-title">
+        <h2 id="step1-title">Step 1. Clarify Your Research Question</h2>
+        <p>
+          Keep your question focused on one measurable characteristic of a single population. Avoid wording that implies
+          causes, relationships, or comparisons across groups.
+        </p>
+        <label for="research-question">What is your research question?</label>
+        <textarea id="research-question" name="research-question" rows="3" aria-describedby="rq-help" required></textarea>
+        <div id="rq-help" class="helper" role="note">
+          <strong>Reminder:</strong> Look for language such as <em>causes</em>, <em>affects</em>, or <em>compared to</em>. If you
+          find any, rephrase the question so it only describes one population characteristic.
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="step2-title">
+        <h2 id="step2-title">Step 2. Identify the Population Parameter</h2>
+        <p>
+          Determine whether you will describe a population mean (μ) or a population proportion (p). Choose one parameter only.
+        </p>
+        <fieldset>
+          <legend>Select the parameter you will test</legend>
+          <div>
+            <input type="radio" id="param-mean" name="parameter" value="mean" required />
+            <label for="param-mean">Population mean (μ): Use for numerical data like heights, prices, or hours.</label>
+          </div>
+          <div>
+            <input type="radio" id="param-proportion" name="parameter" value="proportion" />
+            <label for="param-proportion">Population proportion (p): Use for categorical data such as yes/no responses.</label>
+          </div>
+        </fieldset>
+        <label for="null-value">What claimed value will you test against?</label>
+        <input type="number" id="null-value" name="null-value" aria-describedby="null-value-help" step="any" required />
+        <div id="null-value-help" class="tips">
+          <h3>Choose a specific value</h3>
+          <ul>
+            <li>Draw from historical claims, previous studies, or neutral benchmarks.</li>
+            <li>Avoid ranges or vague descriptions—hypotheses require an exact number.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="step3-title">
+        <h2 id="step3-title">Step 3. Confirm Your Data Is Obtainable</h2>
+        <p>
+          Ensure you can gather a sample ethically, with the resources you have available, and in a way that yields reliable
+          measurements.
+        </p>
+        <label for="feasibility">Describe how you will collect the data.</label>
+        <textarea id="feasibility" name="feasibility" rows="3" aria-describedby="feasibility-help" required></textarea>
+        <div id="feasibility-help" class="helper">
+          <strong>Checklist:</strong> Is the data accessible? Can you measure it objectively? Do you have permission to collect
+          it? If not, adjust your question before moving forward.
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="step4-title">
+        <h2 id="step4-title">Step 4. Build the Null Hypothesis (H₀)</h2>
+        <p>
+          The null hypothesis always uses an equals sign and states that the population parameter equals the value you selected.
+        </p>
+        <div class="tips" role="note">
+          <h3>Format reminder</h3>
+          <p>H₀: parameter = value</p>
+          <ul>
+            <li>There is no &lt;, &gt;, or ≠ in the null hypothesis.</li>
+            <li>Think of this as the “no change” or “status quo” position.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="step5-title">
+        <h2 id="step5-title">Step 5. Choose Your Alternative Hypothesis (H₁)</h2>
+        <p>
+          Decide whether you are testing for any difference (two-tailed) or a specific direction (one-tailed). When unsure,
+          select the two-tailed option.
+        </p>
+        <fieldset>
+          <legend>What kind of difference are you testing?</legend>
+          <div>
+            <input type="radio" id="alt-not-equal" name="alt" value="not-equal" required />
+            <label for="alt-not-equal">Two-tailed: H₁ states the parameter is different (≠) from the null value.</label>
+          </div>
+          <div>
+            <input type="radio" id="alt-greater" name="alt" value="greater" />
+            <label for="alt-greater">Upper-tailed: H₁ states the parameter is greater than (&gt;) the null value.</label>
+          </div>
+          <div>
+            <input type="radio" id="alt-less" name="alt" value="less" />
+            <label for="alt-less">Lower-tailed: H₁ states the parameter is less than (&lt;) the null value.</label>
+          </div>
+        </fieldset>
+        <div class="tips">
+          <h3>Directional choice tips</h3>
+          <ul>
+            <li>Use ≠ when you want to detect any difference.</li>
+            <li>Use &gt; only with a strong reason to look for an increase.</li>
+            <li>Use &lt; only with a strong reason to look for a decrease.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="step6-title">
+        <h2 id="step6-title">Step 6. Select the Test Type</h2>
+        <p>
+          Match your hypotheses to the correct statistical procedure before collecting data.
+        </p>
+        <fieldset>
+          <legend>Recommended test</legend>
+          <p id="test-guidance">Select a parameter above to view the suggested test.</p>
+        </fieldset>
+      </section>
+
+      <section class="step" aria-labelledby="step7-title">
+        <h2 id="step7-title">Step 7. Pick a Significance Level (α)</h2>
+        <p>
+          Choose your tolerance for false alarms before you analyze data. Classroom projects typically use α = 0.05.
+        </p>
+        <label for="alpha">Significance level (α)</label>
+        <select id="alpha" name="alpha" aria-describedby="alpha-help" required>
+          <option value="0.05">0.05 (standard classroom choice)</option>
+          <option value="0.01">0.01 (more cautious)</option>
+          <option value="0.10">0.10 (more exploratory)</option>
+        </select>
+        <div id="alpha-help" class="helper">
+          <strong>Interpretation:</strong> α is the chance of rejecting a true null hypothesis. Decide upfront and stick with it.
+        </div>
+      </section>
+
+      <button type="button" id="generate">Generate Hypotheses Summary</button>
+    </form>
+
+    <section class="output-card" aria-live="polite" aria-atomic="true" id="summary" tabindex="-1">
+      <h2>Your Draft Hypotheses</h2>
+      <p id="null-output">H₀: —</p>
+      <p id="alt-output">H₁: —</p>
+      <p id="test-output">Suggested test: —</p>
+      <p id="alpha-output">Chosen α: —</p>
+      <p id="notes-output" class="sr-only">Complete each step to produce a full summary.</p>
+    </section>
+  </main>
+  <footer style="background-color: var(--purdue-black); color: var(--white); text-align: center; padding: 1rem 0;">
+    <p>&copy; <span id="year"></span> Hypothesis Testing Companion. Built with accessibility and Purdue University colors in mind.</p>
+  </footer>
+
+  <script>
+    (function () {
+      const form = document.getElementById('hypothesis-form');
+      const generateBtn = document.getElementById('generate');
+      const summaryCard = document.getElementById('summary');
+      const nullOutput = document.getElementById('null-output');
+      const altOutput = document.getElementById('alt-output');
+      const testOutput = document.getElementById('test-output');
+      const alphaOutput = document.getElementById('alpha-output');
+      const notesOutput = document.getElementById('notes-output');
+      const testGuidance = document.getElementById('test-guidance');
+      const yearSpan = document.getElementById('year');
+
+      yearSpan.textContent = new Date().getFullYear();
+
+      form.addEventListener('change', function (event) {
+        if (event.target.name === 'parameter') {
+          const param = event.target.value;
+          if (param === 'mean') {
+            testGuidance.textContent = 'One-sample t-test: use when working with numerical data and a population mean (μ).';
+          } else if (param === 'proportion') {
+            testGuidance.textContent = 'One-sample proportion test: use for yes/no or categorical data and a population proportion (p).';
+          }
+        }
+      });
+
+      generateBtn.addEventListener('click', function () {
+        const data = new FormData(form);
+        const parameter = data.get('parameter');
+        const nullValueRaw = data.get('null-value');
+        const altType = data.get('alt');
+        const alpha = data.get('alpha');
+
+        if (!parameter || !nullValueRaw || !altType) {
+          notesOutput.classList.remove('sr-only');
+          notesOutput.textContent = 'Please complete Steps 2 through 5 before generating your hypotheses summary.';
+          summaryCard.focus();
+          return;
+        }
+
+        const nullValue = Number(nullValueRaw);
+        const parameterSymbol = parameter === 'mean' ? 'μ' : 'p';
+        let altSymbol = '≠';
+
+        if (altType === 'greater') {
+          altSymbol = '>';
+        } else if (altType === 'less') {
+          altSymbol = '<';
+        }
+
+        nullOutput.textContent = `H₀: ${parameterSymbol} = ${nullValue}`;
+        altOutput.textContent = `H₁: ${parameterSymbol} ${altSymbol} ${nullValue}`;
+
+        if (parameter === 'mean') {
+          testOutput.textContent = 'Suggested test: One-sample t-test for the population mean.';
+        } else {
+          testOutput.textContent = 'Suggested test: One-sample proportion test for the population proportion.';
+        }
+
+        alphaOutput.textContent = `Chosen α: ${alpha}`;
+        notesOutput.classList.add('sr-only');
+        summaryCard.focus();
+      });
+    })();
+  </script>
+</body>
+</html>
