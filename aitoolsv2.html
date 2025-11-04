@@ -1,0 +1,336 @@
+<!-- v1: Added lecture transcript assistants and updated counts for AI tools -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="This page lists the AI Assistants available for GB 513" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GB 513 AI Assistants</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --purdue-black: #000000;
+      --purdue-athletic-gold: #CEB888;
+      --purdue-campus-gold: #C28E0E;
+      --purdue-link-gold: #8B7415;
+      --purdue-gray: #9D968D;
+      --purdue-dark-gray: #373A36;
+      --purdue-white: #FFFFFF;
+      --max-width: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--purdue-white);
+      color: var(--purdue-dark-gray);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--purdue-link-gold);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-thickness: 0.12em;
+      text-decoration-color: var(--purdue-link-gold);
+    }
+
+    a:visited {
+      color: var(--purdue-link-gold);
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--purdue-campus-gold);
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--purdue-athletic-gold);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--purdue-campus-gold);
+      color: var(--purdue-black);
+      padding: 0.5rem 1rem;
+      z-index: 100;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    header {
+      background: var(--purdue-black);
+      color: var(--purdue-white);
+      padding: 2rem 1rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw + 1rem, 3rem);
+      letter-spacing: 0.04em;
+    }
+
+    header p {
+      max-width: var(--max-width);
+      margin: 1rem auto 0;
+      font-size: 1.1rem;
+      color: var(--purdue-athletic-gold);
+    }
+
+    main {
+      padding: 2.5rem 1rem 3rem;
+    }
+
+    .content-wrapper {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    .intro {
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .assistant-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .assistant-card {
+      background: var(--purdue-white);
+      border: 3px solid var(--purdue-athletic-gold);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(55, 58, 54, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .assistant-card:hover,
+    .assistant-card:focus-within {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .assistant-type {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--purdue-gray);
+    }
+
+    .assistant-name {
+      margin: 0;
+      font-size: 1.35rem;
+      color: var(--purdue-black);
+    }
+
+    .assistant-description {
+      margin: 0;
+      color: var(--purdue-dark-gray);
+    }
+
+    .link-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .assistant-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1rem;
+      border-radius: 999px;
+      border: 2px solid var(--purdue-campus-gold);
+      background-color: var(--purdue-black);
+      color: var(--purdue-white);
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .assistant-link:visited {
+      color: var(--purdue-white);
+    }
+
+    .assistant-link svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: currentColor;
+    }
+
+    .assistant-link:hover,
+    .assistant-link:focus-visible {
+      background-color: var(--purdue-campus-gold);
+      color: var(--purdue-black);
+    }
+
+    .summary-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(206, 184, 136, 0.15), rgba(194, 142, 14, 0.25));
+      border-radius: 16px;
+      border: 1px solid rgba(55, 58, 54, 0.12);
+    }
+
+    .summary-section h2 {
+      margin-top: 0;
+      font-size: 1.75rem;
+      color: var(--purdue-black);
+    }
+
+    .summary-section ul {
+      margin: 1rem 0 0 1.2rem;
+      padding: 0;
+    }
+
+    .summary-section li {
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+      color: var(--purdue-dark-gray);
+    }
+
+    footer {
+      padding: 2rem 1rem;
+      background-color: var(--purdue-black);
+      color: var(--purdue-athletic-gold);
+    }
+
+    footer p {
+      margin: 0 auto;
+      max-width: var(--max-width);
+      font-size: 0.95rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <header role="banner">
+    <div class="content-wrapper">
+      <h1>GB 513 AI Assistants</h1>
+      <p>Explore eight dedicated AI assistants designed to support your coursework, discussions, and final project in GB 513.</p>
+    </div>
+  </header>
+  <main id="main" class="content-wrapper">
+    <section class="intro" aria-labelledby="assistants-heading">
+      <h2 id="assistants-heading">Choose the assistant that fits your needs</h2>
+      <p>Most assistants are available through both ChatGPT and Gemini, sharing the same knowledge base so you can pick the platform that works best.</p>
+    </section>
+
+    <section class="assistant-grid" aria-label="AI assistant links">
+      <article class="assistant-card" aria-labelledby="general-ta-title">
+        <p class="assistant-type">Course-wide Support</p>
+        <h3 id="general-ta-title" class="assistant-name">General Teaching Assistant</h3>
+        <p class="assistant-description">Get help with your statistics questions or suggestions for additional resources. </p>
+        <div class="link-group">
+          <a class="assistant-link" href="https://chatgpt.com/g/g-mzuZYrZTu-gb-513-teaching-assistant" target="_blank" rel="noopener noreferrer" aria-label="Open General Teaching Assistant on ChatGPT">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 12l18-9-9 18-1.5-7.5z"/></svg>
+            ChatGPT
+          </a>
+          <a class="assistant-link" href="https://gemini.google.com/gem/1sLZNriiQYTIMqxUOyc0z3yb4Pl8k0Ju5?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="Open General Teaching Assistant on Gemini">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2l9 4v6c0 5-3.5 9.74-9 10-5.5-.26-9-5-9-10V6z"/></svg>
+            Gemini
+          </a>
+        </div>
+      </article>
+
+      <article class="assistant-card" aria-labelledby="discussion-ta-title">
+        <p class="assistant-type">Discussion Guidance</p>
+        <h3 id="discussion-ta-title" class="assistant-name">Discussion Assistant</h3>
+        <p class="assistant-description">Paste your discussion response for targeted feedback tailored to the specific unit’s expectations.</p>
+        <div class="link-group">
+          <a class="assistant-link" href="https://chatgpt.com/g/g-DYV7WQbDI-gb-513-discussion-assistant" target="_blank" rel="noopener noreferrer" aria-label="Open Discussion Assistant on ChatGPT">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 12l18-9-9 18-1.5-7.5z"/></svg>
+            ChatGPT
+          </a>
+          <a class="assistant-link" href="https://gemini.google.com/gem/1saIhpUFjk352fZgF1_V6Ttjtv84mUO9O?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="Open Discussion Assistant on Gemini">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2l9 4v6c0 5-3.5 9.74-9 10-5.5-.26-9-5-9-10V6z"/></svg>
+            Gemini
+          </a>
+        </div>
+      </article>
+
+      <article class="assistant-card" aria-labelledby="project-ta-title">
+        <p class="assistant-type">Final Project Support</p>
+        <h3 id="project-ta-title" class="assistant-name">Project Assistant</h3>
+        <p class="assistant-description">Upload your project materials and receive feedback to strengthen your final submission.</p>
+        <div class="link-group">
+          <a class="assistant-link" href="https://chatgpt.com/g/g-2ZnMtAd1V-gb-513-project-assistant" target="_blank" rel="noopener noreferrer" aria-label="Open Project Assistant on ChatGPT">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 12l18-9-9 18-1.5-7.5z"/></svg>
+            ChatGPT
+          </a>
+          <a class="assistant-link" href="https://gemini.google.com/gem/18rheUD-Hoq_KSBdfP7w4m1jOCHuNmYzp?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="Open Project Assistant on Gemini">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2l9 4v6c0 5-3.5 9.74-9 10-5.5-.26-9-5-9-10V6z"/></svg>
+            Gemini
+          </a>
+        </div>
+      </article>
+
+      <article class="assistant-card" aria-labelledby="lecture-assistant-title">
+        <p class="assistant-type">Lecture Support</p>
+        <h3 id="lecture-assistant-title" class="assistant-name">Lecture Assistant</h3>
+        <p class="assistant-description">Ask for clarifications or additional examples based on transcripts from the course video lectures.</p>
+        <div class="link-group">
+          <a class="assistant-link" href="https://gemini.google.com/gem/1GTRLsUpaubz9tNeYm9nz5KZ4fOQ2wklb?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="Open Lecture Assistant on Gemini">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 2l9 4v6c0 5-3.5 9.74-9 10-5.5-.26-9-5-9-10V6z"/></svg>
+            Gemini
+          </a>
+        </div>
+      </article>
+
+      <article class="assistant-card" aria-labelledby="lecture-notebook-title">
+        <p class="assistant-type">Lecture Summaries</p>
+        <h3 id="lecture-notebook-title" class="assistant-name">Lectures NotebookLM</h3>
+        <p class="assistant-description">Generate lecture summaries, outlines, or answers to questions powered by NotebookLM’s transcript knowledge.</p>
+        <div class="link-group">
+          <a class="assistant-link" href="https://notebooklm.google.com/notebook/4beb5066-e9e6-4001-abc5-491ba7aa7555?authuser=1" target="_blank" rel="noopener noreferrer" aria-label="Open Lectures NotebookLM">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 12l18-9-9 18-1.5-7.5z"/></svg>
+            NotebookLM
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <section class="summary-section" aria-labelledby="summary-heading">
+      <h2 id="summary-heading">Key guidance for using the assistants</h2>
+      <ul>
+        <li>Sign in with a free or existing Google, Microsoft, Apple, or Gmail account to use these assistants.</li>
+        <li>Provide clear context: name the unit for discussion reviews or upload your project deck to receive targeted feedback.</li>
+        <li>If a response seems generic, prompt the assistant to “Search your knowledge and answer again, focusing on my specific question” </li>
+        <li>Restart conversations when switching topics so the assistant retains focus and accuracy.</li>
+        <li>Use the assistants responsibly—verify their suggestions, and never submit AI-generated work as your own without proper citation.</li>
+        <li>Remember that mastering your own analysis skills is essential for success on the 250-point final project.</li>
+        <li>Share feedback on assistant performance by emailing <a href="mailto:caltinoz@purdueglobal.edu">caltinoz@purdueglobal.edu</a>.</li>
+      </ul>
+    </section>
+  </main>
+  <footer role="contentinfo">
+    <p>These AI assistants are companions to your learning. Use them thoughtfully, verify their guidance, and build your own expertise.</p>
+  </footer>
+</body>
+</html>
