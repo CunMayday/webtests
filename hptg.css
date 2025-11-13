@@ -1,0 +1,74 @@
+/* v1.0 - Initial styling for the Hypothesis Testing Guide web app. */
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #373A36;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+}
+
+header {
+    background: #000000;
+    color: #C28E0E;
+    padding: 1rem 0;
+    text-align: center;
+    border-bottom: 5px solid #CEB888;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px 0;
+}
+
+h2 {
+    color: #000000;
+    border-bottom: 2px solid #9D968D;
+    padding-bottom: 5px;
+}
+
+h3 {
+    color: #373A36;
+}
+
+code {
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.interactive-section {
+    background-color: #CEB888;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #9D968D;
+    border-radius: 5px;
+}
+
+.interactive-section h3 {
+    margin-top: 0;
+}
+
+.interactive-section button {
+    background-color: #000000;
+    color: #C28E0E;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.interactive-section button:hover {
+    background-color: #373A36;
+}

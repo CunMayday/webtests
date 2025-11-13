@@ -1,0 +1,35 @@
+/* v1.1 - Added more animations and styling */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+section {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+#education .grid div, #awards .grid div {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#education .grid div:hover, #awards .grid div:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+header {
+    transition: background-color 0.3s ease;
+}
