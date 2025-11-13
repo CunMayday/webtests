@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- Version 5.0 - Fixed click event handling by adding pointer-events: none to span elements inside buttons. -->
+<!-- Version 6.0 - Removed pointer-events CSS that was blocking clicks; spans work correctly without it. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Methodology Decision Tree - DBA Program</title>
     <style>
-        /* Version 5.0 - Fixed click event handling by adding pointer-events: none to span elements inside buttons */
+        /* Version 6.0 - Removed pointer-events CSS that was blocking clicks; spans work correctly without it */
 
         /* Purdue Color Palette */
         :root {
@@ -142,7 +142,6 @@
             font-size: 0.9rem;
             color: var(--dark-gray);
             margin-top: 6px;
-            pointer-events: none;
         }
 
         .choice-example {
@@ -151,7 +150,6 @@
             color: var(--campus-gold);
             margin-top: 6px;
             font-style: italic;
-            pointer-events: none;
         }
 
         .result-card {
