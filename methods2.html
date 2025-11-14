@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<!-- Version 4.4 - Fixed additional JavaScript syntax error caused by smart quote in phenomenology examples. -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Methodology Decision Tree - DBA Program</title>
+    <style>
+        /* Version 4.4 - Fixed additional JavaScript syntax error caused by smart quote in phenomenology examples */
+
+        /* Purdue Color Palette */
+        :root {
+            --campus-gold: #C28E0E;
+            --athletic-gold: #CEB888;
+            --purdue-black: #000000;
+            --gray: #9D968D;
+            --dark-gray: #373A36;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--white);
+            color: var(--purdue-black);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background-color: var(--purdue-black);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .progress-bar {
+            background-color: var(--gray);
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background-color: var(--campus-gold);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            background-color: var(--white);
+            border: 2px solid var(--athletic-gold);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card h2 {
+            color: var(--purdue-black);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .question-card p {
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            background-color: var(--white);
+            border: 2px solid var(--gray);
+            color: var(--purdue-black);
+            padding: 15px 20px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .option-button:hover {
+            background-color: var(--athletic-gold);
+            border-color: var(--campus-gold);
+            color: var(--purdue-black);
+        }
+
+        .option-button:focus {
+            outline: 3px solid var(--campus-gold);
+            outline-offset: 2px;
+        }
+
+        .choice-hint {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-top: 6px;
+        }
+
+        .choice-example {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--campus-gold);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        .result-card {
+            background-color: var(--athletic-gold);
+            border: 2px solid var(--campus-gold);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .result-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-card h2 {
+            color: var(--purdue-black);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .methodology-details {
+            background-color: var(--white);
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .methodology-details h3 {
+            color: var(--campus-gold);
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .methodology-details ul {
+            margin-left: 20px;
+            color: var(--dark-gray);
+        }
+
+        .methodology-details li {
+            margin-bottom: 8px;
+        }
+
+        .method-summary {
+            margin-bottom: 20px;
+        }
+
+        .method-summary ul {
+            list-style-type: disc;
+        }
+
+        .warning-card {
+            background-color: #f8f1df;
+            border-left: 4px solid var(--campus-gold);
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-card h3 {
+            color: var(--purdue-black);
+            margin-bottom: 10px;
+        }
+
+        .next-steps {
+            background-color: #f4f5f6;
+            border-left: 4px solid var(--gray);
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .path-summary {
+            background-color: var(--white);
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .path-summary h3 {
+            color: var(--campus-gold);
+            margin-bottom: 15px;
+        }
+
+        .path-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 3px;
+            border-left: 3px solid var(--athletic-gold);
+        }
+
+        .alternative-card {
+            background-color: var(--white);
+            border: 1px solid var(--gray);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        .alternative-card h3 {
+            color: var(--campus-gold);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .alternative-card ul {
+            margin-left: 18px;
+            color: var(--dark-gray);
+        }
+
+        .feasibility-notes {
+            background-color: #f8f1df;
+            border-left: 4px solid var(--campus-gold);
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .examples {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--campus-gold);
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .examples h4 {
+            color: var(--purdue-black);
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-button {
+            background-color: var(--campus-gold);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: #A67309;
+        }
+
+        .nav-button:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+        }
+
+        .nav-button:focus {
+            outline: 3px solid var(--purdue-black);
+            outline-offset: 2px;
+        }
+
+        .restart-button {
+            background-color: var(--purdue-black);
+            color: var(--white);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .restart-button:hover {
+            background-color: var(--dark-gray);
+        }
+
+        .restart-button:focus {
+            outline: 3px solid var(--campus-gold);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Research Methodology Decision Tree</h1>
+            <p>Find the right research approach for your DBA applied research project</p>
+        </header>
+
+        <main class="content">
+            <div class="progress-bar" role="progressbar" aria-label="Decision tree progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Question 1: Research Purpose -->
+            <div class="question-card active" id="question1">
+                <h2>What is your primary research purpose?</h2>
+                <p>Choose the core outcome your applied research must deliver for the organization.</p>
+                <div class="options" role="group" aria-labelledby="question1">
+                    <button class="option-button" data-choice="Explore and understand a business problem or phenomenon" data-value="explore" onclick="handleChoice('question1', this)">
+                        Explore and understand a business problem or phenomenon
+                        <span class="choice-hint">Clarify what is happening and why it matters.</span>
+                        <span class="choice-example">Example: Understand how remote work affects team collaboration dynamics in knowledge-intensive firms.</span>
+                    </button>
+                    <button class="option-button" data-choice="Explain relationships between business variables" data-value="explain" onclick="handleChoice('question1', this)">
+                        Explain relationships between business variables
+                        <span class="choice-hint">Test how variables interact and influence outcomes.</span>
+                        <span class="choice-example">Example: Examine how employee engagement mediates the relationship between leadership style and organizational performance.</span>
+                    </button>
+                    <button class="option-button" data-choice="Predict future outcomes or test interventions" data-value="predict" onclick="handleChoice('question1', this)">
+                        Predict future outcomes or test interventions
+                        <span class="choice-hint">Forecast trends or evaluate how an intervention will perform.</span>
+                        <span class="choice-example">Example: Forecast customer demand patterns to optimize inventory levels across retail locations.</span>
+                    </button>
+                    <button class="option-button" data-choice="Improve or change current business practices" data-value="improve" onclick="handleChoice('question1', this)">
+                        Improve or change current business practices
+                        <span class="choice-hint">Drive change or innovation within the organization.</span>
+                        <span class="choice-example">Example: Redesign the onboarding process to reduce new employee time-to-productivity by 30%.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 2: Level of Control -->
+            <div class="question-card" id="questionControl">
+                <h2>Can you manipulate the key variable and (ideally) randomize?</h2>
+                <p>Be realistic about the control you have over treatments, assignments, or processes.</p>
+                <div class="options" role="group" aria-labelledby="questionControl">
+                    <button class="option-button" data-choice="Yes, random assignment to conditions is feasible" data-value="randomized" onclick="handleChoice('questionControl', this)">
+                        Yes, random assignment to conditions is feasible
+                        <span class="choice-hint">You can manipulate the intervention and assign participants randomly.</span>
+                        <span class="choice-example">Example: Randomly assign sales teams to different incentive structures to test impact on performance.</span>
+                    </button>
+                    <button class="option-button" data-choice="I can manipulate but not randomize assignment" data-value="manipulate" onclick="handleChoice('questionControl', this)">
+                        I can manipulate but not randomize assignment
+                        <span class="choice-hint">You control the change but must rely on natural or convenience groups.</span>
+                        <span class="choice-example">Example: Implement new training in the west region while using the east region as a comparison group.</span>
+                    </button>
+                    <button class="option-button" data-choice="No manipulation feasible – observational only" data-value="observational" onclick="handleChoice('questionControl', this)">
+                        No manipulation feasible – observational only
+                        <span class="choice-hint">You must observe existing practices without imposing change.</span>
+                        <span class="choice-example">Example: Analyze existing employee performance data to identify factors associated with high retention rates.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 3: Time Design -->
+            <div class="question-card" id="questionTime">
+                <h2>Will you observe change over time?</h2>
+                <p>Select the time horizon that best matches your data collection or archival records.</p>
+                <div class="options" role="group" aria-labelledby="questionTime">
+                    <button class="option-button" data-choice="Cross-sectional snapshot" data-value="cross_sectional" onclick="handleChoice('questionTime', this)">
+                        Cross-sectional snapshot
+                        <span class="choice-hint">One point in time – useful for benchmarking or diagnosing.</span>
+                        <span class="choice-example">Example: Survey all departments simultaneously to benchmark current employee satisfaction levels.</span>
+                    </button>
+                    <button class="option-button" data-choice="Longitudinal panel or growth over time" data-value="longitudinal" onclick="handleChoice('questionTime', this)">
+                        Longitudinal panel or growth over time
+                        <span class="choice-hint">Track the same units across multiple time points.</span>
+                        <span class="choice-example">Example: Track the same cohort of managers quarterly to measure leadership skill development over two years.</span>
+                    </button>
+                    <button class="option-button" data-choice="High-frequency time-series or forecasting" data-value="time_series" onclick="handleChoice('questionTime', this)">
+                        High-frequency time-series or forecasting
+                        <span class="choice-hint">Many observations ordered in time for trend/seasonality analysis.</span>
+                        <span class="choice-example">Example: Analyze daily sales data over three years to forecast seasonal demand and optimize staffing.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 4: Data Source -->
+            <div class="question-card" id="questionData">
+                <h2>What is your primary data source?</h2>
+                <p>Match the method to the data you can realistically obtain.</p>
+                <div class="options" role="group" aria-labelledby="questionData">
+                    <button class="option-button" data-choice="Existing organizational or archival data" data-value="archival" onclick="handleChoice('questionData', this)">
+                        Existing organizational or archival data
+                        <span class="choice-hint">Enterprise systems, transactions, dashboards, or public records.</span>
+                        <span class="choice-example">Example: Leverage existing CRM data to analyze customer purchasing patterns and churn indicators.</span>
+                    </button>
+                    <button class="option-button" data-choice="New survey data" data-value="survey" onclick="handleChoice('questionData', this)">
+                        New survey data
+                        <span class="choice-hint">You can reach enough respondents with validated measures.</span>
+                        <span class="choice-example">Example: Deploy a validated organizational culture survey to 500+ employees across all business units.</span>
+                    </button>
+                    <button class="option-button" data-choice="Interviews, observations, or documents" data-value="qualitative" onclick="handleChoice('questionData', this)">
+                        Interviews, observations, or documents
+                        <span class="choice-hint">You need rich accounts from participants or organizational artifacts.</span>
+                        <span class="choice-example">Example: Conduct in-depth interviews with 25 frontline employees to understand barriers to digital tool adoption.</span>
+                    </button>
+                    <button class="option-button" data-choice="Combination of quantitative and qualitative sources" data-value="mixed_source" onclick="handleChoice('questionData', this)">
+                        Combination of quantitative and qualitative sources
+                        <span class="choice-hint">You can integrate numbers with stories for a fuller picture.</span>
+                        <span class="choice-example">Example: Combine performance metrics with manager interviews to explain productivity variations across teams.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 5: Depth vs. Generalizability -->
+            <div class="question-card" id="questionDepth">
+                <h2>Is your priority depth in context or generalizable estimates?</h2>
+                <p>This trade-off guides whether you need immersive understanding, broad evidence, or both.</p>
+                <div class="options" role="group" aria-labelledby="questionDepth">
+                    <button class="option-button" data-choice="Contextual depth" data-value="depth" onclick="handleChoice('questionDepth', this)">
+                        Contextual depth
+                        <span class="choice-hint">You must understand lived experiences and organizational culture.</span>
+                        <span class="choice-example">Example: Deeply explore how organizational culture shapes innovation practices within a single high-tech startup.</span>
+                    </button>
+                    <button class="option-button" data-choice="Generalizable estimates" data-value="generalizable" onclick="handleChoice('questionDepth', this)">
+                        Generalizable estimates
+                        <span class="choice-hint">You need findings that scale across units or populations.</span>
+                        <span class="choice-example">Example: Generate findings about customer service effectiveness that can apply across all 200 retail locations.</span>
+                    </button>
+                    <button class="option-button" data-choice="Both depth and generalizability" data-value="both" onclick="handleChoice('questionDepth', this)">
+                        Both depth and generalizability
+                        <span class="choice-hint">You want integrated evidence that satisfies multiple stakeholders.</span>
+                        <span class="choice-example">Example: Combine statistical analysis of engagement scores with case studies to satisfy both executives and HR teams.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 6: Innovation vs. Evaluation (conditional) -->
+            <div class="question-card" id="questionInnovation">
+                <h2>What kind of improvement work are you driving?</h2>
+                <p>Clarify whether you are building something new, co-creating change, or evaluating an existing process.</p>
+                <div class="options" role="group" aria-labelledby="questionInnovation">
+                    <button class="option-button" data-choice="Build and evaluate a new artifact or process" data-value="design" onclick="handleChoice('questionInnovation', this)">
+                        Build and evaluate a new artifact or process
+                        <span class="choice-hint">Prototype and test a tool, workflow, or analytics solution.</span>
+                        <span class="choice-example">Example: Design and pilot a new performance dashboard to help managers make real-time staffing decisions.</span>
+                    </button>
+                    <button class="option-button" data-choice="Iterative co-change with stakeholders" data-value="collaborative" onclick="handleChoice('questionInnovation', this)">
+                        Iterative co-change with stakeholders
+                        <span class="choice-hint">Facilitate cycles of planning, action, and reflection with practitioners.</span>
+                        <span class="choice-example">Example: Partner with frontline teams to iteratively redesign workflow processes through action learning cycles.</span>
+                    </button>
+                    <button class="option-button" data-choice="Evaluate an existing intervention or process" data-value="evaluate" onclick="handleChoice('questionInnovation', this)">
+                        Evaluate an existing intervention or process
+                        <span class="choice-hint">Assess outcomes of a change already in motion.</span>
+                        <span class="choice-example">Example: Evaluate the effectiveness of the leadership development program implemented last year on team outcomes.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 7: Theoretical Maturity -->
+            <div class="question-card" id="questionTheory">
+                <h2>How mature is the theory base in this area?</h2>
+                <p>Determine whether you are extending established theory or need to build new insights.</p>
+                <div class="options" role="group" aria-labelledby="questionTheory">
+                    <button class="option-button" data-choice="Thin theory – need to build or refine frameworks" data-value="thin" onclick="handleChoice('questionTheory', this)">
+                        Thin theory – need to build or refine frameworks
+                        <span class="choice-hint">Limited prior research or conflicting explanations.</span>
+                        <span class="choice-example">Example: Explore emerging gig economy workforce management where little research exists on best practices.</span>
+                    </button>
+                    <button class="option-button" data-choice="Mature theory – ready to test or extend" data-value="mature" onclick="handleChoice('questionTheory', this)">
+                        Mature theory – ready to test or extend
+                        <span class="choice-hint">Robust constructs and prior models exist for validation.</span>
+                        <span class="choice-example">Example: Test established motivation theories in the context of hybrid work arrangements using validated scales.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 8: Feasibility Safeguards -->
+            <div class="question-card" id="questionFeasibility">
+                <h2>What feasibility guardrails apply?</h2>
+                <p>Balance ambition with realities like ethics, access, sample size, and timeline.</p>
+                <div class="options" role="group" aria-labelledby="questionFeasibility">
+                    <button class="option-button" data-choice="Strong support – resources, access, and approvals are in place" data-value="strong_support" onclick="handleChoice('questionFeasibility', this)">
+                        Strong support – resources, access, and approvals are in place
+                        <span class="choice-hint">You can execute complex designs without major constraints.</span>
+                        <span class="choice-example">Example: Executive sponsorship secured, IRB approval granted, and full access to all organizational data systems.</span>
+                    </button>
+                    <button class="option-button" data-choice="Some constraints – need to streamline scope or sequencing" data-value="moderate_constraints" onclick="handleChoice('questionFeasibility', this)">
+                        Some constraints – need to streamline scope or sequencing
+                        <span class="choice-hint">Watch sample size, stakeholder time, or integration workload.</span>
+                        <span class="choice-example">Example: Limited to six-month timeline and restricted access to certain departments due to ongoing restructuring.</span>
+                    </button>
+                    <button class="option-button" data-choice="Significant constraints – prioritize a lean, feasible design" data-value="significant_constraints" onclick="handleChoice('questionFeasibility', this)">
+                        Significant constraints – prioritize a lean, feasible design
+                        <span class="choice-hint">Access, ethics, or timeline pressures limit complex approaches.</span>
+                        <span class="choice-example">Example: Three-month deadline with limited participant availability and sensitive data requiring extensive approvals.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="result-card" id="results">
+                <div class="path-summary">
+                    <h3>Your Decision Path</h3>
+                    <div id="pathSummary"></div>
+                </div>
+
+                <h2>Recommended Methodology</h2>
+                <p id="recommendedMethod" aria-live="polite"></p>
+
+                <div class="methodology-details">
+                    <div id="methodologyContent"></div>
+                </div>
+
+                <div class="examples">
+                    <h4>Business Research Examples:</h4>
+                    <div id="exampleContent"></div>
+                </div>
+
+                <div class="methodology-details" id="alternativeSection">
+                    <h3>Complementary Alternatives</h3>
+                    <div id="alternativeContent"></div>
+                </div>
+
+                <div class="feasibility-notes" id="feasibilityNotes" style="display:none;"></div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-button" id="backButton" onclick="previousQuestion()" disabled>
+                    ← Back
+                </button>
+                <button class="restart-button" onclick="restart()">
+                    Start Over
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const baseSequence = ['question1', 'questionControl', 'questionTime', 'questionData', 'questionDepth', 'questionInnovation', 'questionTheory', 'questionFeasibility'];
+        let decisions = [];
+
+        const methodologies = {
+            'experimental_design': {
+                name: 'Experimental Research Design',
+                description: 'Systematic testing of business interventions through controlled manipulation of variables to establish causal relationships.',
+                when: 'When you must demonstrate that a specific business intervention causes measurable outcomes under controlled conditions.',
+                methods: [
+                    'True experiments with random assignment to treatment and control groups',
+                    'Randomized controlled trials in organizational settings',
+                    'Field experiments conducted in natural business environments',
+                    'A/B or multivariate testing of business processes or interventions',
+                    'Pre-post comparisons with strong control of alternative explanations'
+                ],
+                advantages: [
+                    'Strongest evidence for causal relationships',
+                    'Clear measurement of intervention effects',
+                    'Reduces alternative explanations for outcomes',
+                    'Highly credible evidence for business stakeholders',
+                    'Enables precise measurement of business impact'
+                ],
+                considerations: [
+                    'Randomization and control must be feasible and ethical',
+                    'Requires sufficient sample size per condition',
+                    'Organizational disruption may occur during manipulation',
+                    'Need to manage threats to internal and external validity',
+                    'IRB/ethics approvals and stakeholder alignment are critical'
+                ],
+                examples: [
+                    'Testing impact of flexible work arrangements on employee productivity',
+                    'Comparing different customer service training approaches on satisfaction scores',
+                    'Evaluating effectiveness of leadership development programs on team performance',
+                    'Experimenting with incentive structures to influence sales performance'
+                ],
+                nextSteps: [
+                    'Confirm randomization logistics, control conditions, and blinding where possible',
+                    'Secure ethical approvals and stakeholder agreements before manipulating processes',
+                    'Conduct a power analysis to verify minimum sample size per group',
+                    'Document protocols to ensure treatment fidelity and consistent delivery',
+                    'Plan post-test follow-up to monitor sustained impact and unintended effects'
+                ]
+            },
+            'quasi_experimental': {
+                name: 'Quasi-Experimental Design',
+                description: 'Evaluation of interventions when random assignment is not possible, using comparison groups, matching, or interrupted time-series.',
+                when: 'When you implement or evaluate business changes with limited control over assignment but can build credible comparison logic.',
+                methods: [
+                    'Nonequivalent group designs with pre/post measures',
+                    'Propensity score matching with archival or survey data',
+                    'Regression discontinuity or cutoff-based assignment',
+                    'Interrupted time-series with a clear intervention point',
+                    'Difference-in-differences across comparable business units'
+                ],
+                advantages: [
+                    'Practical for real-world organizational settings',
+                    'Allows evaluation of existing programs or policies',
+                    'Supports causal inference when true experiments are infeasible',
+                    'Leverages naturally occurring groups or timelines',
+                    'Flexible analytical techniques for business data'
+                ],
+                considerations: [
+                    'Requires careful design to address selection bias',
+                    'Comparison groups must be justified and well-documented',
+                    'Data quality and availability drive analytic rigor',
+                    'Need sufficient observations before and after interventions',
+                    'Results may be sensitive to uncontrolled confounders'
+                ],
+                examples: [
+                    'Evaluating performance of stores adopting a new merchandising strategy',
+                    'Assessing the impact of a policy change rolled out to select departments',
+                    'Measuring productivity changes after technology adoption without randomization',
+                    'Analyzing customer churn before and after loyalty program updates'
+                ],
+                nextSteps: [
+                    'Identify and justify a credible comparison group or series',
+                    'Collect consistent pre- and post-intervention data for all groups',
+                    'Document potential confounders and plan analytic controls',
+                    'Engage stakeholders early to secure access to operational metrics',
+                    'Plan sensitivity analyses to test robustness of findings'
+                ]
+            },
+            'correlational_observational': {
+                name: 'Correlational / Observational Study',
+                description: 'Cross-sectional analysis of naturally occurring variables to understand associations and patterns.',
+                when: 'When you need to understand relationships among business variables without manipulating conditions.',
+                methods: [
+                    'Cross-sectional surveys with validated scales',
+                    'Archival data analysis of organizational KPIs',
+                    'Correlation and regression modeling',
+                    'Cluster or factor analysis to uncover patterns',
+                    'Comparative analyses across business units or segments'
+                ],
+                advantages: [
+                    'Low intrusion into business operations',
+                    'Efficient for diagnosing patterns and drivers',
+                    'Can handle large samples for robust estimates',
+                    'Foundation for future predictive or causal work',
+                    'Useful when randomization is not possible'
+                ],
+                considerations: [
+                    'Cannot establish definitive causality',
+                    'Requires high-quality measurement and sampling',
+                    'Potential confounds must be acknowledged',
+                    'Relies on statistical controls and model assumptions',
+                    'Generalization limited to similar contexts'
+                ],
+                examples: [
+                    'Linking leadership behaviors with employee engagement scores',
+                    'Identifying drivers of sales performance across territories',
+                    'Exploring relationships between culture metrics and turnover',
+                    'Mapping connections between process adherence and quality outcomes'
+                ],
+                nextSteps: [
+                    'Select validated measures aligned to constructs of interest',
+                    'Plan a sampling frame that supports external validity',
+                    'Check for multicollinearity and statistical assumptions',
+                    'Communicate limitations about causal inference to stakeholders',
+                    'Identify follow-up analyses for unexpected correlations'
+                ]
+            },
+            'longitudinal_panel': {
+                name: 'Longitudinal Panel / Growth Modeling',
+                description: 'Tracking the same participants or units across multiple time points to analyze change and development.',
+                when: 'When you need to understand how business outcomes evolve over time within the same people, teams, or locations.',
+                methods: [
+                    'Repeated measures surveys or assessments',
+                    'Latent growth modeling or hierarchical linear modeling',
+                    'Panel data regression with fixed/random effects',
+                    'Cohort-sequential designs capturing multiple entry points',
+                    'Experience sampling or diary studies for shorter cycles'
+                ],
+                advantages: [
+                    'Captures trajectories and change processes',
+                    'Controls for unobserved individual differences',
+                    'Supports forecasting of future states',
+                    'Identifies timing and sequencing of effects',
+                    'Valuable for retention, development, and policy evaluation'
+                ],
+                considerations: [
+                    'Requires commitment to multiple data waves',
+                    'Attrition management is critical',
+                    'Complex analysis and data management demands',
+                    'Need consistent measurement across waves',
+                    'IRB/ethics oversight for extended participant contact'
+                ],
+                examples: [
+                    'Tracking leadership competency growth over a development program',
+                    'Monitoring engagement levels through an organizational change',
+                    'Following customer loyalty metrics across product lifecycles',
+                    'Assessing competency adoption for new technology rollouts'
+                ],
+                nextSteps: [
+                    'Plan measurement schedule and retention strategies early',
+                    'Ensure consistent instrumentation and data collection procedures',
+                    'Pre-register analysis models for growth or change detection',
+                    'Secure resources for longitudinal data management',
+                    'Communicate interim findings to maintain stakeholder support'
+                ]
+            },
+            'time_series_forecasting': {
+                name: 'Time-Series / Forecasting Analysis',
+                description: 'High-frequency quantitative analysis leveraging sequential data to detect patterns, cycles, and forecast future performance.',
+                when: 'When historical organizational or market data are available at regular intervals and future projection accuracy matters.',
+                methods: [
+                    'ARIMA, ARIMAX, or SARIMA forecasting models',
+                    'Exponential smoothing and state-space models',
+                    'Machine learning forecasting (prophet, gradient boosting, LSTM)',
+                    'Control charts and anomaly detection for operations',
+                    'Causal impact analysis using Bayesian structural time-series'
+                ],
+                advantages: [
+                    'Optimizes decisions requiring accurate projections',
+                    'Highlights seasonality, trends, and structural breaks',
+                    'Supports scenario planning and resource allocation',
+                    'Leverages existing data assets without new collection',
+                    'Quantifies intervention impacts in temporal context'
+                ],
+                considerations: [
+                    'Requires sufficient historical depth and stability',
+                    'External shocks or missing data complicate modeling',
+                    'Model selection and validation demand technical expertise',
+                    'May need integration with causal explanations for stakeholders',
+                    'Data governance and security for sensitive time-series'
+                ],
+                examples: [
+                    'Forecasting call center volume to optimize staffing',
+                    'Projecting revenue impacts of marketing campaigns',
+                    'Detecting anomalies in supply chain performance metrics',
+                    'Predicting demand for new product launches using leading indicators'
+                ],
+                nextSteps: [
+                    'Audit data quality, stationarity, and seasonality patterns',
+                    'Partition data for training, validation, and holdout testing',
+                    'Engage analytics partners for advanced modeling if needed',
+                    'Visualize forecasts with confidence intervals for decision makers',
+                    'Plan for monitoring model drift and recalibration'
+                ]
+            },
+            'sem_modeling': {
+                name: 'Structural Equation Modeling (SEM)',
+                description: 'Integrated measurement and structural modeling to test theoretical frameworks with latent constructs.',
+                when: 'When you need to validate measurement models and analyze complex relationships among latent variables.',
+                methods: [
+                    'Confirmatory factor analysis for measurement validation',
+                    'Full structural models testing direct and indirect effects',
+                    'Mediation and moderation analysis within SEM frameworks',
+                    'Multi-group SEM to compare across segments',
+                    'Partial least squares (PLS-SEM) for predictive emphasis'
+                ],
+                advantages: [
+                    'Simultaneously tests measurement quality and structural paths',
+                    'Handles complex causal chains and latent constructs',
+                    'Provides rigorous tests of theoretical frameworks',
+                    'Supports model comparison and refinement',
+                    'High credibility for theory-driven DBA research'
+                ],
+                considerations: [
+                    'Requires large sample sizes and high-quality survey data',
+                    'Model identification and fit demand technical expertise',
+                    'Assumptions about normality and linearity must be checked',
+                    'Interpretation must align with theory and business logic',
+                    'Software (AMOS, Mplus, LISREL, SmartPLS) proficiency needed'
+                ],
+                examples: [
+                    'Testing how leadership behaviors influence performance via engagement',
+                    'Examining mediators of customer loyalty in service industries',
+                    'Evaluating competing theoretical models of innovation adoption',
+                    'Assessing culture, climate, and performance linkages in organizations'
+                ],
+                nextSteps: [
+                    'Confirm instrument reliability and validity with pilot data',
+                    'Map theoretical model specifying hypothesized paths',
+                    'Assess sample size adequacy for model complexity',
+                    'Plan for alternative models if initial fit is inadequate',
+                    'Document decisions about estimation methods and fit indices'
+                ]
+            },
+            'survey_research': {
+                name: 'Survey Research Methodology',
+                description: 'Systematic collection of standardized data from targeted populations to identify patterns, relationships, and stakeholder perspectives.',
+                when: 'When you need to measure relationships between variables across broad populations or capture stakeholder perspectives at scale.',
+                methods: [
+                    'Online surveys for cost-effectiveness and broad reach',
+                    'Mixed-mode approaches (online, phone, mail) for higher response rates',
+                    'Structured questionnaires with validated scales',
+                    'Longitudinal surveys to track changes over time',
+                    'Cross-sectional surveys for population snapshots'
+                ],
+                advantages: [
+                    'Efficient data collection from dispersed populations',
+                    'Supports statistical testing of relationships',
+                    'Findings can generalize to larger populations',
+                    'Cost-effective for large sample sizes',
+                    'Enables benchmarking across groups'
+                ],
+                considerations: [
+                    'Requires adequate sample size and response rate management',
+                    'May miss important contextual nuances',
+                    'Risk of response bias and common method variance',
+                    'Instrument design must align with theory and practice',
+                    'Need to balance comprehensiveness with respondent burden'
+                ],
+                examples: [
+                    'Employee engagement surveys across multiple departments',
+                    'Customer satisfaction benchmarking across regions',
+                    'Assessing readiness for organizational change initiatives',
+                    'Measuring adoption of new business processes at scale'
+                ],
+                nextSteps: [
+                    'Secure or adapt validated scales aligned with constructs',
+                    'Plan sampling strategy and incentives to reach target response',
+                    'Pilot test to refine wording and estimate timing',
+                    'Develop analysis plan for reliability, validity, and hypotheses',
+                    'Coordinate administration logistics and follow-up reminders'
+                ]
+            },
+            'mixed_methods': {
+                name: 'Mixed Methods Research',
+                description: 'Strategic combination of quantitative and qualitative approaches to provide comprehensive understanding of complex business phenomena.',
+                when: 'When you need both statistical evidence and deep contextual understanding, or when one method alone is insufficient.',
+                methods: [
+                    'Convergent parallel: simultaneous quantitative and qualitative data collection',
+                    'Explanatory sequential: quantitative first, then qualitative explanation',
+                    'Exploratory sequential: qualitative exploration, then quantitative testing',
+                    'Embedded designs integrating qualitative insights into trials',
+                    'Transformative frameworks addressing equity and social responsibility'
+                ],
+                advantages: [
+                    'Comprehensive view combining breadth and depth',
+                    'Validates findings across different data types',
+                    'Addresses limitations of single-method approaches',
+                    'Builds strong evidence for business recommendations',
+                    'Supports stakeholder learning through mixed evidence'
+                ],
+                considerations: [
+                    'Complex design and analysis requirements',
+                    'Requires expertise in both quantitative and qualitative methods',
+                    'Longer timelines and more resource intensive',
+                    'Integration challenges demand careful planning',
+                    'Need adequate sample sizes for both phases'
+                ],
+                examples: [
+                    'Survey employee attitudes then interview managers about implementation',
+                    'Analyze performance data and explore cultural factors through ethnography',
+                    'Measure customer satisfaction and conduct focus groups for deeper insights',
+                    'Test intervention effectiveness then study implementation processes'
+                ],
+                nextSteps: [
+                    'Specify how qualitative and quantitative strands inform each other',
+                    'Sequence data collection with realistic integration milestones',
+                    'Assemble a team with complementary methodological skills',
+                    'Plan joint displays or meta-inferences to weave findings together',
+                    'Check that timeline and IRB plans accommodate both strands'
+                ]
+            },
+            'case_study': {
+                name: 'Case Study Research',
+                description: 'In-depth investigation of complex business phenomena within their natural organizational contexts using multiple data sources.',
+                when: 'When you need deep understanding of complex business problems, unique situations, or want to capture context and complexity.',
+                methods: [
+                    'Multiple data sources: interviews, observations, documents',
+                    'Single case studies for intensive analysis of unique situations',
+                    'Multiple case studies for comparative analysis',
+                    'Embedded case designs examining multiple units within organizations',
+                    'Systematic case study protocols and evidence chains'
+                ],
+                advantages: [
+                    'Rich, detailed insights into complex business problems',
+                    'Captures context and real-world complexity',
+                    'Flexible data collection methods',
+                    'Good for exceptional performers or innovative practices',
+                    'Generates actionable insights for similar contexts'
+                ],
+                considerations: [
+                    'Findings may not generalize to other organizations',
+                    'Time-intensive data collection and analysis',
+                    'Potential for researcher bias and subjectivity',
+                    'Requires access to organizational stakeholders',
+                    'Need systematic approaches to enhance credibility'
+                ],
+                examples: [
+                    'How a company successfully navigated digital transformation',
+                    'Why a merger failed to achieve expected synergies',
+                    'Factors contributing to exceptional organizational performance',
+                    'Implementation challenges in strategic change initiatives'
+                ],
+                nextSteps: [
+                    'Define case boundaries and selection rationale clearly',
+                    'Negotiate access to people, documents, and observations',
+                    'Develop a protocol to maintain chain of evidence',
+                    'Triangulate data sources to enhance credibility',
+                    'Plan analytic strategy (pattern matching, explanation building)'
+                ]
+            },
+            'ethnography': {
+                name: 'Ethnography',
+                description: 'Immersive qualitative research capturing lived experiences, culture, and meaning-making within organizations.',
+                when: 'When understanding organizational culture, rituals, and daily practice is essential to solving the business problem.',
+                methods: [
+                    'Extended participant observation in the field',
+                    'Shadowing and contextual inquiry',
+                    'Artifact and document analysis',
+                    'Iterative interviewing with key informants',
+                    'Reflexive field notes and analytic memos'
+                ],
+                advantages: [
+                    'Reveals tacit assumptions and cultural drivers',
+                    'Builds empathy and nuanced understanding',
+                    'Generates grounded insights for change initiatives',
+                    'Supports design of context-sensitive interventions',
+                    'Flexible to emerging discoveries'
+                ],
+                considerations: [
+                    'Requires significant time in the field',
+                    'Researcher role management (insider/outsider) is critical',
+                    'Data collection and analysis occur simultaneously',
+                    'Ethical considerations for confidentiality and consent',
+                    'Findings focus on transferability rather than generalization'
+                ],
+                examples: [
+                    'Understanding frontline adoption of new technology',
+                    'Exploring cultural barriers to diversity initiatives',
+                    'Examining informal practices shaping customer experience',
+                    'Documenting how agile teams coordinate in practice'
+                ],
+                nextSteps: [
+                    'Clarify field entry strategy and researcher role',
+                    'Secure informed consent and address confidentiality needs',
+                    'Develop observation guides while allowing flexibility',
+                    'Maintain reflexive journals to monitor bias and learning',
+                    'Plan member checks or feedback sessions with participants'
+                ]
+            },
+            'grounded_theory': {
+                name: 'Grounded Theory',
+                description: 'Systematic qualitative methodology for building theory from data when existing explanations are limited.',
+                when: 'When you need to develop a new conceptual framework or process model grounded in participant experiences.',
+                methods: [
+                    'Theoretical sampling driven by emerging insights',
+                    'Open, axial, and selective coding procedures',
+                    'Constant comparison across incidents and cases',
+                    'Memo writing to capture theoretical leaps',
+                    'Iterative refinement until theoretical saturation'
+                ],
+                advantages: [
+                    'Generates fresh theory tailored to business contexts',
+                    'Captures processes and drivers overlooked by existing models',
+                    'Flexible and responsive to emergent findings',
+                    'Strong fit for novel or rapidly changing phenomena',
+                    'Supports creation of practice-informed frameworks'
+                ],
+                considerations: [
+                    'Requires disciplined coding and memoing routines',
+                    'Demands tolerance for ambiguity during emergence',
+                    'Sample evolves during the study, requiring agility',
+                    'Researcher must bracket preconceptions carefully',
+                    'Takes time to reach theoretical saturation'
+                ],
+                examples: [
+                    'Building a theory of employee experience in hybrid work',
+                    'Understanding how data governance practices emerge in firms',
+                    'Developing a model of customer co-creation in services',
+                    'Explaining resilience processes in entrepreneurial teams'
+                ],
+                nextSteps: [
+                    'Identify initial participants representing key variation',
+                    'Establish coding procedures and qualitative data systems',
+                    'Schedule iterative data collection and analysis cycles',
+                    'Engage peers or advisors for theoretical sampling checks',
+                    'Document emergent framework with visual models'
+                ]
+            },
+            'phenomenology': {
+                name: 'Phenomenology',
+                description: 'Qualitative approach exploring the essence of lived experiences from the participants\' perspectives.',
+                when: 'When the business problem hinges on deeply understanding how individuals experience a phenomenon.',
+                methods: [
+                    'In-depth semi-structured interviews focusing on lived experience',
+                    'Reflective journals or diaries from participants',
+                    'Phenomenological reduction and bracketing',
+                    'Textural and structural description development',
+                    'Synthesis of the essence of experience'
+                ],
+                advantages: [
+                    'Provides empathetic insight into stakeholder experiences',
+                    'Highlights meaning-making critical to change management',
+                    'Supports design of human-centered interventions',
+                    'Illuminates nuanced barriers and enablers',
+                    'Transfers to other contexts through rich description'
+                ],
+                considerations: [
+                    'Requires skillful interviewing and deep listening',
+                    'Researcher must bracket personal assumptions',
+                    'Smaller samples with intensive analysis',
+                    'Findings emphasize essence rather than generalization',
+                    'Ethical care needed for sensitive experiences'
+                ],
+                examples: [
+                    'Exploring employee experiences of remote onboarding',
+                    'Understanding leaders\' journeys through crisis response',
+                    'Capturing customer emotions during service recovery',
+                    'Describing frontline staff experience with AI augmentation'
+                ],
+                nextSteps: [
+                    'Select participants with direct, varied experience of the phenomenon',
+                    'Design interview protocols that elicit deep, reflective narratives',
+                    'Engage in bracketing exercises to surface assumptions',
+                    'Plan analytic steps for textural and structural descriptions',
+                    'Prepare to share composite essence stories with stakeholders'
+                ]
+            },
+            'action_research': {
+                name: 'Action Research',
+                description: 'Collaborative approach combining systematic inquiry with practical action to solve organizational problems while generating knowledge.',
+                when: 'When you want to create organizational change while studying the change process, and can work collaboratively with stakeholders.',
+                methods: [
+                    'Iterative cycles of planning, action, observation, and reflection',
+                    'Participatory action research with stakeholders as co-researchers',
+                    'Insider action research within your own organization',
+                    'Collaborative problem identification and solution development',
+                    'Real-time learning and adaptation throughout the process'
+                ],
+                advantages: [
+                    'Creates immediate organizational benefits',
+                    'High stakeholder buy-in and engagement',
+                    'Practical, actionable findings',
+                    'Builds internal change capacity',
+                    'Aligns with DBA scholar-practitioner goals'
+                ],
+                considerations: [
+                    'Researcher objectivity challenges due to involvement',
+                    'Difficult to generalize findings to other contexts',
+                    'Requires strong organizational partnerships',
+                    'Balancing academic rigor with practical action',
+                    'Time and facilitation skills are essential'
+                ],
+                examples: [
+                    'Improving employee retention through collaborative policy development',
+                    'Enhancing customer service through team-based problem solving',
+                    'Implementing sustainable business practices with employee participation',
+                    'Developing inclusive leadership practices with affinity groups'
+                ],
+                nextSteps: [
+                    'Co-create a charter outlining roles, expectations, and cycles',
+                    'Establish reflective routines after each action phase',
+                    'Document learning and decisions to build organizational memory',
+                    'Attend to power dynamics and inclusivity in participation',
+                    'Plan how insights will be sustained post-project'
+                ]
+            },
+            'design_science': {
+                name: 'Design Science Research',
+                description: 'Systematic creation and evaluation of innovative business solutions, tools, or processes that address identified organizational problems.',
+                when: 'When you need to develop new business solutions, tools, or methods that do not currently exist to address specific challenges.',
+                methods: [
+                    'Problem identification and solution motivation',
+                    'Iterative design and development of business artifacts',
+                    'Demonstration of artifact utility in business contexts',
+                    'Rigorous evaluation through experiments, simulations, or cases',
+                    'Reflection to derive design principles and knowledge contributions'
+                ],
+                advantages: [
+                    'Creates tangible, innovative business value',
+                    'Addresses practical organizational needs directly',
+                    'Combines creativity with rigorous evaluation',
+                    'Can generate intellectual property and competitive advantage',
+                    'Bridges academic research with practical innovation'
+                ],
+                considerations: [
+                    'Requires both technical and business domain expertise',
+                    'Time-intensive development and evaluation process',
+                    'May face organizational resistance to innovation',
+                    'Need resources for artifact development and testing',
+                    'Balancing innovation with proven business practices'
+                ],
+                examples: [
+                    'Developing new performance management frameworks',
+                    'Creating decision support tools for supply chain optimization',
+                    'Designing innovative customer experience systems',
+                    'Building business intelligence dashboards for strategic decision-making'
+                ],
+                nextSteps: [
+                    'Clarify artifact requirements with stakeholders early',
+                    'Develop iterative prototypes and evaluation checkpoints',
+                    'Align technical build with business process integration',
+                    'Document design rationale and emergent design principles',
+                    'Plan deployment support and knowledge transfer'
+                ]
+            },
+            'systematic_review': {
+                name: 'Systematic Review / Meta-Analysis',
+                description: 'Structured synthesis of existing research and evidence to inform decisions when primary data collection is constrained.',
+                when: 'When access to participants is limited or you need to consolidate evidence to guide strategic choices.',
+                methods: [
+                    'Comprehensive literature searching with transparent criteria',
+                    'Critical appraisal and quality assessment of studies',
+                    'Thematic synthesis for qualitative evidence',
+                    'Meta-analytic statistical aggregation where data permit',
+                    'Evidence gap analysis to guide future research'
+                ],
+                advantages: [
+                    'Leverages existing research to inform practice rapidly',
+                    'Clarifies best practices and consensus findings',
+                    'Identifies gaps for future DBA projects',
+                    'Lower risk and cost when primary data access is limited',
+                    'Highly valued for evidence-based decision-making'
+                ],
+                considerations: [
+                    'Requires rigorous search and screening protocols',
+                    'Dependent on availability and quality of prior studies',
+                    'May not capture unique organizational context',
+                    'Time-intensive data management and synthesis work',
+                    'Need transparent reporting for credibility'
+                ],
+                examples: [
+                    'Synthesizing evidence on digital transformation success factors',
+                    'Consolidating research on customer loyalty drivers',
+                    'Reviewing interventions that reduce employee turnover',
+                    'Summarizing best practices for data governance maturity'
+                ],
+                nextSteps: [
+                    'Define search scope, databases, and inclusion criteria',
+                    'Register the protocol to enhance transparency',
+                    'Use systematic screening tools to manage references',
+                    'Extract comparable data for synthesis or meta-analysis',
+                    'Translate findings into actionable recommendations'
+                ]
+            }
+        };
+        function getActiveSequence() {
+            const sequence = [...baseSequence];
+            const purposeDecision = decisions.find(decision => decision.id === 'question1');
+            if (!purposeDecision || purposeDecision.value !== 'improve') {
+                return sequence.filter(id => id !== 'questionInnovation');
+            }
+            return sequence;
+        }
+
+        function decisionExists(questionId) {
+            return decisions.some(decision => decision.id === questionId);
+        }
+
+        function getNextQuestionId(currentId) {
+            const sequence = getActiveSequence();
+            const index = sequence.indexOf(currentId);
+            if (index === -1) {
+                return null;
+            }
+            for (let i = index + 1; i < sequence.length; i++) {
+                const candidate = sequence[i];
+                if (!decisionExists(candidate)) {
+                    return candidate;
+                }
+            }
+            return null;
+        }
+
+        function handleChoice(questionId, element) {
+            // Ensure we have the button element, not a child span
+            const button = element.closest ? element.closest('.option-button') : element;
+            if (!button) {
+                console.error('Button not found', element);
+                return;
+            }
+            const questionElement = document.getElementById(questionId);
+            const questionText = questionElement.querySelector('h2').textContent;
+            const choiceText = button.getAttribute('data-choice');
+            const choiceValue = button.getAttribute('data-value');
+
+            decisions.push({
+                id: questionId,
+                question: questionText,
+                choice: choiceText,
+                value: choiceValue
+            });
+
+            questionElement.classList.remove('active');
+
+            const nextQuestionId = getNextQuestionId(questionId);
+            if (nextQuestionId) {
+                document.getElementById(nextQuestionId).classList.add('active');
+                document.getElementById(nextQuestionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                showResults();
+            }
+
+            updateProgress();
+            updateBackButton();
+        }
+
+        function showResults() {
+            const resultsCard = document.getElementById('results');
+            const { primary, alternatives, methodReasons, methodCautions, feasibilityNotes } = calculateRecommendations();
+            const method = methodologies[primary] || methodologies['mixed_methods'];
+
+            updatePathSummary();
+            displayPrimaryRecommendation(method, methodReasons[primary] || [], methodCautions[primary] || []);
+            displayAlternatives(alternatives, methodReasons, methodCautions);
+            displayFeasibilityNotes(feasibilityNotes);
+
+            resultsCard.classList.add('active');
+            resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updatePathSummary() {
+            const pathSummary = document.getElementById('pathSummary');
+            let pathHtml = '';
+            decisions.forEach((decision, index) => {
+                pathHtml += `<div class="path-item">
+                    <strong>Step ${index + 1}:</strong> ${decision.question}<br>
+                    <em>Your choice:</em> ${decision.choice}
+                </div>`;
+            });
+            pathSummary.innerHTML = pathHtml;
+        }
+
+        function displayPrimaryRecommendation(method, reasons, cautions) {
+            document.getElementById('recommendedMethod').textContent = method.name;
+
+            const methodologyContent = document.getElementById('methodologyContent');
+            const reasonList = reasons.length ? `<ul>${reasons.map(reason => `<li>${reason}</li>`).join('')}</ul>` : `<p>${method.when}</p>`;
+            const cautionHtml = cautions.length ? `
+                <div class="warning-card">
+                    <h3>Feasibility Watch Outs</h3>
+                    <ul>${cautions.map(caution => `<li>${caution}</li>`).join('')}</ul>
+                </div>
+            ` : '';
+
+            const content = `
+                <div class="method-summary">
+                    <h3>Why this method fits</h3>
+                    ${reasonList}
+                </div>
+                <h3>What is ${method.name}?</h3>
+                <p>${method.description}</p>
+                <h3>When to Use This Approach</h3>
+                <p>${method.when}</p>
+                <h3>Common Methods and Techniques</h3>
+                <ul>${method.methods.map(item => `<li>${item}</li>`).join('')}</ul>
+                <h3>Key Advantages</h3>
+                <ul>${method.advantages.map(item => `<li>${item}</li>`).join('')}</ul>
+                <h3>Important Considerations</h3>
+                <ul>${method.considerations.map(item => `<li>${item}</li>`).join('')}</ul>
+                <div class="next-steps">
+                    <h3>Next Steps</h3>
+                    <ul>${method.nextSteps.map(step => `<li>${step}</li>`).join('')}</ul>
+                </div>
+                ${cautionHtml}
+            `;
+
+            methodologyContent.innerHTML = content;
+
+            const exampleHtml = method.examples.map(example => `<li>${example}</li>`).join('');
+            document.getElementById('exampleContent').innerHTML = `<ul>${exampleHtml}</ul>`;
+        }
+
+        function displayAlternatives(alternatives, methodReasons, methodCautions) {
+            const alternativeContainer = document.getElementById('alternativeContent');
+            if (!alternatives.length) {
+                alternativeContainer.innerHTML = '<p>No strong alternatives surfaced based on your answers. Consider revisiting earlier choices if you want different options.</p>';
+                return;
+            }
+
+            const alternativeHtml = alternatives.map(methodKey => {
+                const method = methodologies[methodKey];
+                const reasons = methodReasons[methodKey] || [];
+                const cautions = methodCautions[methodKey] || [];
+                const reasonContent = reasons.length ? `<ul>${reasons.map(reason => `<li>${reason}</li>`).join('')}</ul>` : `<p>${method.when}</p>`;
+                const cautionContent = cautions.length ? `<div class="warning-card"><ul>${cautions.map(caution => `<li>${caution}</li>`).join('')}</ul></div>` : '';
+                return `
+                    <div class="alternative-card">
+                        <h3>${method.name}</h3>
+                        ${reasonContent}
+                        ${cautionContent}
+                    </div>
+                `;
+            }).join('');
+
+            alternativeContainer.innerHTML = alternativeHtml;
+        }
+
+        function displayFeasibilityNotes(notes) {
+            const feasibilityContainer = document.getElementById('feasibilityNotes');
+            if (!notes.length) {
+                feasibilityContainer.style.display = 'none';
+                feasibilityContainer.innerHTML = '';
+                return;
+            }
+
+            feasibilityContainer.style.display = 'block';
+            feasibilityContainer.innerHTML = `<h3>Feasibility Guidance</h3><ul>${notes.map(note => `<li>${note}</li>`).join('')}</ul>`;
+        }
+
+        function calculateRecommendations() {
+            const methodKeys = Object.keys(methodologies);
+            const methodScores = {};
+            const methodReasons = {};
+            const methodCautions = {};
+            const feasibilityNotes = [];
+            methodKeys.forEach(key => {
+                methodScores[key] = 0;
+                methodReasons[key] = [];
+                methodCautions[key] = [];
+            });
+
+            const answers = decisions.reduce((acc, decision) => {
+                acc[decision.id] = decision.value;
+                return acc;
+            }, {});
+
+            function addScore(method, points, reason = null) {
+                methodScores[method] += points;
+                if (reason && points > 0) {
+                    methodReasons[method].push(reason);
+                }
+            }
+
+            function addCaution(method, message) {
+                if (message) {
+                    methodCautions[method].push(message);
+                }
+            }
+
+            // Research purpose weighting
+            switch (answers['question1']) {
+                case 'explore':
+                    addScore('case_study', 3, 'Exploratory goal favors in-depth case understanding.');
+                    addScore('ethnography', 3, 'Exploration benefits from immersive contextual insight.');
+                    addScore('grounded_theory', 3, 'Building new theory aligns with exploratory purpose.');
+                    addScore('phenomenology', 2, 'Understanding lived experience supports exploratory aims.');
+                    addScore('mixed_methods', 1, 'Mixed evidence can deepen exploratory insights.');
+                    break;
+                case 'explain':
+                    addScore('sem_modeling', 3, 'Explaining relationships matches SEM structural modeling.');
+                    addScore('survey_research', 2, 'Surveys capture variable relationships across populations.');
+                    addScore('experimental_design', 2, 'Explaining causal links aligns with experimental control.');
+                    addScore('correlational_observational', 2, 'Correlational analyses reveal association patterns.');
+                    break;
+                case 'predict':
+                    addScore('time_series_forecasting', 3, 'Forecasting focus aligns with time-series models.');
+                    addScore('longitudinal_panel', 2, 'Predictive insights benefit from tracking change over time.');
+                    addScore('sem_modeling', 2, 'SEM supports predictive structural pathways.');
+                    addScore('survey_research', 1, 'Predictive modeling can leverage survey data.');
+                    addScore('experimental_design', 1, 'Testing interventions supports predictive accuracy.');
+                    break;
+                case 'improve':
+                    addScore('action_research', 3, 'Improvement with stakeholders fits action research cycles.');
+                    addScore('design_science', 3, 'Building or refining artifacts advances improvement agendas.');
+                    addScore('mixed_methods', 2, 'Improvement initiatives benefit from mixed evidence.');
+                    addScore('quasi_experimental', 2, 'Applied improvement often uses quasi-experimental evaluation.');
+                    break;
+                default:
+                    addScore('mixed_methods', 1, 'Mixed methods provide balanced evidence when needs are broad.');
+            }
+
+            // Level of control
+            switch (answers['questionControl']) {
+                case 'randomized':
+                    addScore('experimental_design', 4, 'Randomization capacity enables true experiments.');
+                    addScore('design_science', 1, 'Prototypes can be evaluated experimentally.');
+                    addScore('sem_modeling', 1, 'Strong control supports testing structural models.');
+                    break;
+                case 'manipulate':
+                    addScore('quasi_experimental', 3, 'Manipulation without randomization suits quasi-experiments.');
+                    addScore('experimental_design', 1, 'Some control still enables structured intervention testing.');
+                    addScore('mixed_methods', 1, 'Pair quantitative outcomes with qualitative insight.');
+                    break;
+                case 'observational':
+                    addScore('correlational_observational', 3, 'Observational access aligns with correlational designs.');
+                    addScore('survey_research', 2, 'Surveys capture observational relationships.');
+                    addScore('case_study', 2, 'Case work fits observational constraints.');
+                    addScore('systematic_review', 1, 'Limited control may require leveraging existing evidence.');
+                    addCaution('experimental_design', 'No manipulation feasible—true experiments are unlikely.');
+                    addCaution('quasi_experimental', 'Without manipulation, quasi-experiments may lack leverage.');
+                    break;
+            }
+
+            // Time design
+            switch (answers['questionTime']) {
+                case 'cross_sectional':
+                    addScore('correlational_observational', 3, 'Cross-sectional snapshot supports correlational insight.');
+                    addScore('survey_research', 2, 'Surveys efficiently capture cross-sectional data.');
+                    addScore('case_study', 1, 'Case snapshots can diagnose issues at a point in time.');
+                    addScore('sem_modeling', 1, 'SEM handles cross-sectional hypothesis testing.');
+                    break;
+                case 'longitudinal':
+                    addScore('longitudinal_panel', 4, 'Longitudinal focus requires panel and growth modeling.');
+                    addScore('action_research', 1, 'Iterative cycles benefit from longitudinal evidence.');
+                    addScore('mixed_methods', 1, 'Sequencing quantitative and qualitative waves aids change tracking.');
+                    addScore('quasi_experimental', 1, 'Time-based comparisons strengthen quasi-experiments.');
+                    break;
+                case 'time_series':
+                    addScore('time_series_forecasting', 4, 'High-frequency data aligns with time-series forecasting.');
+                    addScore('longitudinal_panel', 2, 'Temporal focus supports longitudinal modeling.');
+                    addScore('quasi_experimental', 1, 'Interrupted time-series designs leverage temporal data.');
+                    addScore('systematic_review', 1, 'May combine multiple time-series evaluations in evidence reviews.');
+                    break;
+            }
+
+            // Data source
+            switch (answers['questionData']) {
+                case 'archival':
+                    addScore('time_series_forecasting', 2, 'Existing data can drive forecasting and intervention analysis.');
+                    addScore('correlational_observational', 2, 'Archival metrics support observational models.');
+                    addScore('systematic_review', 1, 'Archival focus aligns with evidence synthesis.');
+                    addScore('quasi_experimental', 1, 'Operational archives enable quasi-experimental evaluation.');
+                    break;
+                case 'survey':
+                    addScore('survey_research', 4, 'Survey data is central to this methodology.');
+                    addScore('sem_modeling', 3, 'High-quality survey data enable SEM.');
+                    addScore('correlational_observational', 2, 'Survey data supports correlational analyses.');
+                    addScore('mixed_methods', 1, 'Surveys can anchor mixed-method designs.');
+                    break;
+                case 'qualitative':
+                    addScore('case_study', 2, 'Qualitative evidence enriches case narratives.');
+                    addScore('ethnography', 3, 'Observations and interviews align with ethnography.');
+                    addScore('grounded_theory', 3, 'Qualitative data supports theory building.');
+                    addScore('phenomenology', 3, 'Interviews enable phenomenological depth.');
+                    break;
+                case 'mixed_source':
+                    addScore('mixed_methods', 4, 'Mixed data sources require integrated design.');
+                    addScore('action_research', 2, 'Stakeholder collaboration uses multiple evidence streams.');
+                    addScore('design_science', 1, 'Artifact evaluation benefits from blended evidence.');
+                    addScore('case_study', 1, 'Multiple sources strengthen case analysis.');
+                    break;
+            }
+
+            // Depth vs generalizability
+            switch (answers['questionDepth']) {
+                case 'depth':
+                    addScore('case_study', 2, 'Priority on depth favors rich case inquiry.');
+                    addScore('ethnography', 3, 'Contextual depth aligns with ethnographic immersion.');
+                    addScore('grounded_theory', 2, 'Theory building leverages deep qualitative insight.');
+                    addScore('phenomenology', 2, 'Lived experience focus suits phenomenology.');
+                    addCaution('survey_research', 'Depth priority may limit appetite for large-scale surveys.');
+                    addCaution('sem_modeling', 'Depth focus may not justify complex structural modeling.');
+                    break;
+                case 'generalizable':
+                    addScore('survey_research', 3, 'Generalizable estimates align with survey sampling.');
+                    addScore('sem_modeling', 2, 'SEM supports generalizable theory testing.');
+                    addScore('experimental_design', 2, 'Controlled trials produce generalizable impact estimates.');
+                    addScore('correlational_observational', 1, 'Cross-sectional studies provide broader evidence.');
+                    addScore('longitudinal_panel', 1, 'Panel designs generalize across time and units.');
+                    break;
+                case 'both':
+                    addScore('mixed_methods', 3, 'Mixed methods balance depth with generalizable evidence.');
+                    addScore('action_research', 2, 'Collaborative cycles generate depth plus organizational relevance.');
+                    addScore('design_science', 2, 'Design science integrates qualitative insight with quantitative evaluation.');
+                    addScore('quasi_experimental', 1, 'Applied evaluation provides estimates with contextual explanation.');
+                    break;
+            }
+
+            // Innovation vs evaluation (only when answered)
+            if (answers['questionInnovation']) {
+                switch (answers['questionInnovation']) {
+                    case 'design':
+                        addScore('design_science', 4, 'Building artifacts clearly fits design science.');
+                        addScore('experimental_design', 1, 'Artifacts can be evaluated experimentally.');
+                        addScore('mixed_methods', 1, 'Combine build metrics with user experience evidence.');
+                        break;
+                    case 'collaborative':
+                        addScore('action_research', 4, 'Collaborative change aligns with action research cycles.');
+                        addScore('case_study', 1, 'Documenting collaborative change benefits from case logic.');
+                        addScore('mixed_methods', 1, 'Integration of stakeholder evidence supports collaboration.');
+                        break;
+                    case 'evaluate':
+                        addScore('quasi_experimental', 3, 'Evaluation without new build suits quasi-experiments.');
+                        addScore('survey_research', 1, 'Surveys benchmark outcomes of existing interventions.');
+                        addScore('mixed_methods', 1, 'Qualitative insight can explain evaluation results.');
+                        break;
+                }
+            }
+
+            // Theoretical maturity
+            switch (answers['questionTheory']) {
+                case 'thin':
+                    addScore('grounded_theory', 3, 'Thin theory base benefits from building new frameworks.');
+                    addScore('phenomenology', 2, 'Essence-focused work informs emerging theory.');
+                    addScore('case_study', 1, 'Case evidence can surface new propositions.');
+                    addScore('mixed_methods', 1, 'Mixed evidence triangulates emerging constructs.');
+                    addCaution('sem_modeling', 'Limited theory may weaken SEM identification.');
+                    addCaution('experimental_design', 'Without theory, intervention logic may be underdeveloped.');
+                    break;
+                case 'mature':
+                    addScore('sem_modeling', 3, 'Mature theory supports structural testing.');
+                    addScore('experimental_design', 2, 'Established constructs enable precise experiments.');
+                    addScore('survey_research', 2, 'Mature constructs align with validated survey instruments.');
+                    addScore('systematic_review', 1, 'Mature areas allow synthesis of rich evidence.');
+                    break;
+            }
+
+            // Feasibility safeguards
+            switch (answers['questionFeasibility']) {
+                case 'strong_support':
+                    feasibilityNotes.push('You indicated strong feasibility – proceed, but continue monitoring ethics, access, and resources.');
+                    break;
+                case 'moderate_constraints':
+                    feasibilityNotes.push('Some constraints flagged – streamline scope or phase methods to protect timeline and sample quality.');
+                    addCaution('mixed_methods', 'Integration workload may exceed available time and skills.');
+                    addCaution('design_science', 'Prototype development may need phased milestones under constraints.');
+                    addCaution('experimental_design', 'Ensure sample size and control conditions remain viable.');
+                    addScore('systematic_review', 1, 'Consider complementing with synthesized evidence while constraints persist.');
+                    break;
+                case 'significant_constraints':
+                    feasibilityNotes.push('Significant feasibility constraints – prioritize lean designs or staged approaches before scaling.');
+                    addCaution('experimental_design', 'Strong constraints make true experiments risky.');
+                    addCaution('mixed_methods', 'Consider single-method phases before full integration.');
+                    addCaution('design_science', 'Building artifacts may exceed time or access limits right now.');
+                    addScore('correlational_observational', 1, 'Observational studies can launch quickly with minimal disruption.');
+                    addScore('systematic_review', 2, 'Evidence synthesis offers progress when primary data are limited.');
+                    addScore('case_study', 1, 'Focused case work may fit lean timelines.');
+                    break;
+            }
+
+            // Derive top recommendations
+            const sortedMethods = methodKeys.sort((a, b) => methodScores[b] - methodScores[a]);
+            let primary = sortedMethods[0];
+            if (!primary || methodScores[primary] <= 0) {
+                primary = 'mixed_methods';
+            }
+
+            const alternatives = sortedMethods.filter(key => key !== primary && methodScores[key] > 0).slice(0, 2);
+            if (!alternatives.length) {
+                const fallback = sortedMethods.filter(key => key !== primary).slice(0, 2);
+                alternatives.push(...fallback);
+            }
+
+            return { primary, alternatives, methodReasons, methodCautions, feasibilityNotes };
+        }
+
+        function updateProgress() {
+            const sequence = getActiveSequence();
+            const progress = sequence.length ? (decisions.length / sequence.length) * 100 : 0;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateBackButton() {
+            const backButton = document.getElementById('backButton');
+            backButton.disabled = decisions.length === 0;
+        }
+
+        function previousQuestion() {
+            if (decisions.length === 0) {
+                return;
+            }
+
+            const resultsCard = document.getElementById('results');
+            resultsCard.classList.remove('active');
+
+            const lastDecision = decisions.pop();
+            document.querySelectorAll('.question-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(lastDecision.id).classList.add('active');
+            document.getElementById(lastDecision.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            updateProgress();
+            updateBackButton();
+        }
+
+        function restart() {
+            decisions = [];
+            document.querySelectorAll('.question-card').forEach(card => card.classList.remove('active'));
+            document.getElementById('question1').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('pathSummary').innerHTML = '';
+            document.getElementById('methodologyContent').innerHTML = '';
+            document.getElementById('exampleContent').innerHTML = '';
+            document.getElementById('alternativeContent').innerHTML = '';
+            displayFeasibilityNotes([]);
+            updateProgress();
+            updateBackButton();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        updateProgress();
+        updateBackButton();
+    </script>
+</body>
+</html>
