@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- Version 4.0 - Added gold-colored examples for each choice option to illustrate real-world research scenarios. -->
+<!-- Version 4.4 - Fixed additional JavaScript syntax error caused by smart quote in phenomenology examples. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Methodology Decision Tree - DBA Program</title>
     <style>
-        /* Version 4.0 - Added gold-colored examples for each choice option to illustrate real-world research scenarios */
+        /* Version 4.4 - Fixed additional JavaScript syntax error caused by smart quote in phenomenology examples */
 
         /* Purdue Color Palette */
         :root {
@@ -1044,7 +1044,7 @@
             },
             'phenomenology': {
                 name: 'Phenomenology',
-                description: 'Qualitative approach exploring the essence of lived experiences from the participants' perspectives.',
+                description: 'Qualitative approach exploring the essence of lived experiences from the participants\' perspectives.',
                 when: 'When the business problem hinges on deeply understanding how individuals experience a phenomenon.',
                 methods: [
                     'In-depth semi-structured interviews focusing on lived experience',
@@ -1069,7 +1069,7 @@
                 ],
                 examples: [
                     'Exploring employee experiences of remote onboarding',
-                    'Understanding leaders' journeys through crisis response',
+                    'Understanding leaders\' journeys through crisis response',
                     'Capturing customer emotions during service recovery',
                     'Describing frontline staff experience with AI augmentation'
                 ],
@@ -1227,7 +1227,13 @@
             return null;
         }
 
-        function handleChoice(questionId, button) {
+        function handleChoice(questionId, element) {
+            // Ensure we have the button element, not a child span
+            const button = element.closest ? element.closest('.option-button') : element;
+            if (!button) {
+                console.error('Button not found', element);
+                return;
+            }
             const questionElement = document.getElementById(questionId);
             const questionText = questionElement.querySelector('h2').textContent;
             const choiceText = button.getAttribute('data-choice');
