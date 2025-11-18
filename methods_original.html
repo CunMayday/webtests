@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- Version 6.0 - Consolidated redundant introduction text and added creator attribution. -->
+<!-- Version 3.0 - Restored the recommended methodology heading so guidance appears after completing the wizard. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Methodology Decision Tree - DBA Program</title>
     <style>
-        /* Version 6.0 - Consolidated redundant introduction text and added creator attribution */
+        /* Version 3.0 - Restored the recommended methodology heading so guidance appears after completing the wizard */
 
         /* Purdue Color Palette */
         :root {
@@ -60,118 +60,6 @@
 
         .content {
             padding: 30px;
-        }
-
-        .intro-screen {
-            display: block;
-        }
-
-        .intro-screen.hidden {
-            display: none;
-        }
-
-        .intro-content {
-            background-color: var(--white);
-            border: 2px solid var(--athletic-gold);
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 20px;
-        }
-
-        .intro-content h2 {
-            color: var(--campus-gold);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .intro-content h3 {
-            color: var(--purdue-black);
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        .intro-content p {
-            color: var(--dark-gray);
-            margin-bottom: 15px;
-            font-size: 1.05rem;
-        }
-
-        .intro-content ul {
-            margin-left: 25px;
-            margin-bottom: 15px;
-            color: var(--dark-gray);
-        }
-
-        .intro-content li {
-            margin-bottom: 10px;
-        }
-
-        .source-reference {
-            background-color: #f8f1df;
-            border-left: 4px solid var(--campus-gold);
-            padding: 20px;
-            margin: 25px 0;
-            border-radius: 4px;
-        }
-
-        .source-reference h3 {
-            color: var(--purdue-black);
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-
-        .source-reference p {
-            margin-bottom: 12px;
-        }
-
-        .source-reference a {
-            color: var(--campus-gold);
-            text-decoration: none;
-            font-weight: bold;
-            border-bottom: 2px solid var(--campus-gold);
-            padding-bottom: 2px;
-        }
-
-        .source-reference a:hover {
-            color: #A67309;
-            border-bottom-color: #A67309;
-        }
-
-        .source-reference a:focus {
-            outline: 3px solid var(--campus-gold);
-            outline-offset: 2px;
-        }
-
-        .start-button {
-            background-color: var(--campus-gold);
-            color: var(--white);
-            border: none;
-            padding: 15px 40px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            display: block;
-            margin: 30px auto 0;
-        }
-
-        .start-button:hover {
-            background-color: #A67309;
-        }
-
-        .start-button:focus {
-            outline: 3px solid var(--purdue-black);
-            outline-offset: 2px;
-        }
-
-        .decision-tree {
-            display: none;
-        }
-
-        .decision-tree.active {
-            display: block;
         }
 
         .progress-bar {
@@ -254,14 +142,6 @@
             font-size: 0.9rem;
             color: var(--dark-gray);
             margin-top: 6px;
-        }
-
-        .choice-example {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--campus-gold);
-            margin-top: 6px;
-            font-style: italic;
         }
 
         .result-card {
@@ -465,14 +345,6 @@
             .navigation {
                 flex-direction: column;
             }
-
-            .intro-content {
-                padding: 20px;
-            }
-
-            .intro-content h2 {
-                font-size: 1.5rem;
-            }
         }
 
         /* Screen reader only content */
@@ -497,271 +369,208 @@
         </header>
 
         <main class="content">
-            <!-- Introduction Screen -->
-            <div class="intro-screen" id="introScreen">
-                <div class="intro-content">
-                    <h2>Welcome to the Research Methodology Decision Tree</h2>
+            <div class="progress-bar" role="progressbar" aria-label="Decision tree progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
 
-                    <h3>What This Tool Does</h3>
-                    <p>This interactive decision tree helps DBA (Doctor of Business Administration) students and applied researchers select the most appropriate research methodology for their projects. By answering a series of guided questions about your research goals, constraints, and context, you'll receive:</p>
-                    <ul>
-                        <li><strong>Your Decision Path:</strong> A summary of your choices to help you understand how you arrived at the recommendation</li>
-                        <li><strong>Recommended Methodology:</strong> The research approach that best aligns with your answers, including description, advantages, and considerations</li>
-                        <li><strong>Business Research Examples:</strong> Real-world examples to illustrate how the methodology applies to business contexts</li>
-                        <li><strong>Complementary Alternatives:</strong> Other methodologies worth considering based on your responses</li>
-                        <li><strong>Next Steps:</strong> Concrete actions to begin planning and executing your research</li>
-                        <li>A recommended primary research methodology tailored to your specific situation</li>
-                        <li>Detailed explanations of why this methodology fits your needs</li>
-                        <li>Complementary alternative approaches you might consider</li>
-                        <li>Practical next steps to get started with your chosen methodology</li>
-                        <li>Feasibility considerations and potential challenges to address</li>
-                    </ul>
-
-                    <div class="source-reference">
-                        <h3>About This Tool</h3>
-                        <p>This decision tree is based on a listing of research methodology frameworks suitable for DBA applied research projects.</p>
-                        <p><strong>We encourage you to review the source material before starting:</strong></p>
-                        <p><a href="https://cunmayday.github.io/webtests/ResearchMethods.pdf" target="_blank" rel="noopener noreferrer">View the Research Methods Guide (PDF)</a></p>
-                        <p>Reviewing this guide will provide you with deeper context about the various methodologies, helping you make more informed decisions as you progress through the tool.</p>
-                        <p>This tool was created by Dr. Altinoz. For suggestions, email <a href="mailto:caltinoz@purdueglobal.edu">caltinoz@purdueglobal.edu</a></p>
-                    </div>
-
-                    <button class="start-button" onclick="startDecisionTree()" aria-label="Begin the research methodology decision tree">
-                        Begin Decision Tree
+            <!-- Question 1: Research Purpose -->
+            <div class="question-card active" id="question1">
+                <h2>What is your primary research purpose?</h2>
+                <p>Choose the core outcome your applied research must deliver for the organization.</p>
+                <div class="options" role="group" aria-labelledby="question1">
+                    <button class="option-button" data-choice="Explore and understand a business problem or phenomenon" data-value="explore" onclick="handleChoice('question1', this)">
+                        Explore and understand a business problem or phenomenon
+                        <span class="choice-hint">Clarify what is happening and why it matters.</span>
+                    </button>
+                    <button class="option-button" data-choice="Explain relationships between business variables" data-value="explain" onclick="handleChoice('question1', this)">
+                        Explain relationships between business variables
+                        <span class="choice-hint">Test how variables interact and influence outcomes.</span>
+                    </button>
+                    <button class="option-button" data-choice="Predict future outcomes or test interventions" data-value="predict" onclick="handleChoice('question1', this)">
+                        Predict future outcomes or test interventions
+                        <span class="choice-hint">Forecast trends or evaluate how an intervention will perform.</span>
+                    </button>
+                    <button class="option-button" data-choice="Improve or change current business practices" data-value="improve" onclick="handleChoice('question1', this)">
+                        Improve or change current business practices
+                        <span class="choice-hint">Drive change or innovation within the organization.</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Decision Tree Content -->
-            <div class="decision-tree" id="decisionTree">
-                <div class="progress-bar" role="progressbar" aria-label="Decision tree progress">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-
-                <!-- Question 1: Research Purpose -->
-                <div class="question-card active" id="question1">
-                    <h2>What is your primary research purpose?</h2>
-                    <p>Choose the core outcome your applied research must deliver for the organization.</p>
-                    <div class="options" role="group" aria-labelledby="question1">
-                        <button class="option-button" data-choice="Explore and understand a business problem or phenomenon" data-value="explore" onclick="handleChoice('question1', this)">
-                            Explore and understand a business problem or phenomenon
-                            <span class="choice-hint">Clarify what is happening and why it matters.</span>
-                            <span class="choice-example">Example: Understand how remote work affects team collaboration dynamics in knowledge-intensive firms.</span>
-                        </button>
-                        <button class="option-button" data-choice="Explain relationships between business variables" data-value="explain" onclick="handleChoice('question1', this)">
-                            Explain relationships between business variables
-                            <span class="choice-hint">Test how variables interact and influence outcomes.</span>
-                            <span class="choice-example">Example: Examine how employee engagement mediates the relationship between leadership style and organizational performance.</span>
-                        </button>
-                        <button class="option-button" data-choice="Predict future outcomes or test interventions" data-value="predict" onclick="handleChoice('question1', this)">
-                            Predict future outcomes or test interventions
-                            <span class="choice-hint">Forecast trends or evaluate how an intervention will perform.</span>
-                            <span class="choice-example">Example: Forecast customer demand patterns to optimize inventory levels across retail locations.</span>
-                        </button>
-                        <button class="option-button" data-choice="Improve or change current business practices" data-value="improve" onclick="handleChoice('question1', this)">
-                            Improve or change current business practices
-                            <span class="choice-hint">Drive change or innovation within the organization.</span>
-                            <span class="choice-example">Example: Redesign the onboarding process to reduce new employee time-to-productivity by 30%.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question 2: Level of Control -->
-                <div class="question-card" id="questionControl">
-                    <h2>Can you manipulate the key variable and (ideally) randomize?</h2>
-                    <p>Be realistic about the control you have over treatments, assignments, or processes.</p>
-                    <div class="options" role="group" aria-labelledby="questionControl">
-                        <button class="option-button" data-choice="Yes, random assignment to conditions is feasible" data-value="randomized" onclick="handleChoice('questionControl', this)">
-                            Yes, random assignment to conditions is feasible
-                            <span class="choice-hint">You can manipulate the intervention and assign participants randomly.</span>
-                            <span class="choice-example">Example: Randomly assign sales teams to different incentive structures to test impact on performance.</span>
-                        </button>
-                        <button class="option-button" data-choice="I can manipulate but not randomize assignment" data-value="manipulate" onclick="handleChoice('questionControl', this)">
-                            I can manipulate but not randomize assignment
-                            <span class="choice-hint">You control the change but must rely on natural or convenience groups.</span>
-                            <span class="choice-example">Example: Implement new training in the west region while using the east region as a comparison group.</span>
-                        </button>
-                        <button class="option-button" data-choice="No manipulation feasible – observational only" data-value="observational" onclick="handleChoice('questionControl', this)">
-                            No manipulation feasible – observational only
-                            <span class="choice-hint">You must observe existing practices without imposing change.</span>
-                            <span class="choice-example">Example: Analyze existing employee performance data to identify factors associated with high retention rates.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question 3: Time Design -->
-                <div class="question-card" id="questionTime">
-                    <h2>Will you observe change over time?</h2>
-                    <p>Select the time horizon that best matches your data collection or archival records.</p>
-                    <div class="options" role="group" aria-labelledby="questionTime">
-                        <button class="option-button" data-choice="Cross-sectional snapshot" data-value="cross_sectional" onclick="handleChoice('questionTime', this)">
-                            Cross-sectional snapshot
-                            <span class="choice-hint">One point in time – useful for benchmarking or diagnosing.</span>
-                            <span class="choice-example">Example: Survey all departments simultaneously to benchmark current employee satisfaction levels.</span>
-                        </button>
-                        <button class="option-button" data-choice="Longitudinal panel or growth over time" data-value="longitudinal" onclick="handleChoice('questionTime', this)">
-                            Longitudinal panel or growth over time
-                            <span class="choice-hint">Track the same units across multiple time points.</span>
-                            <span class="choice-example">Example: Track the same cohort of managers quarterly to measure leadership skill development over two years.</span>
-                        </button>
-                        <button class="option-button" data-choice="High-frequency time-series or forecasting" data-value="time_series" onclick="handleChoice('questionTime', this)">
-                            High-frequency time-series or forecasting
-                            <span class="choice-hint">Many observations ordered in time for trend/seasonality analysis.</span>
-                            <span class="choice-example">Example: Analyze daily sales data over three years to forecast seasonal demand and optimize staffing.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question 4: Data Source -->
-                <div class="question-card" id="questionData">
-                    <h2>What is your primary data source?</h2>
-                    <p>Match the method to the data you can realistically obtain.</p>
-                    <div class="options" role="group" aria-labelledby="questionData">
-                        <button class="option-button" data-choice="Existing organizational or archival data" data-value="archival" onclick="handleChoice('questionData', this)">
-                            Existing organizational or archival data
-                            <span class="choice-hint">Enterprise systems, transactions, dashboards, or public records.</span>
-                            <span class="choice-example">Example: Leverage existing CRM data to analyze customer purchasing patterns and churn indicators.</span>
-                        </button>
-                        <button class="option-button" data-choice="New survey data" data-value="survey" onclick="handleChoice('questionData', this)">
-                            New survey data
-                            <span class="choice-hint">You can reach enough respondents with validated measures.</span>
-                            <span class="choice-example">Example: Deploy a validated organizational culture survey to 500+ employees across all business units.</span>
-                        </button>
-                        <button class="option-button" data-choice="Interviews, observations, or documents" data-value="qualitative" onclick="handleChoice('questionData', this)">
-                            Interviews, observations, or documents
-                            <span class="choice-hint">You need rich accounts from participants or organizational artifacts.</span>
-                            <span class="choice-example">Example: Conduct in-depth interviews with 25 frontline employees to understand barriers to digital tool adoption.</span>
-                        </button>
-                        <button class="option-button" data-choice="Combination of quantitative and qualitative sources" data-value="mixed_source" onclick="handleChoice('questionData', this)">
-                            Combination of quantitative and qualitative sources
-                            <span class="choice-hint">You can integrate numbers with stories for a fuller picture.</span>
-                            <span class="choice-example">Example: Combine performance metrics with manager interviews to explain productivity variations across teams.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question 5: Depth vs. Generalizability -->
-                <div class="question-card" id="questionDepth">
-                    <h2>Is your priority depth in context or generalizable estimates?</h2>
-                    <p>This trade-off guides whether you need immersive understanding, broad evidence, or both.</p>
-                    <div class="options" role="group" aria-labelledby="questionDepth">
-                        <button class="option-button" data-choice="Contextual depth" data-value="depth" onclick="handleChoice('questionDepth', this)">
-                            Contextual depth
-                            <span class="choice-hint">You must understand lived experiences and organizational culture.</span>
-                            <span class="choice-example">Example: Deeply explore how organizational culture shapes innovation practices within a single high-tech startup.</span>
-                        </button>
-                        <button class="option-button" data-choice="Generalizable estimates" data-value="generalizable" onclick="handleChoice('questionDepth', this)">
-                            Generalizable estimates
-                            <span class="choice-hint">You need findings that scale across units or populations.</span>
-                            <span class="choice-example">Example: Generate findings about customer service effectiveness that can apply across all 200 retail locations.</span>
-                        </button>
-                        <button class="option-button" data-choice="Both depth and generalizability" data-value="both" onclick="handleChoice('questionDepth', this)">
-                            Both depth and generalizability
-                            <span class="choice-hint">You want integrated evidence that satisfies multiple stakeholders.</span>
-                            <span class="choice-example">Example: Combine statistical analysis of engagement scores with case studies to satisfy both executives and HR teams.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question 6: Innovation vs. Evaluation (conditional) -->
-                <div class="question-card" id="questionInnovation">
-                    <h2>What kind of improvement work are you driving?</h2>
-                    <p>Clarify whether you are building something new, co-creating change, or evaluating an existing process.</p>
-                    <div class="options" role="group" aria-labelledby="questionInnovation">
-                        <button class="option-button" data-choice="Build and evaluate a new artifact or process" data-value="design" onclick="handleChoice('questionInnovation', this)">
-                            Build and evaluate a new artifact or process
-                            <span class="choice-hint">Prototype and test a tool, workflow, or analytics solution.</span>
-                            <span class="choice-example">Example: Design and pilot a new performance dashboard to help managers make real-time staffing decisions.</span>
-                        </button>
-                        <button class="option-button" data-choice="Iterative co-change with stakeholders" data-value="collaborative" onclick="handleChoice('questionInnovation', this)">
-                            Iterative co-change with stakeholders
-                            <span class="choice-hint">Facilitate cycles of planning, action, and reflection with practitioners.</span>
-                            <span class="choice-example">Example: Partner with frontline teams to iteratively redesign workflow processes through action learning cycles.</span>
-                        </button>
-                        <button class="option-button" data-choice="Evaluate an existing intervention or process" data-value="evaluate" onclick="handleChoice('questionInnovation', this)">
-                            Evaluate an existing intervention or process
-                            <span class="choice-hint">Assess outcomes of a change already in motion.</span>
-                            <span class="choice-example">Example: Evaluate the effectiveness of the leadership development program implemented last year on team outcomes.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question 7: Theoretical Maturity -->
-                <div class="question-card" id="questionTheory">
-                    <h2>How mature is the theory base in this area?</h2>
-                    <p>Determine whether you are extending established theory or need to build new insights.</p>
-                    <div class="options" role="group" aria-labelledby="questionTheory">
-                        <button class="option-button" data-choice="Thin theory – need to build or refine frameworks" data-value="thin" onclick="handleChoice('questionTheory', this)">
-                            Thin theory – need to build or refine frameworks
-                            <span class="choice-hint">Limited prior research or conflicting explanations.</span>
-                            <span class="choice-example">Example: Explore emerging gig economy workforce management where little research exists on best practices.</span>
-                        </button>
-                        <button class="option-button" data-choice="Mature theory – ready to test or extend" data-value="mature" onclick="handleChoice('questionTheory', this)">
-                            Mature theory – ready to test or extend
-                            <span class="choice-hint">Robust constructs and prior models exist for validation.</span>
-                            <span class="choice-example">Example: Test established motivation theories in the context of hybrid work arrangements using validated scales.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Question 8: Feasibility Safeguards -->
-                <div class="question-card" id="questionFeasibility">
-                    <h2>What feasibility guardrails apply?</h2>
-                    <p>Balance ambition with realities like ethics, access, sample size, and timeline.</p>
-                    <div class="options" role="group" aria-labelledby="questionFeasibility">
-                        <button class="option-button" data-choice="Strong support – resources, access, and approvals are in place" data-value="strong_support" onclick="handleChoice('questionFeasibility', this)">
-                            Strong support – resources, access, and approvals are in place
-                            <span class="choice-hint">You can execute complex designs without major constraints.</span>
-                            <span class="choice-example">Example: Executive sponsorship secured, IRB approval granted, and full access to all organizational data systems.</span>
-                        </button>
-                        <button class="option-button" data-choice="Some constraints – need to streamline scope or sequencing" data-value="moderate_constraints" onclick="handleChoice('questionFeasibility', this)">
-                            Some constraints – need to streamline scope or sequencing
-                            <span class="choice-hint">Watch sample size, stakeholder time, or integration workload.</span>
-                            <span class="choice-example">Example: Limited to six-month timeline and restricted access to certain departments due to ongoing restructuring.</span>
-                        </button>
-                        <button class="option-button" data-choice="Significant constraints – prioritize a lean, feasible design" data-value="significant_constraints" onclick="handleChoice('questionFeasibility', this)">
-                            Significant constraints – prioritize a lean, feasible design
-                            <span class="choice-hint">Access, ethics, or timeline pressures limit complex approaches.</span>
-                            <span class="choice-example">Example: Three-month deadline with limited participant availability and sensitive data requiring extensive approvals.</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Results Section -->
-                <div class="result-card" id="results">
-                    <div class="path-summary">
-                        <h3>Your Decision Path</h3>
-                        <div id="pathSummary"></div>
-                    </div>
-
-                    <h2>Recommended Methodology</h2>
-                    <p id="recommendedMethod" aria-live="polite"></p>
-
-                    <div class="methodology-details">
-                        <div id="methodologyContent"></div>
-                    </div>
-
-                    <div class="examples">
-                        <h4>Business Research Examples:</h4>
-                        <div id="exampleContent"></div>
-                    </div>
-
-                    <div class="methodology-details" id="alternativeSection">
-                        <h3>Complementary Alternatives</h3>
-                        <div id="alternativeContent"></div>
-                    </div>
-
-                    <div class="feasibility-notes" id="feasibilityNotes" style="display:none;"></div>
-                </div>
-
-                <div class="navigation">
-                    <button class="nav-button" id="backButton" onclick="previousQuestion()" disabled>
-                        ← Back
+            <!-- Question 2: Level of Control -->
+            <div class="question-card" id="questionControl">
+                <h2>Can you manipulate the key variable and (ideally) randomize?</h2>
+                <p>Be realistic about the control you have over treatments, assignments, or processes.</p>
+                <div class="options" role="group" aria-labelledby="questionControl">
+                    <button class="option-button" data-choice="Yes, random assignment to conditions is feasible" data-value="randomized" onclick="handleChoice('questionControl', this)">
+                        Yes, random assignment to conditions is feasible
+                        <span class="choice-hint">You can manipulate the intervention and assign participants randomly.</span>
                     </button>
-                    <button class="restart-button" onclick="restart()">
-                        Start Over
+                    <button class="option-button" data-choice="I can manipulate but not randomize assignment" data-value="manipulate" onclick="handleChoice('questionControl', this)">
+                        I can manipulate but not randomize assignment
+                        <span class="choice-hint">You control the change but must rely on natural or convenience groups.</span>
+                    </button>
+                    <button class="option-button" data-choice="No manipulation feasible – observational only" data-value="observational" onclick="handleChoice('questionControl', this)">
+                        No manipulation feasible – observational only
+                        <span class="choice-hint">You must observe existing practices without imposing change.</span>
                     </button>
                 </div>
+            </div>
+
+            <!-- Question 3: Time Design -->
+            <div class="question-card" id="questionTime">
+                <h2>Will you observe change over time?</h2>
+                <p>Select the time horizon that best matches your data collection or archival records.</p>
+                <div class="options" role="group" aria-labelledby="questionTime">
+                    <button class="option-button" data-choice="Cross-sectional snapshot" data-value="cross_sectional" onclick="handleChoice('questionTime', this)">
+                        Cross-sectional snapshot
+                        <span class="choice-hint">One point in time – useful for benchmarking or diagnosing.</span>
+                    </button>
+                    <button class="option-button" data-choice="Longitudinal panel or growth over time" data-value="longitudinal" onclick="handleChoice('questionTime', this)">
+                        Longitudinal panel or growth over time
+                        <span class="choice-hint">Track the same units across multiple time points.</span>
+                    </button>
+                    <button class="option-button" data-choice="High-frequency time-series or forecasting" data-value="time_series" onclick="handleChoice('questionTime', this)">
+                        High-frequency time-series or forecasting
+                        <span class="choice-hint">Many observations ordered in time for trend/seasonality analysis.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 4: Data Source -->
+            <div class="question-card" id="questionData">
+                <h2>What is your primary data source?</h2>
+                <p>Match the method to the data you can realistically obtain.</p>
+                <div class="options" role="group" aria-labelledby="questionData">
+                    <button class="option-button" data-choice="Existing organizational or archival data" data-value="archival" onclick="handleChoice('questionData', this)">
+                        Existing organizational or archival data
+                        <span class="choice-hint">Enterprise systems, transactions, dashboards, or public records.</span>
+                    </button>
+                    <button class="option-button" data-choice="New survey data" data-value="survey" onclick="handleChoice('questionData', this)">
+                        New survey data
+                        <span class="choice-hint">You can reach enough respondents with validated measures.</span>
+                    </button>
+                    <button class="option-button" data-choice="Interviews, observations, or documents" data-value="qualitative" onclick="handleChoice('questionData', this)">
+                        Interviews, observations, or documents
+                        <span class="choice-hint">You need rich accounts from participants or organizational artifacts.</span>
+                    </button>
+                    <button class="option-button" data-choice="Combination of quantitative and qualitative sources" data-value="mixed_source" onclick="handleChoice('questionData', this)">
+                        Combination of quantitative and qualitative sources
+                        <span class="choice-hint">You can integrate numbers with stories for a fuller picture.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 5: Depth vs. Generalizability -->
+            <div class="question-card" id="questionDepth">
+                <h2>Is your priority depth in context or generalizable estimates?</h2>
+                <p>This trade-off guides whether you need immersive understanding, broad evidence, or both.</p>
+                <div class="options" role="group" aria-labelledby="questionDepth">
+                    <button class="option-button" data-choice="Contextual depth" data-value="depth" onclick="handleChoice('questionDepth', this)">
+                        Contextual depth
+                        <span class="choice-hint">You must understand lived experiences and organizational culture.</span>
+                    </button>
+                    <button class="option-button" data-choice="Generalizable estimates" data-value="generalizable" onclick="handleChoice('questionDepth', this)">
+                        Generalizable estimates
+                        <span class="choice-hint">You need findings that scale across units or populations.</span>
+                    </button>
+                    <button class="option-button" data-choice="Both depth and generalizability" data-value="both" onclick="handleChoice('questionDepth', this)">
+                        Both depth and generalizability
+                        <span class="choice-hint">You want integrated evidence that satisfies multiple stakeholders.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 6: Innovation vs. Evaluation (conditional) -->
+            <div class="question-card" id="questionInnovation">
+                <h2>What kind of improvement work are you driving?</h2>
+                <p>Clarify whether you are building something new, co-creating change, or evaluating an existing process.</p>
+                <div class="options" role="group" aria-labelledby="questionInnovation">
+                    <button class="option-button" data-choice="Build and evaluate a new artifact or process" data-value="design" onclick="handleChoice('questionInnovation', this)">
+                        Build and evaluate a new artifact or process
+                        <span class="choice-hint">Prototype and test a tool, workflow, or analytics solution.</span>
+                    </button>
+                    <button class="option-button" data-choice="Iterative co-change with stakeholders" data-value="collaborative" onclick="handleChoice('questionInnovation', this)">
+                        Iterative co-change with stakeholders
+                        <span class="choice-hint">Facilitate cycles of planning, action, and reflection with practitioners.</span>
+                    </button>
+                    <button class="option-button" data-choice="Evaluate an existing intervention or process" data-value="evaluate" onclick="handleChoice('questionInnovation', this)">
+                        Evaluate an existing intervention or process
+                        <span class="choice-hint">Assess outcomes of a change already in motion.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 7: Theoretical Maturity -->
+            <div class="question-card" id="questionTheory">
+                <h2>How mature is the theory base in this area?</h2>
+                <p>Determine whether you are extending established theory or need to build new insights.</p>
+                <div class="options" role="group" aria-labelledby="questionTheory">
+                    <button class="option-button" data-choice="Thin theory – need to build or refine frameworks" data-value="thin" onclick="handleChoice('questionTheory', this)">
+                        Thin theory – need to build or refine frameworks
+                        <span class="choice-hint">Limited prior research or conflicting explanations.</span>
+                    </button>
+                    <button class="option-button" data-choice="Mature theory – ready to test or extend" data-value="mature" onclick="handleChoice('questionTheory', this)">
+                        Mature theory – ready to test or extend
+                        <span class="choice-hint">Robust constructs and prior models exist for validation.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question 8: Feasibility Safeguards -->
+            <div class="question-card" id="questionFeasibility">
+                <h2>What feasibility guardrails apply?</h2>
+                <p>Balance ambition with realities like ethics, access, sample size, and timeline.</p>
+                <div class="options" role="group" aria-labelledby="questionFeasibility">
+                    <button class="option-button" data-choice="Strong support – resources, access, and approvals are in place" data-value="strong_support" onclick="handleChoice('questionFeasibility', this)">
+                        Strong support – resources, access, and approvals are in place
+                        <span class="choice-hint">You can execute complex designs without major constraints.</span>
+                    </button>
+                    <button class="option-button" data-choice="Some constraints – need to streamline scope or sequencing" data-value="moderate_constraints" onclick="handleChoice('questionFeasibility', this)">
+                        Some constraints – need to streamline scope or sequencing
+                        <span class="choice-hint">Watch sample size, stakeholder time, or integration workload.</span>
+                    </button>
+                    <button class="option-button" data-choice="Significant constraints – prioritize a lean, feasible design" data-value="significant_constraints" onclick="handleChoice('questionFeasibility', this)">
+                        Significant constraints – prioritize a lean, feasible design
+                        <span class="choice-hint">Access, ethics, or timeline pressures limit complex approaches.</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="result-card" id="results">
+                <div class="path-summary">
+                    <h3>Your Decision Path</h3>
+                    <div id="pathSummary"></div>
+                </div>
+
+                <h2>Recommended Methodology</h2>
+                <p id="recommendedMethod" aria-live="polite"></p>
+
+                <div class="methodology-details">
+                    <div id="methodologyContent"></div>
+                </div>
+
+                <div class="examples">
+                    <h4>Business Research Examples:</h4>
+                    <div id="exampleContent"></div>
+                </div>
+
+                <div class="methodology-details" id="alternativeSection">
+                    <h3>Complementary Alternatives</h3>
+                    <div id="alternativeContent"></div>
+                </div>
+
+                <div class="feasibility-notes" id="feasibilityNotes" style="display:none;"></div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-button" id="backButton" onclick="previousQuestion()" disabled>
+                    ← Back
+                </button>
+                <button class="restart-button" onclick="restart()">
+                    Start Over
+                </button>
             </div>
         </main>
     </div>
@@ -769,12 +578,6 @@
     <script>
         const baseSequence = ['question1', 'questionControl', 'questionTime', 'questionData', 'questionDepth', 'questionInnovation', 'questionTheory', 'questionFeasibility'];
         let decisions = [];
-
-        function startDecisionTree() {
-            document.getElementById('introScreen').classList.add('hidden');
-            document.getElementById('decisionTree').classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
         const methodologies = {
             'experimental_design': {
@@ -1208,7 +1011,7 @@
             },
             'phenomenology': {
                 name: 'Phenomenology',
-                description: 'Qualitative approach exploring the essence of lived experiences from the participants\' perspectives.',
+                description: 'Qualitative approach exploring the essence of lived experiences from the participants’ perspectives.',
                 when: 'When the business problem hinges on deeply understanding how individuals experience a phenomenon.',
                 methods: [
                     'In-depth semi-structured interviews focusing on lived experience',
@@ -1233,7 +1036,7 @@
                 ],
                 examples: [
                     'Exploring employee experiences of remote onboarding',
-                    'Understanding leaders\' journeys through crisis response',
+                    'Understanding leaders’ journeys through crisis response',
                     'Capturing customer emotions during service recovery',
                     'Describing frontline staff experience with AI augmentation'
                 ],
@@ -1391,13 +1194,7 @@
             return null;
         }
 
-        function handleChoice(questionId, element) {
-            // Ensure we have the button element, not a child span
-            const button = element.closest ? element.closest('.option-button') : element;
-            if (!button) {
-                console.error('Button not found', element);
-                return;
-            }
+        function handleChoice(questionId, button) {
             const questionElement = document.getElementById(questionId);
             const questionText = questionElement.querySelector('h2').textContent;
             const choiceText = button.getAttribute('data-choice');
@@ -1794,8 +1591,6 @@
 
         function restart() {
             decisions = [];
-            document.getElementById('introScreen').classList.remove('hidden');
-            document.getElementById('decisionTree').classList.remove('active');
             document.querySelectorAll('.question-card').forEach(card => card.classList.remove('active'));
             document.getElementById('question1').classList.add('active');
             document.getElementById('results').classList.remove('active');
