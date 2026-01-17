@@ -1,4 +1,4 @@
-<!-- v3: Added information tooltips to explain variables in step 3 for better user guidance. -->
+<!-- v5: Step 2 now shows conditional prompts based on the research purpose selected in Step 1. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -440,8 +440,8 @@
       <nav class="progress" aria-label="Wizard steps">
         <h2>Progress</h2>
         <ul>
-          <li class="active" data-step="0">1. Business Problem &amp; Context</li>
-          <li data-step="1">2. Research Purpose Template</li>
+          <li class="active" data-step="0">1. Research Purpose Template</li>
+          <li data-step="1">2. Business Problem &amp; Context</li>
           <li data-step="2">3. Variables &amp; Relationships</li>
           <li data-step="3">4. SMART Refinement</li>
           <li data-step="4">5. Feasibility Checks</li>
@@ -452,58 +452,7 @@
         <form id="rq-form">
           <article class="step active" data-step="0" aria-labelledby="step1-title">
             <fieldset>
-              <legend id="step1-title">Clarify the Business Challenge</legend>
-              <label for="business-problem">Describe the organizational problem you want to solve <span aria-hidden="true">*</span></label>
-              <textarea id="business-problem" name="business-problem" aria-required="true" placeholder="Example: Employee turnover at our regional call centers has increased 20% in the past year, impacting customer satisfaction scores."></textarea>
-            </fieldset>
-            <fieldset class="two-column" aria-describedby="context-help">
-              <legend>Contextualize Your Environment</legend>
-              <div>
-                <label for="industry">Industry focus</label>
-                <select id="industry" name="industry">
-                  <option value="">Select an industry</option>
-                  <option>Healthcare</option>
-                  <option>Finance</option>
-                  <option>Technology</option>
-                  <option>Manufacturing</option>
-                  <option>Education</option>
-                  <option>Public Sector</option>
-                  <option>Retail &amp; Service</option>
-                </select>
-              </div>
-              <div>
-                <label for="org-level">Organizational level</label>
-                <select id="org-level" name="org-level">
-                  <option value="">Select a level</option>
-                  <option>Individual</option>
-                  <option>Team</option>
-                  <option>Department</option>
-                  <option>Business Unit</option>
-                  <option>Enterprise</option>
-                </select>
-              </div>
-              <div>
-                <label for="stakeholders">Primary stakeholders impacted</label>
-                <input type="text" id="stakeholders" name="stakeholders" placeholder="Employees, customers, suppliers, leadership" />
-              </div>
-              <div>
-                <label for="desired-outcome">Desired organizational outcome</label>
-                <input type="text" id="desired-outcome" name="desired-outcome" placeholder="Reduce turnover by 10%, improve CSAT, streamline onboarding" />
-              </div>
-            </fieldset>
-            <p id="context-help" class="card" role="note">
-              The more specific you are about your context, the easier it will be to align your research purpose and methodology.
-              Consider organizational constraints, stakeholders, and measurable outcomes.
-            </p>
-            <div class="button-row">
-              <span aria-hidden="true"></span>
-              <button type="button" data-action="next">Next: Purpose Templates</button>
-            </div>
-          </article>
-
-          <article class="step" data-step="1" aria-labelledby="step2-title">
-            <fieldset>
-              <legend id="step2-title">Select the Research Purpose</legend>
+              <legend id="step1-title">Select the Research Purpose</legend>
               <p>
                 Choose the primary intent of your study. The builder will offer a template aligned with your choice and adapt to your
                 business context.
@@ -546,6 +495,57 @@
               <p id="purpose-template">Select a purpose to view a tailored question scaffold.</p>
               <p id="purpose-considerations" class="dark-text"></p>
             </div>
+            <div class="button-row">
+              <span aria-hidden="true"></span>
+              <button type="button" data-action="next">Next: Business Context</button>
+            </div>
+          </article>
+
+          <article class="step" data-step="1" aria-labelledby="step2-title">
+            <fieldset>
+              <legend id="step2-title">Describe Your Business Context</legend>
+              <label for="business-problem" id="business-problem-label">Describe the organizational problem you want to solve <span aria-hidden="true">*</span></label>
+              <textarea id="business-problem" name="business-problem" aria-required="true" placeholder="Example: Employee turnover at our regional call centers has increased 20% in the past year, impacting customer satisfaction scores."></textarea>
+            </fieldset>
+            <fieldset class="two-column" aria-describedby="context-help">
+              <legend>Contextualize Your Environment</legend>
+              <div>
+                <label for="industry">Industry focus</label>
+                <select id="industry" name="industry">
+                  <option value="">Select an industry</option>
+                  <option>Healthcare</option>
+                  <option>Finance</option>
+                  <option>Technology</option>
+                  <option>Manufacturing</option>
+                  <option>Education</option>
+                  <option>Public Sector</option>
+                  <option>Retail &amp; Service</option>
+                </select>
+              </div>
+              <div>
+                <label for="org-level">Organizational level</label>
+                <select id="org-level" name="org-level">
+                  <option value="">Select a level</option>
+                  <option>Individual</option>
+                  <option>Team</option>
+                  <option>Department</option>
+                  <option>Business Unit</option>
+                  <option>Enterprise</option>
+                </select>
+              </div>
+              <div>
+                <label for="stakeholders">Primary stakeholders impacted</label>
+                <input type="text" id="stakeholders" name="stakeholders" placeholder="Employees, customers, suppliers, leadership" />
+              </div>
+              <div>
+                <label for="desired-outcome">Desired organizational outcome</label>
+                <input type="text" id="desired-outcome" name="desired-outcome" placeholder="Reduce turnover by 10%, improve CSAT, streamline onboarding" />
+              </div>
+            </fieldset>
+            <p id="context-help" class="card" role="note">
+              The more specific you are about your context, the easier it will be to align your research purpose and methodology.
+              Consider organizational constraints, stakeholders, and measurable outcomes.
+            </p>
             <div class="button-row">
               <button type="button" class="secondary" data-action="prev">Back</button>
               <button type="button" data-action="next">Next: Variables</button>
@@ -778,6 +778,7 @@
     let currentStep = 0;
 
     const businessProblem = document.getElementById("business-problem");
+    const businessProblemLabel = document.getElementById("business-problem-label");
     const industrySelect = document.getElementById("industry");
     const orgLevel = document.getElementById("org-level");
     const stakeholders = document.getElementById("stakeholders");
@@ -852,6 +853,8 @@
       });
       purposeTemplate.textContent = "Select a purpose to view a tailored question scaffold.";
       purposeConsiderations.textContent = "";
+      businessProblemLabel.innerHTML = 'Describe the organizational problem you want to solve <span aria-hidden="true">*</span>';
+      businessProblem.placeholder = "Example: Employee turnover at our regional call centers has increased 20% in the past year, impacting customer satisfaction scores.";
       draftQuestion.textContent = "Complete the fields to see a draft research question.";
       relationshipTip.textContent = "";
       methodSuggestion.textContent = "Specify variables to view recommended designs.";
@@ -874,18 +877,26 @@
       descriptive: {
         template: "What is the current state of [dependent variable] among [population/context] within [timeframe]?",
         considerations: "Consider observational or survey-based designs. Ensure operational definitions for the phenomena you describe.",
+        contextLabel: "Describe the phenomenon or situation you want to understand",
+        contextPlaceholder: "Example: We want to understand the current state of employee engagement practices across our regional offices and how they vary by department.",
       },
       relational: {
         template: "To what extent is [independent variable] associated with [dependent variable] for [population/context] over [timeframe]?",
         considerations: "Correlation, regression, or structural equation modeling may be appropriate. Gather sufficient sample sizes for statistical power.",
+        contextLabel: "Describe the relationship or association you want to explore",
+        contextPlaceholder: "Example: We suspect that employee training frequency may be related to customer satisfaction scores, but we need to understand the strength of this relationship.",
       },
       causal: {
         template: "How does [independent variable or intervention] impact [dependent variable] for [population/context] during [timeframe]?",
         considerations: "Consider quasi-experimental or experimental designs. Address ethical and feasibility concerns for manipulation.",
+        contextLabel: "Describe the organizational problem you want to solve",
+        contextPlaceholder: "Example: Employee turnover at our regional call centers has increased 20% in the past year, impacting customer satisfaction scores.",
       },
       comparative: {
         template: "How does [group/program A] compare to [group/program B] in terms of [dependent variable] within [timeframe]?",
         considerations: "Ensure comparable groups and consider ANCOVA or matched samples to manage confounding factors.",
+        contextLabel: "Describe the groups, programs, or conditions you want to compare",
+        contextPlaceholder: "Example: We implemented a new onboarding program at half of our locations and want to compare retention rates against locations using the traditional program.",
       },
     };
 
@@ -895,6 +906,8 @@
         const details = purposeDetails[selected];
         purposeTemplate.textContent = details.template;
         purposeConsiderations.textContent = details.considerations;
+        businessProblemLabel.innerHTML = details.contextLabel + ' <span aria-hidden="true">*</span>';
+        businessProblem.placeholder = details.contextPlaceholder;
         updateDraftQuestion();
       });
     });
@@ -1130,13 +1143,13 @@
     }
 
     function validateStep(stepIndex) {
-      if (stepIndex === 0 && !businessProblem.value.trim()) {
-        businessProblem.focus();
-        businessProblem.setAttribute("aria-invalid", "true");
+      if (stepIndex === 0 && !document.querySelector("input[name='purpose']:checked")) {
+        purposeTemplate.textContent = "Select a purpose to proceed.";
         return false;
       }
-      if (stepIndex === 1 && !document.querySelector("input[name='purpose']:checked")) {
-        purposeTemplate.textContent = "Select a purpose to proceed.";
+      if (stepIndex === 1 && !businessProblem.value.trim()) {
+        businessProblem.focus();
+        businessProblem.setAttribute("aria-invalid", "true");
         return false;
       }
       if (stepIndex === 2) {
