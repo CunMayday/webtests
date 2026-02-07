@@ -1,0 +1,777 @@
+// App.jsx
+// Preview-ready single-file React app (Tailwind + Framer Motion)
+// Notes:
+// 1) Ensure Tailwind is configured in your project.
+// 2) Install Framer Motion: npm i framer-motion
+
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+
+const BTHS = {
+  blue: "#1D4ED8",
+  blueDeep: "#0B3AAE",
+  black: "#0B0B0F",
+  silver: "#C7CDD6",
+  silverDeep: "#9AA6B2",
+  white: "#FFFFFF",
+};
+
+const sections = [
+  { id: "top", label: "Top" },
+  { id: "about", label: "Academy" },
+  { id: "mission", label: "Mission" },
+  { id: "strands", label: "Strands" },
+  { id: "courses", label: "Courses → Real World" },
+  { id: "experiences", label: "DECA + Practicals" },
+  { id: "credentials", label: "Certs + Dual Enrollment" },
+  { id: "apply", label: "Apply" },
+];
+
+const LinkPill = ({ href, children }) => {
+  const handleClick = (e) => {
+    if (!href) return;
+    // Some embedded previews block target=_blank navigation.
+    // Force-open external links reliably.
+    if (href.startsWith("http")) {
+      e.preventDefault();
+      window.open(href, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      onClick={handleClick}
+      className="inline-flex items-center gap-2 rounded-full border-[3px] border-black bg-[var(--bths-silver)] px-4 py-2 text-sm font-black text-black shadow-[6px_6px_0_0_rgba(0,0,0,1)] transition hover:-translate-x-[2px] hover:-translate-y-[2px] hover:bg-[var(--bths-blue)] hover:text-white hover:shadow-[10px_10px_0_0_rgba(0,0,0,1)] active:translate-x-0 active:translate-y-0"
+    >
+      {children}
+      <span aria-hidden>↗</span>
+    </a>
+  );
+};
+
+const NeoCard = ({ tone = "blue", title, kicker, children }) => {
+  const tones = {
+    blue: `bg-[${BTHS.blue}]`,
+    silver: `bg-[${BTHS.silver}]`,
+    black: `bg-[${BTHS.black}]`,
+    white: `bg-white`,
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18, rotate: -0.5 }}
+      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ type: "spring", stiffness: 160, damping: 18 }}
+      className={`relative rounded-2xl border-[4px] border-black p-5 shadow-[10px_10px_0_0_rgba(0,0,0,1)] ${
+        tones[tone] || tones.blue
+      }`}
+    >
+      <div className="absolute -right-2 -top-2 rotate-2 rounded-xl border-[3px] border-black bg-white px-3 py-1 text-xs font-black shadow-[5px_5px_0_0_rgba(0,0,0,1)]">
+        PRACTICAL
+      </div>
+
+      <div className="flex flex-col gap-1">
+        {kicker && (
+          <div className="inline-flex w-fit rounded-full border-[3px] border-black bg-white px-3 py-1 text-xs font-black">
+            {kicker}
+          </div>
+        )}
+        <h3 className="mt-2 text-xl font-black tracking-tight text-black">{title}</h3>
+      </div>
+
+      <div className="mt-3 text-sm font-semibold text-black/90">{children}</div>
+    </motion.div>
+  );
+};
+
+function Badge({ children, className = "" }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-full border-[3px] border-black bg-white px-3 py-1 text-xs font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] ${className}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+function SectionHeading({ eyebrow, title, subtitle }) {
+  return (
+    <div className="mb-7">
+      {eyebrow && (
+        <div className="mb-2 inline-flex rounded-full border-[3px] border-black bg-white px-3 py-1 text-xs font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+          {eyebrow}
+        </div>
+      )}
+      <h2 className="text-3xl font-black tracking-tight text-black sm:text-4xl">{title}</h2>
+      {subtitle && <p className="mt-2 max-w-3xl text-base font-semibold text-black/80">{subtitle}</p>}
+    </div>
+  );
+}
+
+function CourseRow({ course, skills, realWorld, tone }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -18 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ type: "spring", stiffness: 160, damping: 18 }}
+      className="grid gap-4 rounded-2xl border-[4px] border-black bg-white p-5 shadow-[10px_10px_0_0_rgba(0,0,0,1)] lg:grid-cols-12"
+    >
+      <div className="lg:col-span-4">
+        <div className="flex flex-wrap gap-2">
+          <Badge>{tone}</Badge>
+          <Badge>COURSE</Badge>
+        </div>
+        <div className="mt-3 text-lg font-black leading-snug">{course}</div>
+      </div>
+
+      <div className="lg:col-span-4">
+        <div className="text-xs font-black">Practicals you build</div>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm font-semibold text-black/85">
+          {skills.map((s) => (
+            <li key={s}>{s}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="lg:col-span-4">
+        <div className="text-xs font-black">Real world application</div>
+        <p className="mt-2 text-sm font-semibold text-black/85">{realWorld}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function App() {
+  // Official bear logo asset (used in header and as fallback watermark)
+  const logoUrl = "https://www-bths.stjohns.k12.fl.us/wp-content/uploads/2015/09/Bear-Logo-2015-Gif.gif";
+
+  // If you want to use the exact image you uploaded (bear + BARTRAM TRAIL HIGH SCHOOL),
+  // paste a data URL here (data:image/png;base64,...) to guarantee it loads in any preview.
+  // Keeping it empty avoids a massive string in the file.
+  const providedBearPngDataUrl = "";
+
+  const heroMarkUrl = providedBearPngDataUrl || logoUrl;
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const academyFacts = useMemo(
+    () => [
+      {
+        label: "What it is",
+        text: "An academic and internship program exploring careers in financial services and business management.",
+      },
+      {
+        label: "Opportunities",
+        text: "Program of study includes dual enrollment, AP opportunities, and honors credit.",
+      },
+      {
+        label: "Student association",
+        text: "Students are required to participate in DECA.",
+      },
+      {
+        label: "Strands",
+        text: "Students may enroll in either the Finance or Entrepreneurship strand.",
+      },
+    ],
+    []
+  );
+
+  const courses = useMemo(
+    () => [
+      {
+        tone: "FINANCE STRAND",
+        course: "Accounting 1 Honors",
+        skills: ["Double-entry journals", "Ledger accuracy checks", "Basic financial statements"],
+        realWorld:
+          "Run clean books for a club, side hustle, or school event so you can answer: where did the money go and what’s left?",
+      },
+      {
+        tone: "FINANCE STRAND",
+        course: "Accounting 2 Honors",
+        skills: ["Adjusting entries", "Inventory methods", "Depreciation and aging", "Controls and reconciliation"],
+        realWorld:
+          "Build systems that catch mistakes and fraud, like the same checks and balances real companies use.",
+      },
+      {
+        tone: "FINANCE STRAND",
+        course: "Business & Entrepreneurial Principles Honors",
+        skills: ["Business model basics", "Customer value proposition", "Team roles and workflows"],
+        realWorld:
+          "Turn an idea into a plan you can test: who it’s for, why they care, how you deliver, and what it costs.",
+      },
+      {
+        tone: "FINANCE STRAND",
+        course: "Legal Aspects of Business Honors",
+        skills: ["Contracts and obligations", "Ethics and compliance thinking", "Risk spotting"],
+        realWorld:
+          "Make smarter decisions when money is on the line, from hiring a vendor to writing policies for a student-led operation.",
+      },
+      {
+        tone: "ENTREPRENEUR STRAND",
+        course: "Principles of Entrepreneurship",
+        skills: ["Opportunity identification", "Market research basics", "Customer interviews"],
+        realWorld:
+          "Validate a product before you build it, saving time and money by proving real demand first.",
+      },
+      {
+        tone: "ENTREPRENEUR STRAND",
+        course: "Business Management & Law",
+        skills: ["Operations planning", "Basic HR and management", "Business legal foundations"],
+        realWorld:
+          "Run a team like a mini-company: roles, deadlines, quality checks, and rules that keep the project stable.",
+      },
+      {
+        tone: "DUAL ENROLLMENT",
+        course: "Personal Finance (DE: FIN1100)",
+        skills: ["Budgeting systems", "Interest and credit literacy", "Goal-based saving"],
+        realWorld:
+          "Build your own money playbook for college and beyond, including avoiding common credit traps.",
+      },
+      {
+        tone: "DUAL ENROLLMENT",
+        course: "Principles of Management (DE: MAN2021)",
+        skills: ["Leadership styles", "Decision frameworks", "Team performance rituals"],
+        realWorld:
+          "Lead a DECA project team or school-based enterprise using the same tools managers use in the workplace.",
+      },
+      {
+        tone: "DUAL ENROLLMENT",
+        course: "Business Communications (DE: GEB2214)",
+        skills: ["Professional email and meeting notes", "Presentations and pitching", "Stakeholder updates"],
+        realWorld:
+          "Pitch ideas clearly to judges, partners, or employers and keep projects moving with strong communication.",
+      },
+      {
+        tone: "ENTREPRENEUR STRAND",
+        course: "Business Ownership (DE)",
+        skills: ["Branding statement and portfolio", "Product-to-market workflow", "Store operations thinking"],
+        realWorld:
+          "Launch and operate something real, from branding to marketing to distribution, then document it like a pro.",
+      },
+    ],
+    []
+  );
+
+  const links = {
+    bthsAcademies: "https://www-bths.stjohns.k12.fl.us/academies/",
+    cteAcademy: "https://cte.stjohns.k12.fl.us/academies/bths-business/",
+    financeShowcase: "https://cte.stjohns.k12.fl.us/showcase/bths-finance/",
+    entrepreneurShowcase: "https://cte.stjohns.k12.fl.us/showcase/bths-entrepreneur/",
+    financePOS:
+      "https://www-bths.stjohns.k12.fl.us/academies/wp-content/uploads/sites/3/2020/12/BTHS-Vystar-Academy-Finance-POS-SY21-22-pdf.pdf",
+    entrepreneurPOS:
+      "https://cte.stjohns.k12.fl.us/wp-content/uploads/2019/03/BTHS-Vystar-Academy-Entrepreneur-Program-of-Study-2018-2019.pdf",
+    brochure:
+      "https://www-bths.stjohns.k12.fl.us/academies/wp-content/uploads/sites/3/2020/12/VyStar-Brochure-1-5-16-1.pdf",
+  };
+
+  return (
+    <div className="min-h-screen bg-white text-black">
+      <style>{`
+        :root{
+          --bths-blue:${BTHS.blue};
+          --bths-blue-deep:${BTHS.blueDeep};
+          --bths-black:${BTHS.black};
+          --bths-silver:${BTHS.silver};
+          --bths-silver-deep:${BTHS.silverDeep};
+          --bths-white:${BTHS.white};
+        }
+        html { scroll-behavior: smooth; }
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap');
+        body { font-family: "Space Grotesk", ui-sans-serif, system-ui; }
+        .mono { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+        .neo-grid {
+          background-image:
+            linear-gradient(to right, rgba(0,0,0,0.08) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0,0,0,0.08) 1px, transparent 1px);
+          background-size: 28px 28px;
+        }
+
+        /* Hero background (BT-style vibe): blueprint stripes + spotlights + blended athletics bear watermark */
+        .hero-bg {
+          position: relative;
+          background-image:
+            radial-gradient(circle at 18% 22%, rgba(29,78,216,0.22) 0 34%, transparent 58%),
+            radial-gradient(circle at 78% 34%, rgba(199,205,214,0.55) 0 22%, transparent 52%),
+            radial-gradient(circle at 70% 88%, rgba(0,0,0,0.10) 0 26%, transparent 60%),
+            repeating-linear-gradient(
+              45deg,
+              rgba(11,11,15,0.10) 0,
+              rgba(11,11,15,0.10) 2px,
+              rgba(255,255,255,0.00) 2px,
+              rgba(255,255,255,0.00) 18px
+            );
+        }
+
+        /* Watermark image (blended, subtle) */
+        .hero-bg::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image:
+            url("https://www-bths.stjohns.k12.fl.us/athletics/wp-content/uploads/sites/57/2020/10/bears_logo.png"),
+            radial-gradient(circle at 55% 45%, rgba(255,255,255,0.22) 0 40%, transparent 65%);
+          background-repeat: no-repeat, no-repeat;
+          background-position: 62% 52%, 0 0;
+          background-size: min(820px, 92vw), auto;
+          opacity: 0.18;
+          filter: saturate(0.1) contrast(1.05);
+          mix-blend-mode: multiply;
+          pointer-events: none;
+        }
+
+        /* Light wash that keeps text readable */
+        .hero-bg::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(0deg, rgba(255,255,255,0.10), rgba(255,255,255,0.10));
+          pointer-events: none;
+        }
+      `}</style>
+
+      <div className="sticky top-0 z-50 border-b-[4px] border-black bg-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+          <a href="#top" className="flex items-center gap-3">
+            <img
+              src={logoUrl}
+              alt="Bartram Trail Bears logo"
+              className="h-10 w-10 rounded-xl border-[3px] border-black bg-white object-contain p-1 shadow-[5px_5px_0_0_rgba(0,0,0,1)]"
+            />
+            <div className="leading-tight">
+              <div className="text-sm font-black">VyStar Academy</div>
+              <div className="mono text-xs font-bold text-black/70">Bartram Trail High School</div>
+            </div>
+          </a>
+
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            className="inline-flex items-center gap-2 rounded-full border-[3px] border-black bg-[var(--bths-silver)] px-4 py-2 text-xs font-black shadow-[5px_5px_0_0_rgba(0,0,0,1)] sm:hidden"
+            aria-expanded={menuOpen}
+          >
+            MENU <span aria-hidden>{menuOpen ? "✕" : "☰"}</span>
+          </button>
+
+          <div className="hidden items-center gap-2 sm:flex">
+            {sections.slice(1).map((s) => (
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                className="rounded-full border-[3px] border-black bg-white px-3 py-2 text-xs font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition hover:-translate-y-[2px] hover:shadow-[6px_6px_0_0_rgba(0,0,0,1)]"
+              >
+                {s.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {menuOpen && (
+          <div className="border-t-[4px] border-black bg-white sm:hidden">
+            <div className="mx-auto grid max-w-7xl gap-2 px-4 py-3">
+              {sections.map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-xl border-[3px] border-black bg-[var(--bths-silver)] px-4 py-3 text-sm font-black shadow-[6px_6px_0_0_rgba(0,0,0,1)]"
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <header
+        id="top"
+        className="hero-bg relative overflow-hidden"
+      >
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 150, damping: 16 }}
+            className="grid items-center gap-10 lg:grid-cols-12"
+          >
+            <div className="lg:col-span-7">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge>BLUE · BLACK · SILVER</Badge>                <Badge>ST. JOHNS, FL</Badge>
+              </div>
+
+              <h1 className="mt-5 text-4xl font-black leading-[1.02] tracking-tight sm:text-6xl">
+                Build business skills that actually ship.
+              </h1>
+
+              <p className="mt-4 max-w-2xl text-base font-semibold text-black/85 sm:text-lg">
+                VyStar Academy of Business and Finance at Bartram Trail High School combines a rigorous program of study
+                with applied learning, DECA, and career exploration in financial services and business management.
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a
+                  href="#courses"
+                  className="inline-flex items-center gap-2 rounded-2xl border-[4px] border-black bg-[var(--bths-blue)] px-5 py-3 text-sm font-black text-white shadow-[10px_10px_0_0_rgba(0,0,0,1)] transition hover:-translate-x-[2px] hover:-translate-y-[2px] hover:bg-[var(--bths-blue-deep)] hover:shadow-[14px_14px_0_0_rgba(0,0,0,1)]"
+                >
+                  Explore courses <span aria-hidden>↓</span>
+                </a>
+                <a
+                  href="#apply"
+                  className="inline-flex items-center gap-2 rounded-2xl border-[4px] border-black bg-white px-5 py-3 text-sm font-black shadow-[10px_10px_0_0_rgba(0,0,0,1)] transition hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[14px_14px_0_0_rgba(0,0,0,1)]"
+                >
+                  How to apply <span aria-hidden>→</span>
+                </a>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                <NeoCard tone="silver" title="Career-ready confidence" kicker="IMPACT">
+                  Applied learning + an internship mindset means you practice professional behaviors now: communicating,
+                  collaborating, and solving real business problems so you feel prepared for jobs, internships, and
+                  leadership roles.
+                </NeoCard>
+                <NeoCard tone="blue" title="Portfolio + college advantage" kicker="IMPACT">
+                  Dual enrollment and honors options help you earn momentum. Pair that with DECA competition artifacts
+                  like pitches, budgets, and marketing plans and you graduate with proof you can do the work.
+                </NeoCard>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <motion.div
+                initial={{ opacity: 0, y: 18, rotate: 1 }}
+                whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ type: "spring", stiffness: 160, damping: 18 }}
+                className="relative rounded-[28px] border-[5px] border-black bg-[var(--bths-black)] p-6 shadow-[14px_14px_0_0_rgba(0,0,0,1)]"
+              >
+                <div className="mono text-xs font-bold text-white/90">LIVE DASHBOARD</div>
+                <div className="mt-2 text-2xl font-black text-white">What you get</div>
+
+                <div className="mt-5 grid gap-3">
+                  <div className="rounded-2xl border-[4px] border-black bg-white p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+                    <div className="text-xs font-black">Two strands</div>
+                    <div className="mt-1 text-sm font-semibold">Finance or Entrepreneurship.</div>
+                  </div>
+                  <div className="rounded-2xl border-[4px] border-black bg-[var(--bths-silver)] p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+                    <div className="text-xs font-black">Program features</div>
+                    <div className="mt-1 text-sm font-semibold">Dual enrollment, AP opportunities, and honors credit.</div>
+                  </div>
+                  <div className="rounded-2xl border-[4px] border-black bg-[var(--bths-silver)] p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+                    <div className="text-xs font-black">VyStar connection</div>
+                    <div className="mt-1 text-sm font-semibold">Student-run branch energy and responsible financial skills.</div>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <LinkPill href={links.bthsAcademies}>BTHS Academies page</LinkPill>
+                  <LinkPill href={links.cteAcademy}>CTE academy page</LinkPill>
+                </div>
+
+                <div className="pointer-events-none absolute -bottom-8 -right-8 h-28 w-28 rotate-12 rounded-[28px] border-[5px] border-black bg-[var(--bths-silver)] shadow-[12px_12px_0_0_rgba(0,0,0,1)]" />
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </header>
+
+      <section id="about" className="neo-grid border-t-[5px] border-black bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="THE ACADEMY"
+            title="VyStar Academy of Business and Finance"
+            subtitle="Official essentials plus a real-world translation layer: every course becomes a toolkit you can use."
+          />
+
+          <div className="grid gap-4 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <div className="rounded-3xl border-[5px] border-black bg-[var(--bths-silver)] p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+                <div className="mono text-xs font-bold">OVERVIEW</div>
+                <p className="mt-3 text-base font-semibold text-black/85">
+                  The academy is described as an academic and internship program for students exploring career
+                  opportunities within financial services and business management, with dual enrollment, AP opportunities,
+                  honors credit, and DECA participation.
+                </p>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {academyFacts.map((f) => (
+                    <div
+                      key={f.label}
+                      className="rounded-2xl border-[4px] border-black bg-white p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]"
+                    >
+                      <div className="text-xs font-black">{f.label}</div>
+                      <div className="mt-1 text-sm font-semibold text-black/85">{f.text}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <NeoCard tone="silver" title="Finance strand focus" kicker="FINANCE">
+                Accounting principles, recording transactions, analyzing statements, payroll and tax forms, controls,
+                inventory methods, depreciation, and applying accounting to different entities.
+              </NeoCard>
+
+              <div className="mt-4">
+                <NeoCard tone="blue" title="Entrepreneurship strand focus" kicker="ENTREPRENEURSHIP">
+                  Honors level business program building transferable business principles and employability skills, plus an
+                  online portfolio with a unique branding statement.
+                </NeoCard>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <LinkPill href={links.financeShowcase}>Finance showcase</LinkPill>
+            <LinkPill href={links.entrepreneurShowcase}>Entrepreneur showcase</LinkPill>
+            <LinkPill href={links.brochure}>Brochure PDF</LinkPill>
+          </div>
+        </div>
+      </section>
+
+      <section id="mission" className="border-t-[5px] border-black bg-[var(--bths-blue)]">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="MISSION"
+            title="Engaging, relevant, applied learning"
+            subtitle="Supportive environment, applied learning, confidence, relationships, and community."
+          />
+
+          <div className="grid gap-4 lg:grid-cols-12">
+            <div className="lg:col-span-8">
+              <div className="rounded-3xl border-[5px] border-black bg-white p-7 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+                <p className="text-lg font-black leading-relaxed">
+                  “VyStar Academy of Business and Finance at Bartram Trail High School will provide engaging and relevant
+                  curriculum in a supportive and nurturing environment. Through applied learning students develop
+                  confidence, long-lasting relationships and a sense of community.”
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Badge>APPLIED LEARNING</Badge>
+                  <Badge>CONFIDENCE</Badge>
+                  <Badge>COMMUNITY</Badge>
+                  <Badge>RELATIONSHIPS</Badge>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-4">
+              <div className="rounded-3xl border-[5px] border-black bg-[var(--bths-silver)] p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+                <div className="mono text-xs font-bold text-black">NEOBRUTAL PROMISE</div>
+                <p className="mt-3 text-sm font-semibold text-black/90">
+                  Loud visuals, clear artifacts: business is not a worksheet, it is a system you can design, test, and
+                  improve.
+                </p>
+                <p className="mt-3 text-sm font-semibold text-black/90">Scroll for the course-to-career translation layer.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="strands" className="neo-grid border-t-[5px] border-black bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="STRANDS"
+            title="Choose your lane, then cross-train"
+            subtitle="Officially, students may enroll in Finance or Entrepreneurship. In practice, the best builders borrow from both."
+          />
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <NeoCard tone="blue" title="Finance strand" kicker="OFFICIAL">
+              Explore business and finance careers and stack certs like QuickBooks and Microsoft Office.
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Badge>QuickBooks</Badge>
+                <Badge>Microsoft Office Bundle</Badge>
+              </div>
+            </NeoCard>
+
+            <NeoCard tone="silver" title="Entrepreneurship strand" kicker="OFFICIAL">
+              Build transferable skills and create a portfolio with a unique branding statement.
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Badge>Portfolio</Badge>
+                <Badge>Branding</Badge>
+                <Badge>Employability</Badge>
+              </div>
+            </NeoCard>
+          </div>
+        </div>
+      </section>
+
+      <section id="courses" className="border-t-[5px] border-black bg-[var(--bths-silver)]">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="COURSES → REAL WORLD"
+            title="Every class becomes a practical toolkit"
+            subtitle="Course names and DE codes are pulled from program-of-study documents and the academy brochure."
+          />
+
+          <div className="grid gap-4">
+            {courses.map((c) => (
+              <CourseRow key={c.course} {...c} />
+            ))}
+          </div>
+
+          <div className="mt-8 rounded-3xl border-[5px] border-black bg-white p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+            <div className="mono text-xs font-bold">OFFICIAL DOC LINKS</div>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <LinkPill href={links.financePOS}>Finance POS</LinkPill>
+              <LinkPill href={links.entrepreneurPOS}>Entrepreneur POS</LinkPill>
+              <LinkPill href={links.brochure}>Academy Brochure</LinkPill>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experiences" className="neo-grid border-t-[5px] border-black bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="DECA + PRACTICALS"
+            title="Compete, collaborate, and build proof"
+            subtitle="DECA participation + an internship mindset means you build artifacts, not just notes."
+          />
+
+          <div className="grid gap-4 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <NeoCard tone="blue" title="DECA, the arena" kicker="REQUIRED">
+                Deadlines, judges, teamwork, presentation pressure, measurable outcomes.
+                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm font-semibold text-black/85">
+                  <li>Pitching and presenting like a demo day</li>
+                  <li>Business problem-solving under time constraints</li>
+                  <li>Portfolio-ready artifacts: reports, decks, budgets, marketing plans</li>
+                </ul>
+              </NeoCard>
+            </div>
+
+            <div className="lg:col-span-5">
+              <NeoCard tone="silver" title="VyStar branch energy" kicker="BROCHURE">
+                Student-run branch focus: responsible financial skills and real workflows.
+                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm font-semibold text-black/85">
+                  <li>Customer service and professionalism</li>
+                  <li>Accuracy, compliance, and trust</li>
+                  <li>Real accountability</li>
+                </ul>
+              </NeoCard>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            <NeoCard tone="silver" title="Applied learning loop" kicker="HOW IT FEELS">
+              Learn a concept, build a deliverable, get feedback, iterate, present.
+            </NeoCard>
+            <NeoCard tone="blue" title="Internship mindset" kicker="OFFICIAL">
+              Career exploration and workplace readiness through applied learning.
+            </NeoCard>
+            <NeoCard tone="black" title="Community and relationships" kicker="MISSION">
+              Confidence, relationships, and community through applied learning.
+            </NeoCard>
+          </div>
+        </div>
+      </section>
+
+      <section id="credentials" className="border-t-[5px] border-black bg-[var(--bths-silver)]">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="CREDENTIALS"
+            title="Certifications + dual enrollment"
+            subtitle="Stack signals: industry certs, DE courses, and honors level coursework."
+          />
+
+          <div className="grid gap-4 lg:grid-cols-12">
+            <div className="lg:col-span-6">
+              <div className="rounded-3xl border-[5px] border-black bg-white p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+                <div className="mono text-xs font-bold">INDUSTRY CERTIFICATIONS</div>
+                <p className="mt-3 text-sm font-semibold text-black/85">
+                  Finance program of study lists QuickBooks and Microsoft Office bundle certifications.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge>QuickBooks</Badge>
+                  <Badge>Microsoft Office Bundle</Badge>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-6">
+              <div className="rounded-3xl border-[5px] border-black bg-[var(--bths-black)] p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+                <div className="mono text-xs font-bold text-white/90">DUAL ENROLLMENT</div>
+                <p className="mt-3 text-sm font-semibold text-white/90">
+                  Dual enrollment courses include FIN1100, MAN2021, and GEB2214.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center rounded-full border-[3px] border-black bg-white px-3 py-1 text-xs font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+                    FIN1100
+                  </span>
+                  <span className="inline-flex items-center rounded-full border-[3px] border-black bg-white px-3 py-1 text-xs font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+                    MAN2021
+                  </span>
+                  <span className="inline-flex items-center rounded-full border-[3px] border-black bg-white px-3 py-1 text-xs font-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+                    GEB2214
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <LinkPill href={links.financePOS}>Finance POS</LinkPill>
+            <LinkPill href={links.entrepreneurPOS}>Entrepreneur POS</LinkPill>
+          </div>
+        </div>
+      </section>
+
+      <section id="apply" className="neo-grid border-t-[5px] border-black bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+          <SectionHeading
+            eyebrow="APPLY"
+            title="Next steps"
+            subtitle="Use the official pages for the most current application details and program updates."
+          />
+
+          <div className="grid gap-4 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <div className="rounded-3xl border-[5px] border-black bg-[var(--bths-silver)] p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+                <div className="mono text-xs font-bold">OFFICIAL START POINTS</div>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <LinkPill href={links.bthsAcademies}>BTHS Academies page</LinkPill>
+                  <LinkPill href={links.cteAcademy}>CTE Academy page</LinkPill>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="rounded-3xl border-[5px] border-black bg-white p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+                <div className="mono text-xs font-bold">WHAT TO BRING</div>
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-sm font-semibold text-black/85">
+                  <li>Curiosity about money, operations, and how businesses work</li>
+                  <li>Willingness to build projects, present, and iterate</li>
+                  <li>Consistency, because DECA and practicals reward follow-through</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <footer className="mt-10 rounded-3xl border-[5px] border-black bg-[var(--bths-blue)] p-6 shadow-[12px_12px_0_0_rgba(0,0,0,1)]">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="text-lg font-black text-white">VyStar Academy of Business and Finance</div>
+                <div className="mono text-xs font-bold text-white/80">Bartram Trail High School</div>
+              </div>
+              <a
+                href="#top"
+                className="inline-flex w-fit items-center gap-2 rounded-2xl border-[4px] border-black bg-white px-5 py-3 text-sm font-black shadow-[10px_10px_0_0_rgba(0,0,0,1)] transition hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[14px_14px_0_0_rgba(0,0,0,1)]"
+              >
+                Back to top <span aria-hidden>↑</span>
+              </a>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </div>
+  );
+}
