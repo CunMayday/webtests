@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Tree Scoring Matrix</title>
+    <style>
+        :root {
+            --campus-gold: #C28E0E;
+            --athletic-gold: #CEB888;
+            --purdue-black: #000000;
+            --gray: #9D968D;
+            --dark-gray: #373A36;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--purdue-black);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--dark-gray);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: var(--campus-gold);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--athletic-gold);
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        .matrix-table th {
+            background-color: var(--purdue-black);
+            color: var(--white);
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid var(--gray);
+        }
+
+        .matrix-table td {
+            padding: 10px 8px;
+            border: 1px solid var(--gray);
+            vertical-align: top;
+        }
+
+        .matrix-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .matrix-table tr:hover {
+            background-color: #f8f1df;
+        }
+
+        .question-col {
+            font-weight: bold;
+            color: var(--purdue-black);
+            width: 15%;
+        }
+
+        .answer-col {
+            width: 20%;
+            color: var(--dark-gray);
+        }
+
+        .methodology-col {
+            width: 25%;
+        }
+
+        .points-col {
+            width: 10%;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .reason-col {
+            width: 30%;
+            font-style: italic;
+            color: #555;
+        }
+
+        .points-4 {
+            background-color: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .points-3 {
+            background-color: #5cb85c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .points-2 {
+            background-color: #ffc107;
+            color: var(--purdue-black);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .points-1 {
+            background-color: #f0ad4e;
+            color: var(--purdue-black);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .caution {
+            background-color: #dc3545;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .flow-diagram {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .flow-card {
+            background-color: var(--athletic-gold);
+            border: 2px solid var(--campus-gold);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .flow-card h3 {
+            color: var(--purdue-black);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .flow-card ul {
+            list-style-position: inside;
+            color: var(--dark-gray);
+        }
+
+        .flow-card li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .example-path {
+            background-color: #f8f1df;
+            border-left: 4px solid var(--campus-gold);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .example-path h3 {
+            color: var(--purdue-black);
+            margin-bottom: 15px;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .step-number {
+            background-color: var(--campus-gold);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex-grow: 1;
+        }
+
+        .step-question {
+            font-weight: bold;
+            color: var(--purdue-black);
+        }
+
+        .step-answer {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1200px) {
+            .flow-diagram {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .matrix-table {
+                font-size: 0.75rem;
+            }
+
+            .matrix-table th,
+            .matrix-table td {
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Research Methodology Decision Tree</h1>
+        <p class="subtitle">Scoring Matrix & Evaluation Logic</p>
+
+        <!-- Example Scoring Path -->
+        <div class="section">
+            <h2>Example Decision Path</h2>
+            <div class="example-path">
+                <h3>Scenario: Testing Employee Engagement Survey Relationships</h3>
+                
+                <div class="path-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-question">Research Purpose</div>
+                        <div class="step-answer">→ Explain relationships between business variables</div>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-question">Level of Control</div>
+                        <div class="step-answer">→ No manipulation feasible – observational only</div>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-question">Time Design</div>
+                        <div class="step-answer">→ Cross-sectional snapshot</div>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-question">Data Source</div>
+                        <div class="step-answer">→ New survey data</div>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-question">Depth vs. Generalizability</div>
+                        <div class="step-answer">→ Generalizable estimates</div>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <div class="step-question">Innovation vs. Evaluation</div>
+                        <div class="step-answer">→ (Skipped - not improving)</div>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <div class="step-question">Theoretical Maturity</div>
+                        <div class="step-answer">→ Mature theory – ready to test or extend</div>
+                    </div>
+                </div>
+
+                <div class="path-step">
+                    <div class="step-number">8</div>
+                    <div class="step-content">
+                        <div class="step-question">Feasibility Safeguards</div>
+                        <div class="step-answer">→ Strong support – resources in place</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background-color: white; border-radius: 4px;">
+                    <strong style="color: var(--campus-gold);">Resulting Scores:</strong><br>
+                    <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                        <div>🥇 <strong>Survey Research:</strong> 15 points</div>
+                        <div>🥈 <strong>SEM:</strong> 13 points</div>
+                        <div>🥉 <strong>Correlational/Observational:</strong> 11 points</div>
+                        <div>📊 <strong>Experimental Design:</strong> 6 points (with cautions)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scoring Matrix by Question -->
+        <div class="section">
+            <h2>Detailed Scoring Matrix</h2>
+            <p style="margin-bottom: 15px; color: #555;">
+                This table shows key scoring relationships. Each answer adds points to methodologies that align with that choice.
+            </p>
+
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th class="question-col">Question</th>
+                        <th class="answer-col">Answer Option</th>
+                        <th class="methodology-col">Methodology Affected</th>
+                        <th class="points-col">Points</th>
+                        <th class="reason-col">Reason / Logic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Q1: Research Purpose -->
+                    <tr>
+                        <td rowspan="4" class="question-col">Q1: Research Purpose</td>
+                        <td class="answer-col">Explore</td>
+                        <td class="methodology-col">Case Study, Ethnography, Grounded Theory</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Exploratory goals favor in-depth contextual understanding</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Explain</td>
+                        <td class="methodology-col">SEM</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Explaining relationships matches structural modeling</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Predict</td>
+                        <td class="methodology-col">Time-Series Forecasting</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Forecasting focus aligns with time-series models</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Improve</td>
+                        <td class="methodology-col">Action Research, Design Science</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Improvement with stakeholders fits action cycles</td>
+                    </tr>
+
+                    <!-- Q2: Level of Control -->
+                    <tr>
+                        <td rowspan="3" class="question-col">Q2: Level of Control</td>
+                        <td class="answer-col">Randomized</td>
+                        <td class="methodology-col">Experimental Design</td>
+                        <td class="points-col"><span class="points-4">+4</span></td>
+                        <td class="reason-col">Randomization capacity enables true experiments</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Manipulate</td>
+                        <td class="methodology-col">Quasi-Experimental</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Manipulation without randomization suits quasi-experiments</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Observational</td>
+                        <td class="methodology-col">Correlational/Observational</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Observational access aligns with correlational designs</td>
+                    </tr>
+
+                    <!-- Q3: Time Design -->
+                    <tr>
+                        <td rowspan="3" class="question-col">Q3: Time Design</td>
+                        <td class="answer-col">Cross-sectional</td>
+                        <td class="methodology-col">Correlational/Observational</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Cross-sectional snapshot supports correlational insight</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Longitudinal</td>
+                        <td class="methodology-col">Longitudinal Panel</td>
+                        <td class="points-col"><span class="points-4">+4</span></td>
+                        <td class="reason-col">Longitudinal focus requires panel and growth modeling</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Time-series</td>
+                        <td class="methodology-col">Time-Series Forecasting</td>
+                        <td class="points-col"><span class="points-4">+4</span></td>
+                        <td class="reason-col">High-frequency data aligns with time-series forecasting</td>
+                    </tr>
+
+                    <!-- Q4: Data Source -->
+                    <tr>
+                        <td rowspan="4" class="question-col">Q4: Data Source</td>
+                        <td class="answer-col">Archival</td>
+                        <td class="methodology-col">Time-Series, Correlational</td>
+                        <td class="points-col"><span class="points-2">+2</span></td>
+                        <td class="reason-col">Existing data can drive forecasting and analysis</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Survey</td>
+                        <td class="methodology-col">Survey Research</td>
+                        <td class="points-col"><span class="points-4">+4</span></td>
+                        <td class="reason-col">Survey data is central to this methodology</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Qualitative</td>
+                        <td class="methodology-col">Ethnography, Grounded Theory, Phenomenology</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Qualitative evidence aligns with interpretive methods</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Mixed sources</td>
+                        <td class="methodology-col">Mixed Methods</td>
+                        <td class="points-col"><span class="points-4">+4</span></td>
+                        <td class="reason-col">Mixed data sources require integrated design</td>
+                    </tr>
+
+                    <!-- Q5: Depth vs Generalizability -->
+                    <tr>
+                        <td rowspan="3" class="question-col">Q5: Depth vs. Generalizability</td>
+                        <td class="answer-col">Depth</td>
+                        <td class="methodology-col">Ethnography</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Contextual depth aligns with ethnographic immersion</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Generalizable</td>
+                        <td class="methodology-col">Survey Research</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Generalizable estimates align with survey sampling</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Both</td>
+                        <td class="methodology-col">Mixed Methods</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Mixed methods balance depth with generalizable evidence</td>
+                    </tr>
+
+                    <!-- Q6: Innovation (Conditional) -->
+                    <tr>
+                        <td rowspan="3" class="question-col">Q6: Innovation Type<br><em style="font-size: 0.8rem;">(if Q1=Improve)</em></td>
+                        <td class="answer-col">Design</td>
+                        <td class="methodology-col">Design Science</td>
+                        <td class="points-col"><span class="points-4">+4</span></td>
+                        <td class="reason-col">Building artifacts clearly fits design science</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Collaborative</td>
+                        <td class="methodology-col">Action Research</td>
+                        <td class="points-col"><span class="points-4">+4</span></td>
+                        <td class="reason-col">Collaborative change aligns with action research cycles</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Evaluate</td>
+                        <td class="methodology-col">Quasi-Experimental</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Evaluation without new build suits quasi-experiments</td>
+                    </tr>
+
+                    <!-- Q7: Theoretical Maturity -->
+                    <tr>
+                        <td rowspan="2" class="question-col">Q7: Theoretical Maturity</td>
+                        <td class="answer-col">Thin theory</td>
+                        <td class="methodology-col">Grounded Theory</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Thin theory base benefits from building new frameworks</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Mature theory</td>
+                        <td class="methodology-col">SEM</td>
+                        <td class="points-col"><span class="points-3">+3</span></td>
+                        <td class="reason-col">Mature theory supports structural testing</td>
+                    </tr>
+
+                    <!-- Q8: Feasibility -->
+                    <tr>
+                        <td rowspan="2" class="question-col">Q8: Feasibility</td>
+                        <td class="answer-col">Moderate constraints</td>
+                        <td class="methodology-col">Systematic Review</td>
+                        <td class="points-col"><span class="points-1">+1</span></td>
+                        <td class="reason-col">Consider complementing with synthesized evidence</td>
+                    </tr>
+                    <tr>
+                        <td class="answer-col">Significant constraints</td>
+                        <td class="methodology-col">Systematic Review</td>
+                        <td class="points-col"><span class="points-2">+2</span></td>
+                        <td class="reason-col">Evidence synthesis offers progress when primary data limited</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Key Features -->
+        <div class="section">
+            <h2>Key Evaluation Features</h2>
+            <div class="flow-diagram">
+                <div class="flow-card">
+                    <h3>🎯 Weighted Scoring</h3>
+                    <ul>
+                        <li><strong>4 points:</strong> Perfect alignment</li>
+                        <li><strong>3 points:</strong> Strong fit</li>
+                        <li><strong>2 points:</strong> Moderate fit</li>
+                        <li><strong>1 point:</strong> Weak fit</li>
+                        <li>Scores accumulate across all questions</li>
+                    </ul>
+                </div>
+
+                <div class="flow-card">
+                    <h3>📝 Reason Tracking</h3>
+                    <ul>
+                        <li>Every point added includes explanation</li>
+                        <li>Reasons shown in final recommendation</li>
+                        <li>Helps users understand "why"</li>
+                        <li>Transparent decision logic</li>
+                        <li>Educational value for researchers</li>
+                    </ul>
+                </div>
+
+                <div class="flow-card">
+                    <h3>⚠️ Caution System</h3>
+                    <ul>
+                        <li>Flags problematic methodologies</li>
+                        <li>Warns about feasibility issues</li>
+                        <li>Highlights constraints</li>
+                        <li>Doesn't eliminate options</li>
+                        <li>Informs decision-making</li>
+                    </ul>
+                </div>
+
+                <div class="flow-card">
+                    <h3>🔀 Conditional Logic</h3>
+                    <ul>
+                        <li>Question 6 only if Q1 = "Improve"</li>
+                        <li>Dynamic question sequence</li>
+                        <li>Efficient user experience</li>
+                        <li>Context-aware branching</li>
+                        <li>Reduces unnecessary questions</li>
+                    </ul>
+                </div>
+
+                <div class="flow-card">
+                    <h3>🏆 Recommendation Output</h3>
+                    <ul>
+                        <li>Primary: Highest-scoring methodology</li>
+                        <li>Alternatives: Top 2 runners-up</li>
+                        <li>Decision path summary</li>
+                        <li>Feasibility guidance</li>
+                        <li>Concrete next steps</li>
+                    </ul>
+                </div>
+
+                <div class="flow-card">
+                    <h3>🎓 Educational Design</h3>
+                    <ul>
+                        <li>Real-world examples for every option</li>
+                        <li>Detailed methodology descriptions</li>
+                        <li>Advantages and considerations</li>
+                        <li>Business research context</li>
+                        <li>DBA-specific guidance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; color: #666;">
+            <p><strong>Created by:</strong> Dr. Altinoz | <strong>Contact:</strong> caltinoz@purdueglobal.edu</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                <a href="https://cunmayday.github.io/webtests/ResearchMethods.pdf" target="_blank" style="color: #C28E0E;">
+                    View Research Methods Guide (PDF)
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
