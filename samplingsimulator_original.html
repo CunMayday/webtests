@@ -1,0 +1,747 @@
+<!-- Version 4.0 - Added non-visual live announcements for simulator and CLT updates without changing the visible layout. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sampling Distributions &amp; Standard Error - Purdue Global</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold-campus: #C28E0E;
+      --gold-athletic: #CEB888;
+      --black: #000000;
+      --dark-gray: #373A36;
+      --gray: #9D968D;
+      --white: #FFFFFF;
+      --bg: #F5F4F1;
+      --surface: #FFFFFF;
+      --surface2: #EDEAE5;
+      --border: rgba(157, 150, 141, 0.28);
+      --border2: rgba(157, 150, 141, 0.55);
+      --gold-light: rgba(194, 142, 14, 0.10);
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--black); min-height: 100vh; }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; box-shadow: 0 0 0 3px var(--gold-athletic); }
+    .skip-link { position: absolute; left: 12px; top: -48px; z-index: 20; padding: 0.55rem 0.85rem; background: var(--gold-campus); color: var(--black); text-decoration: none; border-radius: 0 0 var(--radius-sm) var(--radius-sm); font-weight: 700; }
+    .skip-link:focus { top: 0; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    header { background: var(--black); }
+    .hdr { display: flex; align-items: stretch; max-width: 1120px; margin: 0 auto; }
+    .hdr-stripe { width: 6px; background: var(--gold-campus); flex-shrink: 0; }
+    .hdr-text { padding: 16px 22px; }
+    .hdr-text h1 { font-size: 17px; font-weight: 700; color: var(--white); line-height: 1.3; }
+    .hdr-text p { font-size: 12px; color: var(--gold-athletic); margin-top: 3px; letter-spacing: 0.2px; }
+    .hdr-badge { margin-left: auto; display: flex; align-items: center; padding-right: 22px; }
+    .hdr-badge span { font-size: 10px; font-weight: 700; color: var(--gold-campus); letter-spacing: 1.2px; text-transform: uppercase; border: 1px solid var(--gold-campus); padding: 4px 11px; border-radius: 3px; }
+
+    .main { max-width: 1120px; margin: 0 auto; padding: 22px 20px 52px; }
+
+    .tabs { display: flex; gap: 3px; margin-bottom: 20px; background: var(--dark-gray); border-radius: var(--radius); padding: 4px; width: fit-content; }
+    .tab { padding: 7px 20px; border-radius: 7px; border: none; background: transparent; font-size: 13px; font-weight: 500; color: var(--gold-athletic); cursor: pointer; transition: all 0.15s; }
+    .tab.active { background: var(--gold-campus); color: var(--black); font-weight: 700; }
+    .tab:hover:not(.active) { color: var(--white); }
+    .panel[hidden] { display: none; }
+
+    .controls-bar { background: var(--dark-gray); border-radius: var(--radius); padding: 16px 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 16px; }
+    .ctrl-group label { display: flex; justify-content: space-between; font-size: 12px; color: var(--gold-athletic); margin-bottom: 6px; font-weight: 500; }
+    .ctrl-group label span { font-weight: 700; color: var(--white); font-size: 13px; }
+    input[type=range] { width: 100%; accent-color: var(--gold-campus); cursor: pointer; }
+    .shape-group { display: flex; flex-direction: column; }
+    .shape-group .top-lbl { font-size: 12px; color: var(--gold-athletic); margin-bottom: 6px; font-weight: 500; display: block; }
+    .shape-btns { display: flex; gap: 6px; }
+    .shape-btn { flex: 1; padding: 7px 4px; border: 1px solid var(--gold-athletic); border-radius: var(--radius-sm); background: transparent; font-size: 12px; font-weight: 600; color: var(--gold-athletic); cursor: pointer; transition: all 0.15s; text-align: center; }
+    .shape-btn.active { background: var(--gold-campus); color: var(--black); border-color: var(--gold-campus); }
+    .shape-btn:hover:not(.active) { border-color: var(--white); color: var(--white); }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 15px; }
+    .stat-card.hl { border: 2px solid var(--gold-campus); background: var(--gold-light); }
+    .stat-lbl { font-size: 10px; color: var(--dark-gray); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; margin-bottom: 4px; }
+    .stat-val { font-size: 26px; font-weight: 700; color: var(--black); letter-spacing: -0.5px; line-height: 1; }
+    .stat-card.hl .stat-val { color: var(--dark-gray); }
+    .stat-sub { font-size: 11px; color: var(--dark-gray); margin-top: 4px; }
+
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+    .chart-hdr { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+    .chart-title { font-size: 14px; font-weight: 700; color: var(--black); }
+    .chart-sub { font-size: 12px; color: var(--dark-gray); }
+    .chart-sub strong { color: var(--black); }
+
+    .btn-row { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .btn { padding: 8px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--surface); cursor: pointer; font-size: 13px; font-weight: 600; color: var(--dark-gray); transition: all 0.15s; }
+    .btn:hover { background: var(--surface2); }
+    .btn:active { transform: scale(0.98); }
+    .btn.primary { background: var(--gold-campus); color: var(--black); border-color: var(--gold-campus); }
+    .btn.primary:hover { background: #A57A0C; }
+    .btn.danger { border-color: #8B1A1A; color: #8B1A1A; }
+    .btn.danger:hover { background: #FDF0F0; }
+    .sample-count { font-size: 13px; color: var(--dark-gray); margin-left: auto; font-weight: 700; background: var(--surface2); padding: 6px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border2); }
+
+    .insight { background: var(--dark-gray); border-left: 4px solid var(--gold-campus); border-radius: 0 var(--radius) var(--radius) 0; padding: 13px 17px; font-size: 13px; color: var(--gold-athletic); line-height: 1.65; }
+    .insight strong { color: var(--white); font-weight: 700; }
+
+    .clt-compare { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .clt-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+    .clt-card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; color: var(--black); }
+    .clt-note { font-size: 11px; color: var(--dark-gray); margin-top: 7px; font-style: italic; min-height: 28px; }
+
+    .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .concept-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; }
+    .concept-card h3 { font-size: 14px; font-weight: 700; color: var(--black); padding-bottom: 8px; margin-bottom: 10px; border-bottom: 2px solid var(--gold-campus); display: inline-block; }
+    .concept-card p, .concept-card li { font-size: 13px; color: var(--dark-gray); line-height: 1.65; }
+    .concept-card ul { padding-left: 17px; margin-top: 6px; }
+    .concept-card ul li { margin-bottom: 5px; }
+    .formula-box { background: var(--dark-gray); border-radius: var(--radius-sm); padding: 11px 15px; margin: 11px 0; font-family: 'Courier New', monospace; font-size: 15px; font-weight: 700; text-align: center; color: var(--gold-athletic); letter-spacing: 0.5px; }
+    .concept-card.full { grid-column: 1/-1; }
+    .diff-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .diff-table th { text-align: left; padding: 9px 12px; background: var(--dark-gray); color: var(--gold-athletic); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .diff-table td { padding: 9px 12px; border-top: 1px solid var(--border); color: var(--dark-gray); vertical-align: top; }
+    .diff-table td:first-child { font-weight: 600; color: var(--black); }
+    .diff-table tr:hover td { background: var(--surface2); }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-sigma { background: rgba(157,150,141,0.18); color: var(--dark-gray); }
+    .badge-sem { background: var(--gold-light); color: var(--dark-gray); border: 1px solid var(--gold-campus); }
+
+    @media (max-width: 700px) {
+      .charts-grid, .concept-grid, .clt-compare { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .concept-card.full { grid-column: 1; }
+      .hdr-badge { display: none; }
+      .main { padding: 14px 12px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header role="banner">
+    <div class="hdr">
+      <div class="hdr-stripe" aria-hidden="true"></div>
+      <div class="hdr-text">
+        <h1>Sampling Distributions &amp; Standard Error</h1>
+        <p>Interactive Simulator by Dr. Altinoz | Purdue Global</p>
+      </div>
+      <div class="hdr-badge"><span>Purdue Global</span></div>
+    </div>
+  </header>
+
+  <main id="main-content" class="main">
+    <div id="simulator-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <div id="clt-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <div class="tabs" role="tablist" aria-label="Sampling simulator sections">
+      <button id="tab-button-simulator" class="tab active" type="button" role="tab" aria-selected="true" aria-controls="tab-simulator" tabindex="0" data-tab="simulator" onclick="switchTab('simulator', this)">Simulator</button>
+      <button id="tab-button-clt" class="tab" type="button" role="tab" aria-selected="false" aria-controls="tab-clt" tabindex="-1" data-tab="clt" onclick="switchTab('clt', this)">Central Limit Theorem</button>
+      <button id="tab-button-concepts" class="tab" type="button" role="tab" aria-selected="false" aria-controls="tab-concepts" tabindex="-1" data-tab="concepts" onclick="switchTab('concepts', this)">Key Concepts</button>
+    </div>
+    <section id="tab-simulator" class="panel" role="tabpanel" aria-labelledby="tab-button-simulator">
+      <div class="controls-bar">
+        <div class="ctrl-group shape-group">
+          <span id="shape-group-label" class="top-lbl">Population shape</span>
+          <div class="shape-btns" role="radiogroup" aria-labelledby="shape-group-label">
+            <button class="shape-btn active" type="button" role="radio" aria-checked="true" tabindex="0" data-shape="normal" onclick="setShape('normal', this)">Normal</button>
+            <button class="shape-btn" type="button" role="radio" aria-checked="false" tabindex="-1" data-shape="rskewed" onclick="setShape('rskewed', this)">Right-skewed</button>
+            <button class="shape-btn" type="button" role="radio" aria-checked="false" tabindex="-1" data-shape="lskewed" onclick="setShape('lskewed', this)">Left-skewed</button>
+            <button class="shape-btn" type="button" role="radio" aria-checked="false" tabindex="-1" data-shape="bimodal" onclick="setShape('bimodal', this)">Bimodal</button>
+          </div>
+        </div>
+
+        <div class="ctrl-group"><label for="sigma">Population std dev (sigma) <span id="sigma-out">15</span></label> <input type="range" id="sigma" min="5" max="30" value="15" step="1" oninput="onSigmaChange(this.value)"></div>
+        <div class="ctrl-group"><label for="n-ctrl">Sample size (n) <span id="n-out">30</span></label> <input type="range" id="n-ctrl" min="2" max="100" value="30" step="1" oninput="onNChange(this.value)"></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-lbl">Population sigma</div>
+          <div class="stat-val" id="stat-sigma">15.0</div>
+          <div class="stat-sub">Spread of individuals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Sample size n</div>
+          <div class="stat-val" id="stat-n">30</div>
+          <div class="stat-sub">Observations per sample</div>
+        </div>
+        <div class="stat-card hl">
+          <div class="stat-lbl">Std Error of Mean (SEM)</div>
+          <div class="stat-val" id="stat-sem">2.74</div>
+          <div class="stat-sub">sigma / sqrt(n) - theoretical</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-lbl">Observed spread of x-bar</div>
+          <div class="stat-val" id="stat-obs">--</div>
+          <div class="stat-sub">Std dev of sample means</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-hdr">
+            <div class="chart-title">Population distribution</div>
+            <div class="chart-sub">Spread = <strong>sigma = <span id="lbl-sigma">15.0</span></strong></div>
+          </div>
+          <div style="position: relative; height: 230px;"><canvas id="popChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-hdr">
+            <div class="chart-title">Sampling distribution of x-bar</div>
+            <div class="chart-sub">Spread = <strong>SEM = sigma/sqrt(n) = <span id="lbl-sem">2.74</span></strong></div>
+          </div>
+          <div style="position: relative; height: 230px;"><canvas id="sampleChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="btn-row"><button class="btn primary" type="button" onclick="drawN(1)">Draw 1 sample</button> <button class="btn" type="button" onclick="drawN(10)">Draw 10</button> <button class="btn" type="button" onclick="drawN(100)">Draw 100</button> <button class="btn" type="button" onclick="drawN(500)">Draw 500</button> <button class="btn danger" type="button" onclick="resetSim()">Reset</button> <span class="sample-count" id="sample-count">0 samples drawn</span></div>
+      <div class="insight" id="insight">Press <strong>Draw 1 sample</strong> to begin. Each click draws a random sample of size n, computes its mean x-bar, and plots it on the right. The dashed line marks mu = 100 on both charts - watch how the sampling distribution centers right on it.</div>
+    </section>
+
+    <section id="tab-clt" class="panel" role="tabpanel" aria-labelledby="tab-button-clt" hidden>
+      <div class="controls-bar" style="grid-template-columns: 1fr 1fr;">
+        <div class="ctrl-group"><label for="clt-n">Sample size (n) <span id="clt-n-out">2</span></label> <input type="range" id="clt-n" min="2" max="100" value="2" step="1" oninput="cltNChange(this.value)"></div>
+        <div style="display: flex; align-items: flex-end;"><button class="btn primary" type="button" style="width: 100%;" onclick="runCLT()">Run simulation (1,000 samples each)</button></div>
+      </div>
+
+      <div class="clt-compare" style="grid-template-columns: 1fr 1fr;">
+        <div class="clt-card">
+          <div class="clt-card-title">Normal population</div>
+          <div style="position: relative; height: 190px;"><canvas id="clt-normal"></canvas></div>
+          <div class="clt-note" id="clt-normal-note">Symmetric -> sampling dist. also normal</div>
+        </div>
+        <div class="clt-card">
+          <div class="clt-card-title">Right-skewed population</div>
+          <div style="position: relative; height: 190px;"><canvas id="clt-rskewed"></canvas></div>
+          <div class="clt-note" id="clt-rskewed-note">Right-skewed -> sampling dist. becomes normal</div>
+        </div>
+        <div class="clt-card">
+          <div class="clt-card-title">Left-skewed population</div>
+          <div style="position: relative; height: 190px;"><canvas id="clt-lskewed"></canvas></div>
+          <div class="clt-note" id="clt-lskewed-note">Left-skewed -> sampling dist. becomes normal</div>
+        </div>
+        <div class="clt-card">
+          <div class="clt-card-title">Bimodal population</div>
+          <div style="position: relative; height: 190px;"><canvas id="clt-bimodal"></canvas></div>
+          <div class="clt-note" id="clt-bimodal-note">Two humps -> sampling dist. becomes normal</div>
+        </div>
+      </div>
+      <div class="insight">The <strong>Central Limit Theorem</strong>: regardless of the population's shape, the sampling distribution of the mean approaches a <strong>normal distribution</strong> as n increases - provided the population has finite variance. This is why hypothesis tests and confidence intervals assume normality of sample means even when raw data is not normal. <strong>Try increasing n</strong> and re-running - watch the bell shape sharpen.</div>
+    </section>
+    <section id="tab-concepts" class="panel" role="tabpanel" aria-labelledby="tab-button-concepts" hidden>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h3>Standard Deviation (sigma)</h3>
+          <p>The standard deviation of the <strong>population</strong> measures how spread out individual observations are around the population mean.</p>
+          <div class="formula-box">sigma = sqrt[ sum((x_i - mu)^2) / N ]</div>
+          <ul>
+            <li>Property of the <strong>population</strong>, not any sample</li>
+            <li>Does <strong>not change</strong> as n increases</li>
+            <li>Answers: "How variable are individual values?"</li>
+            <li>Example: heights of all students have sigma = 3 in - fixed regardless of how many you measure</li>
+          </ul>
+        </div>
+        <div class="concept-card">
+          <h3>Standard Error of the Mean (SEM)</h3>
+          <p>The SEM measures the spread of <strong>sample means</strong> around the population mean mu - how precise our estimate of mu is.</p>
+          <div class="formula-box">SEM = sigma / sqrt(n)</div>
+          <ul>
+            <li>Property of the <strong>sampling distribution</strong></li>
+            <li><strong>Shrinks</strong> as n increases - bigger samples -> more precise estimates</li>
+            <li>Answers: "How much would my sample mean vary across repeated studies?"</li>
+            <li>Example: average height in samples of 100 has SEM = 3/sqrt(100) = 0.3 in</li>
+          </ul>
+        </div>
+        <div class="concept-card">
+          <h3>Sampling Distribution</h3>
+          <p>Draw thousands of random samples of size n from the same population and plot all their means -> you get the <strong>sampling distribution of x-bar</strong>.</p>
+          <ul>
+            <li>Center = population mean mu (unbiased estimator)</li>
+            <li>Spread = SEM = sigma/sqrt(n)</li>
+            <li>Shape -> normal as n grows (Central Limit Theorem)</li>
+            <li>Rarely constructed in practice - but underlies every hypothesis test and confidence interval</li>
+          </ul>
+        </div>
+        <div class="concept-card">
+          <h3>Why This Matters in Research</h3>
+          <ul>
+            <li><strong>Confidence intervals</strong> use SEM, not sigma</li>
+            <li><strong>t-statistics</strong> divide by SEM to standardize the estimate</li>
+            <li>Reporting sigma when you mean SEM misrepresents precision</li>
+            <li>A large sigma is fine - if n is large enough, SEM will be small and your estimate still precise</li>
+          </ul>
+          <div class="formula-box">95% CI approx x-bar +/- 1.96 x SEM</div>
+        </div>
+        <div class="concept-card full">
+          <h3>sigma vs. SEM - Side-by-Side Comparison</h3>
+          <table class="diff-table">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th><span class="badge badge-sigma">sigma - Standard Deviation</span></th>
+                <th><span class="badge badge-sem">SEM - Standard Error</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>What it describes</td><td>Spread of individual observations</td><td>Spread of sample means</td></tr>
+              <tr><td>Formula</td><td>sqrt(sum((x_i - mu)^2) / N)</td><td>sigma / sqrt(n)</td></tr>
+              <tr><td>Changes with n?</td><td>No - fixed population property</td><td>Yes - shrinks as n increases</td></tr>
+              <tr><td>Always &lt;= sigma?</td><td>--</td><td>Yes (SEM &lt;= sigma when n &gt;= 1)</td></tr>
+              <tr><td>Used for</td><td>Describing variability, histograms, z-scores</td><td>Confidence intervals, hypothesis tests, t-statistics</td></tr>
+              <tr><td>Intuition</td><td>"How much do individuals vary?"</td><td>"How far off might my estimate of the mean be?"</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const POP_MEAN = 100;
+    const AXIS_LO = 40;
+    const AXIS_HI = 160;
+    const BIN_W = 5;
+    const BINS = (AXIS_HI - AXIS_LO) / BIN_W;
+    let sigma = 15;
+    let n = 30;
+    let shape = 'normal';
+    let sampleMeans = [];
+    let cltN = 2;
+
+    function randn() {
+      let u = 0;
+      let v = 0;
+      while (!u) u = Math.random();
+      while (!v) v = Math.random();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+
+    function randNormal(mu, s) { return mu + randn() * s; }
+    function randRSkewed(s) { return POP_MEAN - s * 1.2 + (-Math.log(Math.random()) * s * 1.2); }
+    function randLSkewed(s) { return POP_MEAN + s * 1.2 - (-Math.log(Math.random()) * s * 1.2); }
+    function randBimodal(s) {
+      const peak = Math.random() < 0.5 ? -1.5 : 1.5;
+      return POP_MEAN + peak * s + randn() * (s * 0.5);
+    }
+
+    function randVal() {
+      if (shape === 'normal') return randNormal(POP_MEAN, sigma);
+      if (shape === 'rskewed') return randRSkewed(sigma);
+      if (shape === 'lskewed') return randLSkewed(sigma);
+      return randBimodal(sigma);
+    }
+
+    function drawOneSample() {
+      let s = 0;
+      for (let i = 0; i < n; i++) s += randVal();
+      return s / n;
+    }
+
+    function buildTickWinner() {
+      const winner = {};
+      for (let i = 0; i < BINS; i++) {
+        const binStart = AXIS_LO + i * BIN_W;
+        if (binStart % 5 === 0 && binStart >= AXIS_LO && binStart < AXIS_HI) {
+          const isLabel = (binStart % 10 === 0) && (binStart !== POP_MEAN);
+          const isMinor = binStart % 10 !== 0;
+          if (isLabel) winner[i] = String(binStart);
+          else if (isMinor) winner[i] = '.';
+        }
+      }
+      return winner;
+    }
+
+    function buildBinLabels() {
+      return Array.from({ length: BINS }, (_, i) => AXIS_LO + (i + 0.5) * BIN_W);
+    }
+
+    function makeTickCallback() {
+      const winner = buildTickWinner();
+      return function(val, index) {
+        return winner[index] !== undefined ? winner[index] : '';
+      };
+    }
+
+    function buildPopBins() {
+      const labels = buildBinLabels();
+      const data = [];
+      for (let i = 0; i < BINS; i++) {
+        const x = AXIS_LO + (i + 0.5) * BIN_W;
+        let h = 0;
+        if (shape === 'normal') {
+          const z = (x - POP_MEAN) / sigma;
+          h = Math.exp(-0.5 * z * z) / (sigma * Math.sqrt(2 * Math.PI)) * BIN_W;
+        } else if (shape === 'rskewed') {
+          const rate = 1 / (sigma * 1.2);
+          const xs = x - (POP_MEAN - sigma * 1.2);
+          h = xs > 0 ? rate * Math.exp(-rate * xs) * BIN_W : 0;
+        } else if (shape === 'lskewed') {
+          const rate = 1 / (sigma * 1.2);
+          const xs = (POP_MEAN + sigma * 1.2) - x;
+          h = xs > 0 ? rate * Math.exp(-rate * xs) * BIN_W : 0;
+        } else {
+          const s2 = sigma * 0.5;
+          const z1 = (x - (POP_MEAN - 1.5 * sigma)) / s2;
+          const z2 = (x - (POP_MEAN + 1.5 * sigma)) / s2;
+          h = 0.5 * (Math.exp(-0.5 * z1 * z1) + Math.exp(-0.5 * z2 * z2)) / (s2 * Math.sqrt(2 * Math.PI)) * BIN_W;
+        }
+        data.push(Math.max(0, parseFloat((h * 100).toFixed(4))));
+      }
+      return { labels, data };
+    }
+    function buildSampleBins() {
+      const labels = buildBinLabels();
+      const counts = new Array(BINS).fill(0);
+      sampleMeans.forEach((m) => {
+        const idx = Math.floor((m - AXIS_LO) / BIN_W);
+        if (idx >= 0 && idx < BINS) counts[idx]++;
+      });
+      return { labels, data: counts };
+    }
+
+    const meanLinePlugin = {
+      id: 'meanLine',
+      afterDraw(chart) {
+        const color = chart.config.options.meanLineColor;
+        if (!color) return;
+        const { ctx, chartArea: { left, right, top, bottom } } = chart;
+        const numBins = chart.data.labels.length;
+        if (!numBins) return;
+        const meanBinIdx = (POP_MEAN - AXIS_LO) / BIN_W;
+        const binPx = (right - left) / numBins;
+        const xPos = left + meanBinIdx * binPx;
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([5, 4]);
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = color;
+        ctx.moveTo(xPos, top);
+        ctx.lineTo(xPos, bottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = color;
+        ctx.font = 'bold 10px -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('mu=100', xPos, top - 4);
+        ctx.restore();
+      }
+    };
+    Chart.register(meanLinePlugin);
+
+    const GRID_COLOR = 'rgba(157,150,141,0.22)';
+
+    function chartOptions(showYTicks, meanColor, tickCb) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        meanLineColor: meanColor || null,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          x: {
+            ticks: {
+              autoSkip: false,
+              maxRotation: 0,
+              font: { size: 11 },
+              color: '#373A36',
+              callback: tickCb || null
+            },
+            grid: { display: false },
+            border: { color: 'rgba(157,150,141,0.35)' }
+          },
+          y: {
+            display: true,
+            beginAtZero: true,
+            ticks: { display: !!showYTicks, font: { size: 10 }, color: '#373A36', maxTicksLimit: 5 },
+            grid: { display: true, color: GRID_COLOR, lineWidth: 1 },
+            border: { display: false }
+          }
+        },
+        animation: { duration: 220 }
+      };
+    }
+
+    const popInit = buildPopBins();
+    const popChart = new Chart(document.getElementById('popChart'), {
+      type: 'bar',
+      data: {
+        labels: popInit.labels,
+        datasets: [{ data: popInit.data, backgroundColor: 'rgba(206,184,136,0.45)', borderColor: 'rgba(194,142,14,0.70)', borderWidth: 1, barPercentage: 1, categoryPercentage: 1 }]
+      },
+      options: chartOptions(false, 'rgba(55,58,54,0.70)', makeTickCallback())
+    });
+
+    const sampInit = buildSampleBins();
+    const sampleChart = new Chart(document.getElementById('sampleChart'), {
+      type: 'bar',
+      data: {
+        labels: sampInit.labels,
+        datasets: [{ data: sampInit.data, backgroundColor: 'rgba(194,142,14,0.50)', borderColor: 'rgba(194,142,14,0.85)', borderWidth: 1, barPercentage: 1, categoryPercentage: 1 }]
+      },
+      options: chartOptions(true, 'rgba(55,58,54,0.70)', makeTickCallback())
+    });
+
+    const CLT_BINS = BINS;
+    const CLT_BIN_W = BIN_W;
+
+    function makeCLTChart(id, bg, bdr) {
+      const initLabels = Array.from({ length: CLT_BINS }, (_, i) => AXIS_LO + (i + 0.5) * CLT_BIN_W);
+      return new Chart(document.getElementById(id), {
+        type: 'bar',
+        data: { labels: initLabels, datasets: [{ data: Array(CLT_BINS).fill(0), backgroundColor: bg, borderColor: bdr, borderWidth: 1, barPercentage: 1, categoryPercentage: 1 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          meanLineColor: 'rgba(55,58,54,0.70)',
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: {
+              ticks: { autoSkip: false, maxRotation: 0, font: { size: 10 }, color: '#373A36', callback: makeTickCallback() },
+              grid: { display: false },
+              border: { color: 'rgba(157,150,141,0.35)' }
+            },
+            y: { display: true, beginAtZero: true, ticks: { display: false }, grid: { display: true, color: GRID_COLOR, lineWidth: 1 }, border: { display: false } }
+          },
+          animation: { duration: 280 }
+        }
+      });
+    }
+
+    const cltNormal = makeCLTChart('clt-normal', 'rgba(157,150,141,0.40)', 'rgba(55,58,54,0.65)');
+    const cltRSkewed = makeCLTChart('clt-rskewed', 'rgba(194,142,14,0.45)', 'rgba(194,142,14,0.80)');
+    const cltLSkewed = makeCLTChart('clt-lskewed', 'rgba(194,142,14,0.45)', 'rgba(194,142,14,0.80)');
+    const cltBimodal = makeCLTChart('clt-bimodal', 'rgba(206,184,136,0.50)', 'rgba(157,150,141,0.65)');
+
+    function refreshPopChart() {
+      const d = buildPopBins();
+      popChart.data.labels = d.labels;
+      popChart.data.datasets[0].data = d.data;
+      popChart.options.scales.x.ticks.callback = makeTickCallback();
+      popChart.update();
+    }
+
+    function refreshSampleChart() {
+      const d = buildSampleBins();
+      sampleChart.data.labels = d.labels;
+      sampleChart.data.datasets[0].data = d.data;
+      sampleChart.options.scales.x.ticks.callback = makeTickCallback();
+      sampleChart.update();
+    }
+
+    function updateSliderValueText() {
+      document.getElementById('sigma').setAttribute('aria-valuetext', 'Population standard deviation ' + sigma);
+      document.getElementById('n-ctrl').setAttribute('aria-valuetext', 'Sample size ' + n);
+      document.getElementById('clt-n').setAttribute('aria-valuetext', 'Central Limit Theorem sample size ' + cltN);
+    }
+
+    function announce(id, message) {
+      const region = document.getElementById(id);
+      if (!region) return;
+      region.textContent = '';
+      window.setTimeout(() => {
+        region.textContent = message;
+      }, 30);
+    }
+
+    function announceSimulator(message) {
+      announce('simulator-live', message);
+    }
+
+    function announceCLT(message) {
+      announce('clt-live', message);
+    }
+
+    function updateStats() {
+      const sem = sigma / Math.sqrt(n);
+      document.getElementById('stat-sigma').textContent = sigma.toFixed(1);
+      document.getElementById('stat-n').textContent = n;
+      document.getElementById('stat-sem').textContent = sem.toFixed(2);
+      document.getElementById('sigma-out').textContent = sigma;
+      document.getElementById('n-out').textContent = n;
+      document.getElementById('lbl-sigma').textContent = sigma.toFixed(1);
+      document.getElementById('lbl-sem').textContent = sem.toFixed(2);
+      if (sampleMeans.length > 1) {
+        const mn = sampleMeans.reduce((a, b) => a + b) / sampleMeans.length;
+        const sd = Math.sqrt(sampleMeans.reduce((a, b) => a + (b - mn) ** 2, 0) / sampleMeans.length);
+        document.getElementById('stat-obs').textContent = sd.toFixed(2);
+      } else {
+        document.getElementById('stat-obs').textContent = '--';
+      }
+      document.getElementById('sample-count').textContent = sampleMeans.length + ' samples drawn';
+      updateSliderValueText();
+    }
+
+    function updateInsight() {
+      const sem = (sigma / Math.sqrt(n)).toFixed(2);
+      const box = document.getElementById('insight');
+      const shapeLabel = { normal: 'normally distributed', rskewed: 'right-skewed', lskewed: 'left-skewed', bimodal: 'bimodal' }[shape];
+      if (sampleMeans.length === 0) {
+        box.innerHTML = `Population is <strong>${shapeLabel}</strong> with sigma = ${sigma}. Draw samples to build the sampling distribution on the right. The gray histogram is fixed - it describes the population, not any sample.`;
+      } else if (sampleMeans.length < 30) {
+        const ratio = (sigma / parseFloat(sem)).toFixed(1);
+        box.innerHTML = `With n = ${n}: SEM = sigma / sqrt(n) = ${sigma} / sqrt(${n}) = <strong>${sem}</strong>. Population sigma = ${sigma} is <strong>${ratio}x larger</strong> than the SEM. Keep drawing - the distribution shape will emerge.`;
+      } else {
+        const mn = sampleMeans.reduce((a, b) => a + b) / sampleMeans.length;
+        const obsSd = Math.sqrt(sampleMeans.reduce((a, b) => a + (b - mn) ** 2, 0) / sampleMeans.length).toFixed(2);
+        const cltNote = shape !== 'normal'
+          ? ` Even though the population is <strong>${shapeLabel}</strong>, the sampling distribution is converging toward a <strong>normal bell curve</strong> - this is the Central Limit Theorem.`
+          : '';
+        box.innerHTML = `${sampleMeans.length} samples, n = ${n}: sigma = <strong>${sigma}</strong> (individual spread) vs. SEM = <strong>${sem}</strong> (precision of mean estimate). Observed spread of x-bars = <strong>${obsSd}</strong>, converging on theoretical SEM.${cltNote}`;
+      }
+    }
+    function syncShapeButtons(activeShape) {
+      document.querySelectorAll('.shape-btn').forEach((button) => {
+        const isActive = button.dataset.shape === activeShape;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        button.tabIndex = isActive ? 0 : -1;
+      });
+    }
+
+    function setShape(s, btn) {
+      shape = s;
+      syncShapeButtons(shape);
+      if (btn) btn.focus();
+      sampleMeans = [];
+      refreshPopChart();
+      refreshSampleChart();
+      updateStats();
+      updateInsight();
+      announceSimulator('Population shape set to ' + btn.textContent + '. Sample results cleared.');
+    }
+
+    function onSigmaChange(v) {
+      sigma = +v;
+      sampleMeans = [];
+      refreshPopChart();
+      refreshSampleChart();
+      updateStats();
+      updateInsight();
+      announceSimulator('Population standard deviation set to ' + sigma + '. Sample results cleared.');
+    }
+
+    function onNChange(v) {
+      n = +v;
+      sampleMeans = [];
+      refreshSampleChart();
+      updateStats();
+      updateInsight();
+      announceSimulator('Sample size set to ' + n + '. Sample results cleared.');
+    }
+
+    function drawN(count) {
+      for (let i = 0; i < count; i++) sampleMeans.push(drawOneSample());
+      refreshSampleChart();
+      updateStats();
+      updateInsight();
+      announceSimulator(count + ' sample' + (count === 1 ? '' : 's') + ' drawn. Total samples: ' + sampleMeans.length + '.');
+    }
+
+    function resetSim() {
+      sampleMeans = [];
+      refreshSampleChart();
+      updateStats();
+      updateInsight();
+      announceSimulator('Simulator reset. No samples drawn.');
+    }
+
+    function cltNChange(v) {
+      cltN = +v;
+      document.getElementById('clt-n-out').textContent = v;
+      updateSliderValueText();
+      announceCLT('Central Limit Theorem sample size set to ' + cltN + '.');
+    }
+
+    function updateCLTChart(chart, means) {
+      const counts = new Array(CLT_BINS).fill(0);
+      means.forEach((m) => {
+        const idx = Math.floor((m - AXIS_LO) / CLT_BIN_W);
+        if (idx >= 0 && idx < CLT_BINS) counts[idx]++;
+      });
+      chart.data.labels = Array.from({ length: CLT_BINS }, (_, i) => AXIS_LO + (i + 0.5) * CLT_BIN_W);
+      chart.data.datasets[0].data = counts;
+      chart.update();
+    }
+
+    function runCLT() {
+      const N = 1000;
+      function genMeans(fn) {
+        const out = [];
+        for (let i = 0; i < N; i++) {
+          let s = 0;
+          for (let j = 0; j < cltN; j++) s += fn();
+          out.push(s / cltN);
+        }
+        return out;
+      }
+      updateCLTChart(cltNormal, genMeans(() => randNormal(POP_MEAN, 15)));
+      updateCLTChart(cltRSkewed, genMeans(() => randRSkewed(15)));
+      updateCLTChart(cltLSkewed, genMeans(() => randLSkewed(15)));
+      updateCLTChart(cltBimodal, genMeans(() => randBimodal(15)));
+      const semA = (15 / Math.sqrt(cltN)).toFixed(2);
+      document.getElementById('clt-normal-note').textContent = `Normal pop -> sampling dist. normal (SEM approx ${semA})`;
+      document.getElementById('clt-rskewed-note').textContent = `Right-skewed pop -> ${cltN >= 30 ? 'approximately normal' : 'still skewed - try n >= 30'}`;
+      document.getElementById('clt-lskewed-note').textContent = `Left-skewed pop -> ${cltN >= 30 ? 'approximately normal' : 'still skewed - try n >= 30'}`;
+      document.getElementById('clt-bimodal-note').textContent = `Bimodal pop -> ${cltN >= 25 ? 'approximately normal' : 'two humps fading - increase n'}`;
+      announceCLT('Central Limit Theorem simulation run with sample size ' + cltN + '. Updated notes describe the normal, right-skewed, left-skewed, and bimodal results.');
+    }
+
+    function switchTab(name, btn) {
+      const tabs = document.querySelectorAll('[role="tab"]');
+      const panels = document.querySelectorAll('[role="tabpanel"]');
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.tab === name;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        tab.tabIndex = isActive ? 0 : -1;
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.id !== 'tab-' + name;
+      });
+      if (btn) btn.focus();
+      announce('simulator-live', '');
+      announce('clt-live', '');
+      if (name === 'clt') runCLT();
+    }
+
+    function initTabKeyboard() {
+      const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('keydown', (event) => {
+          let nextIndex = index;
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === 'Home') nextIndex = 0;
+          else if (event.key === 'End') nextIndex = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          const nextTab = tabs[nextIndex];
+          switchTab(nextTab.dataset.tab, nextTab);
+        });
+      });
+    }
+
+    function initShapeKeyboard() {
+      const buttons = Array.from(document.querySelectorAll('.shape-btn'));
+      buttons.forEach((button, index) => {
+        button.addEventListener('keydown', (event) => {
+          let nextIndex = index;
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % buttons.length;
+          else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + buttons.length) % buttons.length;
+          else if (event.key === 'Home') nextIndex = 0;
+          else if (event.key === 'End') nextIndex = buttons.length - 1;
+          else return;
+          event.preventDefault();
+          const nextButton = buttons[nextIndex];
+          setShape(nextButton.dataset.shape, nextButton);
+        });
+      });
+    }
+
+    initTabKeyboard();
+    initShapeKeyboard();
+    syncShapeButtons(shape);
+    updateStats();
+    updateInsight();
+  </script>
+</body>
+</html>
