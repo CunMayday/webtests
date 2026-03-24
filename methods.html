@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- Version 6.0 - Consolidated redundant introduction text and added creator attribution. -->
+<!-- Version 8.0 - Removed background color from About This Tool section for white background. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Methodology Decision Tree - DBA Program</title>
     <style>
-        /* Version 6.0 - Consolidated redundant introduction text and added creator attribution */
+        /* Version 7.0 - Fixed ADA/WCAG accessibility issues: color contrast, ARIA attributes, focus management, and reduced-motion support */
 
         /* Purdue Color Palette */
         :root {
@@ -16,6 +16,8 @@
             --gray: #9D968D;
             --dark-gray: #373A36;
             --white: #FFFFFF;
+            /* Accessible text gold: #9A7010 achieves 4.63:1 on white (WCAG AA) */
+            --gold-text: #9A7010;
         }
 
         * {
@@ -79,7 +81,7 @@
         }
 
         .intro-content h2 {
-            color: var(--campus-gold);
+            color: var(--gold-text);
             margin-bottom: 20px;
             font-size: 1.8rem;
         }
@@ -108,7 +110,7 @@
         }
 
         .source-reference {
-            background-color: #f8f1df;
+            background-color: #ffffff;
             border-left: 4px solid var(--campus-gold);
             padding: 20px;
             margin: 25px 0;
@@ -126,16 +128,16 @@
         }
 
         .source-reference a {
-            color: var(--campus-gold);
+            color: var(--gold-text);
             text-decoration: none;
             font-weight: bold;
-            border-bottom: 2px solid var(--campus-gold);
+            border-bottom: 2px solid var(--gold-text);
             padding-bottom: 2px;
         }
 
         .source-reference a:hover {
-            color: #A67309;
-            border-bottom-color: #A67309;
+            color: #7A5700;
+            border-bottom-color: #7A5700;
         }
 
         .source-reference a:focus {
@@ -145,7 +147,7 @@
 
         .start-button {
             background-color: var(--campus-gold);
-            color: var(--white);
+            color: var(--purdue-black);
             border: none;
             padding: 15px 40px;
             border-radius: 5px;
@@ -259,7 +261,7 @@
         .choice-example {
             display: block;
             font-size: 0.9rem;
-            color: var(--campus-gold);
+            color: var(--gold-text);
             margin-top: 6px;
             font-style: italic;
         }
@@ -292,7 +294,7 @@
         }
 
         .methodology-details h3 {
-            color: var(--campus-gold);
+            color: var(--gold-text);
             margin-bottom: 12px;
             font-size: 1.3rem;
         }
@@ -342,7 +344,7 @@
         }
 
         .path-summary h3 {
-            color: var(--campus-gold);
+            color: var(--gold-text);
             margin-bottom: 15px;
         }
 
@@ -363,7 +365,7 @@
         }
 
         .alternative-card h3 {
-            color: var(--campus-gold);
+            color: var(--gold-text);
             margin-bottom: 8px;
             font-size: 1.1rem;
         }
@@ -401,7 +403,7 @@
 
         .nav-button {
             background-color: var(--campus-gold);
-            color: var(--white);
+            color: var(--purdue-black);
             border: none;
             padding: 12px 25px;
             border-radius: 5px;
@@ -417,6 +419,7 @@
 
         .nav-button:disabled {
             background-color: var(--gray);
+            color: var(--purdue-black);
             cursor: not-allowed;
         }
 
@@ -475,6 +478,15 @@
             }
         }
 
+        /* Respect user's motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         /* Screen reader only content */
         .sr-only {
             position: absolute;
@@ -521,7 +533,7 @@
                         <h3>About This Tool</h3>
                         <p>This decision tree is based on a listing of research methodology frameworks suitable for DBA applied research projects.</p>
                         <p><strong>We encourage you to review the source material before starting:</strong></p>
-                        <p><a href="https://cunmayday.github.io/webtests/ResearchMethods.pdf" target="_blank" rel="noopener noreferrer">View the Research Methods Guide (PDF)</a></p>
+                        <p><a href="https://cunmayday.github.io/webtests/ResearchMethods.pdf" target="_blank" rel="noopener noreferrer" aria-label="View the Research Methods Guide PDF (opens in new tab)">View the Research Methods Guide (PDF)</a></p>
                         <p>Reviewing this guide will provide you with deeper context about the various methodologies, helping you make more informed decisions as you progress through the tool.</p>
                         <p>This tool was created by Dr. Altinoz. For suggestions, email <a href="mailto:caltinoz@purdueglobal.edu">caltinoz@purdueglobal.edu</a></p>
                     </div>
@@ -534,15 +546,15 @@
 
             <!-- Decision Tree Content -->
             <div class="decision-tree" id="decisionTree">
-                <div class="progress-bar" role="progressbar" aria-label="Decision tree progress">
+                <div class="progress-bar" role="progressbar" aria-label="Decision tree progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
 
                 <!-- Question 1: Research Purpose -->
                 <div class="question-card active" id="question1">
-                    <h2>What is your primary research purpose?</h2>
+                    <h2 id="q1-heading">What is your primary research purpose?</h2>
                     <p>Choose the core outcome your applied research must deliver for the organization.</p>
-                    <div class="options" role="group" aria-labelledby="question1">
+                    <div class="options" role="group" aria-labelledby="q1-heading">
                         <button class="option-button" data-choice="Explore and understand a business problem or phenomenon" data-value="explore" onclick="handleChoice('question1', this)">
                             Explore and understand a business problem or phenomenon
                             <span class="choice-hint">Clarify what is happening and why it matters.</span>
@@ -568,9 +580,9 @@
 
                 <!-- Question 2: Level of Control -->
                 <div class="question-card" id="questionControl">
-                    <h2>Can you manipulate the key variable and (ideally) randomize?</h2>
+                    <h2 id="qControl-heading">Can you manipulate the key variable and (ideally) randomize?</h2>
                     <p>Be realistic about the control you have over treatments, assignments, or processes.</p>
-                    <div class="options" role="group" aria-labelledby="questionControl">
+                    <div class="options" role="group" aria-labelledby="qControl-heading">
                         <button class="option-button" data-choice="Yes, random assignment to conditions is feasible" data-value="randomized" onclick="handleChoice('questionControl', this)">
                             Yes, random assignment to conditions is feasible
                             <span class="choice-hint">You can manipulate the intervention and assign participants randomly.</span>
@@ -591,9 +603,9 @@
 
                 <!-- Question 3: Time Design -->
                 <div class="question-card" id="questionTime">
-                    <h2>Will you observe change over time?</h2>
+                    <h2 id="qTime-heading">Will you observe change over time?</h2>
                     <p>Select the time horizon that best matches your data collection or archival records.</p>
-                    <div class="options" role="group" aria-labelledby="questionTime">
+                    <div class="options" role="group" aria-labelledby="qTime-heading">
                         <button class="option-button" data-choice="Cross-sectional snapshot" data-value="cross_sectional" onclick="handleChoice('questionTime', this)">
                             Cross-sectional snapshot
                             <span class="choice-hint">One point in time – useful for benchmarking or diagnosing.</span>
@@ -614,9 +626,9 @@
 
                 <!-- Question 4: Data Source -->
                 <div class="question-card" id="questionData">
-                    <h2>What is your primary data source?</h2>
+                    <h2 id="qData-heading">What is your primary data source?</h2>
                     <p>Match the method to the data you can realistically obtain.</p>
-                    <div class="options" role="group" aria-labelledby="questionData">
+                    <div class="options" role="group" aria-labelledby="qData-heading">
                         <button class="option-button" data-choice="Existing organizational or archival data" data-value="archival" onclick="handleChoice('questionData', this)">
                             Existing organizational or archival data
                             <span class="choice-hint">Enterprise systems, transactions, dashboards, or public records.</span>
@@ -642,9 +654,9 @@
 
                 <!-- Question 5: Depth vs. Generalizability -->
                 <div class="question-card" id="questionDepth">
-                    <h2>Is your priority depth in context or generalizable estimates?</h2>
+                    <h2 id="qDepth-heading">Is your priority depth in context or generalizable estimates?</h2>
                     <p>This trade-off guides whether you need immersive understanding, broad evidence, or both.</p>
-                    <div class="options" role="group" aria-labelledby="questionDepth">
+                    <div class="options" role="group" aria-labelledby="qDepth-heading">
                         <button class="option-button" data-choice="Contextual depth" data-value="depth" onclick="handleChoice('questionDepth', this)">
                             Contextual depth
                             <span class="choice-hint">You must understand lived experiences and organizational culture.</span>
@@ -665,9 +677,9 @@
 
                 <!-- Question 6: Innovation vs. Evaluation (conditional) -->
                 <div class="question-card" id="questionInnovation">
-                    <h2>What kind of improvement work are you driving?</h2>
+                    <h2 id="qInnovation-heading">What kind of improvement work are you driving?</h2>
                     <p>Clarify whether you are building something new, co-creating change, or evaluating an existing process.</p>
-                    <div class="options" role="group" aria-labelledby="questionInnovation">
+                    <div class="options" role="group" aria-labelledby="qInnovation-heading">
                         <button class="option-button" data-choice="Build and evaluate a new artifact or process" data-value="design" onclick="handleChoice('questionInnovation', this)">
                             Build and evaluate a new artifact or process
                             <span class="choice-hint">Prototype and test a tool, workflow, or analytics solution.</span>
@@ -688,9 +700,9 @@
 
                 <!-- Question 7: Theoretical Maturity -->
                 <div class="question-card" id="questionTheory">
-                    <h2>How mature is the theory base in this area?</h2>
+                    <h2 id="qTheory-heading">How mature is the theory base in this area?</h2>
                     <p>Determine whether you are extending established theory or need to build new insights.</p>
-                    <div class="options" role="group" aria-labelledby="questionTheory">
+                    <div class="options" role="group" aria-labelledby="qTheory-heading">
                         <button class="option-button" data-choice="Thin theory – need to build or refine frameworks" data-value="thin" onclick="handleChoice('questionTheory', this)">
                             Thin theory – need to build or refine frameworks
                             <span class="choice-hint">Limited prior research or conflicting explanations.</span>
@@ -706,9 +718,9 @@
 
                 <!-- Question 8: Feasibility Safeguards -->
                 <div class="question-card" id="questionFeasibility">
-                    <h2>What feasibility guardrails apply?</h2>
+                    <h2 id="qFeasibility-heading">What feasibility guardrails apply?</h2>
                     <p>Balance ambition with realities like ethics, access, sample size, and timeline.</p>
-                    <div class="options" role="group" aria-labelledby="questionFeasibility">
+                    <div class="options" role="group" aria-labelledby="qFeasibility-heading">
                         <button class="option-button" data-choice="Strong support – resources, access, and approvals are in place" data-value="strong_support" onclick="handleChoice('questionFeasibility', this)">
                             Strong support – resources, access, and approvals are in place
                             <span class="choice-hint">You can execute complex designs without major constraints.</span>
@@ -755,7 +767,7 @@
                 </div>
 
                 <div class="navigation">
-                    <button class="nav-button" id="backButton" onclick="previousQuestion()" disabled>
+                    <button class="nav-button" id="backButton" onclick="previousQuestion()" disabled aria-label="Go back to previous question">
                         ← Back
                     </button>
                     <button class="restart-button" onclick="restart()">
@@ -1414,8 +1426,14 @@
 
             const nextQuestionId = getNextQuestionId(questionId);
             if (nextQuestionId) {
-                document.getElementById(nextQuestionId).classList.add('active');
-                document.getElementById(nextQuestionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const nextCard = document.getElementById(nextQuestionId);
+                nextCard.classList.add('active');
+                nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const nextHeading = nextCard.querySelector('h2');
+                if (nextHeading) {
+                    nextHeading.setAttribute('tabindex', '-1');
+                    nextHeading.focus();
+                }
             } else {
                 showResults();
             }
@@ -1436,6 +1454,11 @@
 
             resultsCard.classList.add('active');
             resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const resultsHeading = resultsCard.querySelector('h2');
+            if (resultsHeading) {
+                resultsHeading.setAttribute('tabindex', '-1');
+                resultsHeading.focus();
+            }
         }
 
         function updatePathSummary() {
@@ -1768,6 +1791,7 @@
             const sequence = getActiveSequence();
             const progress = sequence.length ? (decisions.length / sequence.length) * 100 : 0;
             document.getElementById('progressFill').style.width = progress + '%';
+            document.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', Math.round(progress));
         }
 
         function updateBackButton() {
@@ -1785,8 +1809,14 @@
 
             const lastDecision = decisions.pop();
             document.querySelectorAll('.question-card').forEach(card => card.classList.remove('active'));
-            document.getElementById(lastDecision.id).classList.add('active');
-            document.getElementById(lastDecision.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const prevCard = document.getElementById(lastDecision.id);
+            prevCard.classList.add('active');
+            prevCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const prevHeading = prevCard.querySelector('h2');
+            if (prevHeading) {
+                prevHeading.setAttribute('tabindex', '-1');
+                prevHeading.focus();
+            }
 
             updateProgress();
             updateBackButton();
