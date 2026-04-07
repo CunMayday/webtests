@@ -1,0 +1,674 @@
+<!-- Version 1.0 - Fixed UTF-8 tooltip decoding, removed em dashes from page copy, and repaired malformed Section 4 example markup. -->
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A comprehensive Before and After writing guide for incoming DBA students at Purdue University Global, covering six essential transformations from corporate to scholarly writing.">
+<title>From the Boardroom to the Dissertation | DBA Writing Guide | Purdue University Global</title>
+<style>
+.skip-link {
+  position: absolute; top: -100px; left: 0;
+  background: #000; color: #CEB888;
+  padding: 12px 20px; font-size: 1rem; font-weight: 600;
+  z-index: 9999; text-decoration: none;
+  border-bottom-right-radius: 4px; transition: top 0.2s;
+}
+.skip-link:focus { top: 0; outline: 3px solid #C28E0E; outline-offset: 2px; }
+
+:root {
+  --campus-gold:   #C28E0E;
+  --campus-gold-dark: #8A6508;
+  --athletic-gold: #CEB888;
+  --purdue-black:  #000000;
+  --gray:          #59554D;
+  --dark-gray:     #373A36;
+  --white:         #FFFFFF;
+  --off-white:     #F9F7F3;
+  --gold-tint:     #FAF5E8;
+  --gold-tint-mid: #F0E4B0;
+  --gold-border:   #DFC87A;
+
+  --corp-hbg:  var(--dark-gray);
+  --corp-htxt: var(--athletic-gold);
+  --corp-bbg:  #EDEAE5;
+  --corp-btxt: var(--dark-gray);
+
+  --schol-hbg:  var(--campus-gold);
+  --schol-htxt: var(--purdue-black);
+  --schol-bbg:  var(--gold-tint);
+  --schol-btxt: var(--dark-gray);
+
+  --break-hbg:  var(--purdue-black);
+  --break-htxt: var(--campus-gold);
+  --break-bbg:  #1E1C18;
+  --break-btxt: var(--athletic-gold);
+
+  --fs: 'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;
+  --fu: system-ui,-apple-system,'Segoe UI',sans-serif;
+  --r: 6px; --rl: 10px; --mw: 960px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--fs); background: var(--off-white); color: var(--dark-gray); line-height: 1.75; min-height: 100vh; }
+*:focus-visible { outline: 3px solid var(--campus-gold); outline-offset: 3px; border-radius: 2px; }
+
+/* HEADER */
+.site-header { background: var(--purdue-black); position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.header-inner { max-width: var(--mw); margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 1rem; }
+.header-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; }
+.pu-mark { width: 38px; height: 38px; background: var(--campus-gold); border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-family: Georgia,serif; font-size: 1.1rem; font-weight: 700; color: var(--purdue-black); flex-shrink: 0; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.25; }
+.brand-u { font-family: var(--fu); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--athletic-gold); }
+.brand-p { font-family: var(--fu); font-size: 0.8rem; font-weight: 500; color: var(--white); }
+.header-nav { display: flex; align-items: center; gap: 2px; }
+.nav-link { font-family: var(--fu); font-size: 0.76rem; font-weight: 500; color: var(--athletic-gold); text-decoration: none; padding: 5px 9px; border-radius: var(--r); white-space: nowrap; transition: background 0.15s, color 0.15s; }
+.nav-link:hover, .nav-link:focus-visible { background: rgba(194,142,14,0.2); color: var(--white); }
+.nav-toggle { display: none; background: none; border: 1.5px solid var(--athletic-gold); border-radius: var(--r); padding: 6px 10px; cursor: pointer; color: var(--athletic-gold); font-size: 1rem; line-height: 1; font-family: var(--fu); }
+.nav-toggle:hover { background: rgba(206,184,136,0.15); }
+.gold-stripe { height: 4px; background: linear-gradient(90deg,var(--campus-gold) 0%,var(--athletic-gold) 55%,var(--campus-gold) 100%); }
+
+/* HERO */
+.hero { background: var(--purdue-black); color: var(--white); padding: 3.5rem 1.5rem 3rem; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg,transparent,transparent 38px,rgba(194,142,14,0.05) 38px,rgba(194,142,14,0.05) 39px); pointer-events: none; }
+.hero-eyebrow { font-family: var(--fu); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--campus-gold); display: block; margin-bottom: 0.9rem; }
+.hero h1 { font-family: Georgia,serif; font-size: clamp(1.75rem,4vw,2.8rem); font-weight: 700; line-height: 1.2; color: var(--white); max-width: 680px; margin: 0 auto 0.65rem; }
+.hero-sub { font-size: 1.05rem; color: var(--athletic-gold); font-style: italic; max-width: 560px; margin: 0 auto 1.75rem; line-height: 1.6; }
+.hero-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.6rem; }
+.badge { font-family: var(--fu); font-size: 0.74rem; font-weight: 600; background: var(--campus-gold); color: var(--purdue-black); padding: 4px 13px; border-radius: 20px; }
+
+/* PAGE BODY */
+.page-body { max-width: var(--mw); margin: 0 auto; padding: 2rem 1.5rem 4rem; display: flex; flex-direction: column; gap: 1.5rem; align-items: stretch; }
+
+/* SIDEBAR REFACTORED TO TOP NAV */
+.sidebar { background: var(--white); border: 1.5px solid var(--gold-border); border-radius: var(--rl); padding: 1.1rem 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; align-items: center; }
+.sidebar-title { font-family: var(--fu); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.8rem; padding-bottom: 0; border-bottom: none; text-align: center; }
+.toc-list { list-style: none; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.toc-list a { font-family: var(--fu); font-size: 0.8rem; color: var(--dark-gray); text-decoration: none; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--gold-border); display: flex; align-items: center; gap: 7px; line-height: 1; transition: background 0.15s, color 0.15s; }
+.toc-list a:hover, .toc-list a:focus-visible { background: var(--gold-tint); color: var(--purdue-black); border-color: var(--campus-gold); }
+.toc-list a.active { background: var(--campus-gold); color: var(--purdue-black); font-weight: 600; border-color: var(--campus-gold); }
+.toc-num { display: none; }
+.prog-wrap { margin-top: 1.1rem; padding-top: 0.9rem; border-top: 1px solid var(--gold-border); }
+.prog-label { font-family: var(--fu); font-size: 0.68rem; color: var(--gray); margin-bottom: 5px; font-weight: 500; }
+.prog-track { background: #E8E3D8; border-radius: 4px; height: 5px; overflow: hidden; }
+.prog-fill { background: linear-gradient(90deg,var(--campus-gold),var(--athletic-gold)); height: 100%; border-radius: 4px; width: 0%; transition: width 0.3s ease; }
+.prog-pct { font-family: var(--fu); font-size: 0.68rem; color: var(--campus-gold-dark); font-weight: 700; margin-top: 3px; text-align: right; }
+
+/* MAIN */
+.main-content { min-width: 0; }
+
+.intro-callout { background: var(--purdue-black); border-radius: var(--rl); padding: 1.6rem 1.9rem; margin-bottom: 1.75rem; border-left: 5px solid var(--campus-gold); }
+.intro-callout p { font-family: var(--fs); font-size: 0.98rem; color: var(--athletic-gold); line-height: 1.8; }
+
+/* Tab legend strip */
+.legend-strip { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; align-items: center; padding: 0.7rem 1rem; background: var(--white); border: 1px solid var(--gold-border); border-radius: var(--r); }
+.legend-label { font-family: var(--fu); font-size: 0.7rem; color: var(--gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-right: 4px; }
+.legend-chip { font-family: var(--fu); font-size: 0.73rem; padding: 3px 10px; border-radius: 4px; font-weight: 600; }
+.lc-corp  { background: var(--dark-gray); color: var(--athletic-gold); }
+.lc-schol { background: var(--campus-gold); color: var(--purdue-black); }
+.lc-break { background: var(--purdue-black); color: var(--campus-gold); border: 1px solid var(--campus-gold); }
+
+/* SECTION ACCORDION */
+.section-block { margin-bottom: 0.75rem; scroll-margin-top: 82px; }
+.section-trigger { width: 100%; display: flex; align-items: center; gap: 12px; padding: 0.85rem 1.1rem; background: var(--purdue-black); color: var(--athletic-gold); border: none; border-radius: var(--rl); cursor: pointer; text-align: left; transition: background 0.18s; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+.section-trigger:hover { background: #1A1916; }
+.section-trigger[aria-expanded="true"] { border-radius: var(--rl) var(--rl) 0 0; }
+.sec-badge { font-family: var(--fu); font-size: 0.67rem; font-weight: 700; background: var(--campus-gold); color: var(--purdue-black); padding: 3px 9px; border-radius: 4px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
+.sec-title { font-family: Georgia,serif; font-size: 1.05rem; font-weight: 700; flex: 1; color: var(--white); line-height: 1.25; }
+.sec-chevron { font-size: 0.78rem; color: var(--campus-gold); flex-shrink: 0; transition: transform 0.3s ease; font-style: normal; display: inline-block; }
+.section-trigger[aria-expanded="true"] .sec-chevron { transform: rotate(180deg); }
+
+.section-panel { background: var(--white); border: 1.5px solid var(--gold-border); border-top: none; border-radius: 0 0 var(--rl) var(--rl); overflow: hidden; max-height: 0; transition: max-height 0.44s cubic-bezier(0.4,0,0.2,1); }
+.section-panel.open { max-height: 10000px; }
+.section-panel-inner { padding: 1.4rem 1.5rem 1.6rem; }
+.section-desc { font-size: 0.93rem; color: var(--dark-gray); margin-bottom: 1.4rem; line-height: 1.72; padding: 0.65rem 1rem; background: var(--gold-tint); border-left: 3px solid var(--campus-gold); border-radius: 0 var(--r) var(--r) 0; }
+
+/* EXAMPLE PAIR */
+.example-pair { margin-bottom: 1.6rem; }
+.pair-header { font-family: var(--fu); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--gray); text-transform: uppercase; margin-bottom: 0.55rem; display: flex; align-items: center; gap: 8px; }
+.pair-header::after { content: ''; flex: 1; height: 1px; background: var(--gold-border); }
+
+/* TAB BAR */
+.tab-bar { display: flex; gap: 0; border-radius: var(--rl) var(--rl) 0 0; overflow: hidden; border: 1.5px solid var(--gold-border); border-bottom: none; }
+.tab-btn { flex: 1; padding: 9px 6px; border: none; cursor: pointer; font-family: var(--fu); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em; background: #E4DECE; color: var(--gray); transition: background 0.18s, color 0.18s; display: flex; align-items: center; justify-content: center; gap: 6px; border-right: 1px solid var(--gold-border); }
+.tab-btn:last-child { border-right: none; }
+.tab-btn:hover { background: var(--gold-tint-mid); color: var(--dark-gray); }
+.tab-btn[aria-selected="true"].tab--corp  { background: var(--corp-hbg);  color: var(--corp-htxt); }
+.tab-btn[aria-selected="true"].tab--schol { background: var(--schol-hbg); color: var(--schol-htxt); }
+.tab-btn[aria-selected="true"].tab--break { background: var(--break-hbg); color: var(--break-htxt); }
+.tab-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--gray); }
+.tab-btn[aria-selected="true"].tab--corp  .tab-dot { background: var(--athletic-gold); }
+.tab-btn[aria-selected="true"].tab--schol .tab-dot { background: var(--purdue-black); }
+.tab-btn[aria-selected="true"].tab--break .tab-dot { background: var(--campus-gold); }
+
+/* TAB PANELS */
+.tab-panels { border: 1.5px solid var(--gold-border); border-top: none; border-radius: 0 0 var(--rl) var(--rl); overflow: hidden; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.panel-body { padding: 1.1rem 1.25rem; font-size: 0.96rem; line-height: 1.78; }
+.panel--corp  .panel-body { background: var(--corp-bbg);  color: var(--corp-btxt);  border-left: 4px solid var(--dark-gray); }
+.panel--schol .panel-body { background: var(--schol-bbg); color: var(--schol-btxt); border-left: 4px solid var(--campus-gold); }
+.panel--break .panel-body { background: var(--break-bbg); color: var(--break-btxt); border-left: 4px solid var(--campus-gold); font-size: 0.92rem; }
+
+/* Bottom nav in panel */
+.tab-nav { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px 10px; background: #EDE7D6; border-top: 1px solid var(--gold-border); }
+.tab-nav-label { font-family: var(--fu); font-size: 0.69rem; color: var(--gray); font-style: italic; }
+.tab-nav-btns { display: flex; gap: 6px; }
+.tab-nav-btn { font-family: var(--fu); font-size: 0.72rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1.5px solid var(--campus-gold-dark); background: transparent; color: var(--campus-gold-dark); cursor: pointer; transition: background 0.15s, color 0.15s; }
+.tab-nav-btn:hover, .tab-nav-btn:focus-visible { background: var(--campus-gold-dark); color: var(--white); }
+
+.key-term { font-weight: 700; font-style: normal; }
+.panel--corp  .key-term { color: var(--dark-gray); }
+.panel--schol .key-term { color: var(--campus-gold-dark); }
+.panel--break .key-term { color: var(--campus-gold-dark); }
+
+.draft-list { list-style: disc; padding-left: 1.35rem; margin-top: 0.45rem; }
+.draft-list li { margin-bottom: 0.25rem; }
+
+/* CLOSING */
+.hr-gold { border: none; border-top: 1px solid var(--gold-border); margin: 2rem 0; }
+.closing-section { background: var(--purdue-black); border-radius: var(--rl); padding: 1.9rem 2.1rem; border: 2px solid var(--campus-gold); }
+.closing-section h2 { font-family: Georgia,serif; font-size: 1.2rem; color: var(--campus-gold); margin-bottom: 1rem; padding-bottom: 0.7rem; border-bottom: 1px solid rgba(194,142,14,0.3); }
+.closing-section p { font-size: 0.95rem; color: var(--athletic-gold); line-height: 1.8; margin-bottom: 0.85rem; }
+.closing-section p:last-child { margin-bottom: 0; }
+.closing-section .key-term { color: var(--campus-gold); }
+
+/* FOOTER */
+footer { background: var(--dark-gray); text-align: center; padding: 1.4rem 1.5rem; }
+footer p { font-family: var(--fu); font-size: 0.77rem; line-height: 1.6; color: var(--gray); }
+footer strong { color: var(--athletic-gold); }
+
+/* RESPONSIVE */
+@media (max-width: 780px) {
+  .sidebar { position: static; order: -1; }
+  .header-nav { display: none; flex-direction: column; position: absolute; top: 62px; left: 0; right: 0; background: var(--purdue-black); padding: 0.5rem 1rem 1rem; border-top: 1px solid rgba(194,142,14,0.25); gap: 2px; }
+  .header-nav.open { display: flex; }
+  .nav-toggle { display: block; }
+  .tab-btn { font-size: 0.69rem; padding: 8px 4px; }
+}
+@media (max-width: 480px) {
+  .hero { padding: 2.25rem 1rem; }
+  .section-panel-inner { padding: 1rem; }
+  .panel-body { padding: 0.9rem 0.95rem; font-size: 0.9rem; }
+}
+@media print {
+  .site-header, .sidebar, footer, .tab-bar, .tab-nav { display: none; }
+  .page-body { grid-template-columns: 1fr; }
+  .section-panel { max-height: none !important; }
+  .tab-panel { display: block !important; }
+}
+@media (forced-colors: active) {
+  .panel--corp .panel-body, .panel--schol .panel-body, .panel--break .panel-body { border-left: 4px solid ButtonText; }
+}
+</style>
+<style>
+.split-container { display: flex; gap: 1.5rem; margin-bottom: 1rem; position: relative; }
+.pane { flex: 1; border: 1.5px solid var(--gold-border); border-radius: var(--rl); background: var(--white); display: flex; flex-direction: column; }
+.pane-corp { background: var(--corp-bbg); color: var(--corp-btxt); border-left: 5px solid var(--dark-gray); }
+.pane-schol { background: var(--schol-bbg); color: var(--schol-btxt); border-left: 5px solid var(--campus-gold-dark); }
+.pane-header { font-family: var(--fu); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.7rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; }
+.pane-corp .pane-header { background: rgba(0,0,0,0.04); }
+.pane-schol .pane-header { background: rgba(194,142,14,0.1); color: var(--campus-gold-dark); }
+.pane-body { padding: 1.25rem 1.5rem; font-size: 0.95rem; line-height: 1.8; flex: 1; }
+.hl-corp, .hl-schol { background: rgba(194,142,14,0.15); border-bottom: 2px dashed var(--campus-gold-dark); cursor: help; padding: 1px 3px; border-radius: 3px; transition: all 0.2s; position: relative; font-weight: 600; }
+.hl-corp:hover, .hl-schol:hover { background: rgba(194,142,14,0.3); border-bottom: 2px solid var(--campus-gold-dark); }
+.hl-corp.active-match, .hl-schol.active-match { background: rgba(194,142,14,0.5); border-bottom: 2px solid var(--purdue-black); color: var(--purdue-black); }
+#breakdown-tooltip { position: absolute; background: var(--dark-gray); color: var(--white); border: 2px solid var(--campus-gold-dark); border-radius: 8px; max-width: 450px; padding: 1rem 1.25rem; font-size: 0.9rem; line-height: 1.6; pointer-events: none; opacity: 0; transform: translateY(10px) scale(0.95); transition: opacity 0.2s, transform 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000; display: none; }
+#breakdown-tooltip.visible { display: block; opacity: 1; transform: translateY(0) scale(1); }
+#breakdown-tooltip::after { content: ''; position: absolute; top: -10px; left: 20px; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid var(--campus-gold-dark); }
+.breakdown-tt-header { font-family: var(--fu); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--campus-gold); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.4rem; margin-bottom: 0.5rem; }
+.breakdown-tt-body .key-term { color: var(--campus-gold); }
+#line-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+.conn-line { stroke: var(--campus-gold-dark); stroke-width: 2.5; stroke-dasharray: 6,4; fill: none; opacity: 0; transition: opacity 0.3s; }
+.conn-line.active { opacity: 1; animation: dash 10s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -100; } }
+@media (max-width: 768px) { .split-container { flex-direction: column; gap: 0.5rem; } .conn-line { display: none; } }
+</style><style>#section-context-bar { position: fixed; top: 62px; left: 0; right: 0; z-index: 190; background: var(--campus-gold); color: var(--purdue-black); font-family: var(--fu); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 5px 1.5rem; text-align: center; transition: opacity 0.3s; opacity: 0; pointer-events: none; }
+#section-context-bar.visible { opacity: 1; }
+#scb-label { display: inline-block; }
+.section-desc { font-size: 0.97rem; color: var(--dark-gray); margin-bottom: 1.6rem; line-height: 1.78; padding: 1rem 1.25rem 1rem 1.4rem; background: linear-gradient(135deg, #FDF8EC 0%, #FAF3D8 100%); border-left: 4px solid var(--campus-gold); border-radius: 0 var(--rl) var(--rl) 0; box-shadow: 0 2px 8px rgba(194,142,14,0.12); font-style: italic; position: relative; }
+.section-desc::before { content: "\201C"; position: absolute; top: -4px; left: 12px; font-size: 2.5rem; color: var(--campus-gold); font-family: Georgia,serif; line-height: 1; opacity: 0.5; }
+.examiner-note { margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.85rem; line-height: 1.55; color: rgba(255,255,255,0.9); font-style: italic; }
+.en-label { display: block; font-family: var(--fu); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--campus-gold); margin-bottom: 0.35rem; font-style: normal; }
+.vocab-card { margin-top: 2.5rem; border: 2px solid var(--campus-gold-dark); border-radius: var(--rl); overflow: hidden; }
+.vocab-toggle { width: 100%; display: flex; align-items: center; gap: 12px; padding: 1rem 1.25rem; background: var(--purdue-black); color: var(--athletic-gold); border: none; cursor: pointer; text-align: left; transition: background 0.18s; }
+.vocab-toggle:hover { background: #1A1916; }
+.vocab-icon { font-size: 1.1rem; flex-shrink: 0; }
+.vocab-title { font-family: Georgia,serif; font-size: 1rem; font-weight: 700; color: var(--white); flex: 1; }
+.vocab-chevron { font-size: 0.78rem; color: var(--campus-gold); flex-shrink: 0; transition: transform 0.3s ease; font-style: normal; display: inline-block; }
+.vocab-toggle[aria-expanded="true"] .vocab-chevron { transform: rotate(180deg); }
+.vocab-body { padding: 1.5rem; background: var(--white); }
+.vocab-intro { font-size: 0.92rem; color: var(--dark-gray); margin-bottom: 1.2rem; line-height: 1.7; padding: 0.75rem 1rem; background: var(--gold-tint); border-left: 3px solid var(--campus-gold); border-radius: 0 var(--r) var(--r) 0; }
+.vocab-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.vocab-table thead th { font-family: var(--fu); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 0.6rem 1rem; border-bottom: 2px solid var(--gold-border); text-align: left; }
+.vocab-table thead th:first-child { background: rgba(55,58,54,0.06); color: var(--dark-gray); }
+.vocab-table thead th:last-child { background: rgba(194,142,14,0.08); color: var(--campus-gold-dark); }
+.vocab-table tbody tr:nth-child(even) { background: var(--off-white); }
+.vocab-table tbody tr:hover { background: var(--gold-tint); }
+.vocab-table td { padding: 0.55rem 1rem; vertical-align: top; border-bottom: 1px solid var(--gold-border); line-height: 1.5; }
+.vc-corp { font-family: var(--fu); font-style: italic; color: var(--dark-gray); }
+.vc-schol { color: var(--campus-gold-dark); font-weight: 600; }
+.apa-refs { margin-top: 1rem; padding: 0.9rem 1rem; background: rgba(194,142,14,0.06); border-top: 1px dashed var(--gold-border); border-radius: 0 0 var(--r) var(--r); }
+.apa-label { font-family: var(--fu); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--campus-gold-dark); margin-bottom: 0.55rem; }
+.apa-list { padding-left: 1.5rem; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.apa-list li { font-size: 0.82rem; line-height: 1.6; color: var(--dark-gray); font-family: var(--fs); text-indent: -1.5rem; padding-left: 1.5rem; list-style: none; counter-increment: none; }
+@media (max-width: 640px) {
+  .split-container { flex-direction: column; overflow: hidden; position: relative; touch-action: pan-y; }
+  .pane { min-width: 100%; transition: transform 0.35s ease; }
+  .pane-schol { position: absolute; top: 0; left: 0; right: 0; transform: translateX(100%); }
+  .split-container.show-schol .pane-corp { transform: translateX(-100%); }
+  .split-container.show-schol .pane-schol { position: relative; transform: translateX(0); }
+  .mobile-swipe-btns { display: flex; gap: 0; border: 1.5px solid var(--gold-border); border-radius: var(--r); overflow: hidden; margin-bottom: 0.75rem; }
+  .msb { flex: 1; padding: 8px; border: none; font-family: var(--fu); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: background 0.15s; background: #E8E3D8; color: var(--dark-gray); }
+  .msb.active { background: var(--purdue-black); color: var(--athletic-gold); }
+  #section-context-bar { top: 62px; }
+}
+@media (min-width: 641px) {
+  .mobile-swipe-btns { display: none; }
+}
+#breakdown-tooltip { position: fixed !important; max-width: min(460px, calc(100vw - 24px)); }</style></head>
+<body><div id="section-context-bar" aria-live="polite" aria-label="Current section"><span id="scb-label"></span></div>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="#" class="header-brand" aria-label="Purdue University Global DBA Program home">
+      <div class="pu-mark" aria-hidden="true">PG</div>
+      <div class="brand-text">
+        <span class="brand-u">Purdue University Global</span>
+        <span class="brand-p">Doctor of Business Administration</span>
+      </div>
+    </a>
+    <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+    <nav id="primary-nav" class="header-nav" aria-label="Primary navigation">
+      <a href="#s1" class="nav-link">§1 Executive I</a>
+      <a href="#s2" class="nav-link">§2 Hedging</a>
+      <a href="#s3" class="nav-link">§3 Jargon</a>
+      <a href="#s4" class="nav-link">§4 Synthesis</a>
+      <a href="#s5" class="nav-link">§5 Counter</a>
+      <a href="#s6" class="nav-link">§6 Framing</a>
+    </nav>
+  </div>
+</header>
+<div class="gold-stripe" role="presentation" aria-hidden="true"></div>
+
+<section class="hero" aria-labelledby="hero-title">
+  <span class="hero-eyebrow">DBA Academic Writing Guide</span>
+  <h1 id="hero-title">From the Boardroom to the Dissertation</h1>
+  <p class="hero-sub">Six essential writing transformations for the executive scholar</p>
+  
+</section>
+
+<div class="page-body">
+
+  <aside aria-label="Table of contents and reading progress">
+    <div class="sidebar">
+      <div class="sidebar-title" id="toc-h">Contents</div>
+      <nav aria-labelledby="toc-h">
+        <ol class="toc-list" role="list">
+          <li><a href="#s1" id="toc-1"><span class="toc-num" aria-hidden="true">1</span>Removing the "Executive I"</a></li>
+          <li><a href="#s2" id="toc-2"><span class="toc-num" aria-hidden="true">2</span>The Art of Hedging</a></li>
+          <li><a href="#s3" id="toc-3"><span class="toc-num" aria-hidden="true">3</span>Eliminating Jargon</a></li>
+          <li><a href="#s4" id="toc-4"><span class="toc-num" aria-hidden="true">4</span>Synthesizing vs. Listing</a></li>
+          <li><a href="#s5" id="toc-5"><span class="toc-num" aria-hidden="true">5</span>Handling Counter-evidence</a></li>
+          <li><a href="#s6" id="toc-6"><span class="toc-num" aria-hidden="true">6</span>Framing Recommendations</a></li>
+        </ol>
+      </nav>
+      
+    </div>
+  </aside>
+
+  <main id="main-content" tabindex="-1">
+
+    
+
+    <div class="legend-strip" role="note" aria-label="Tab color guide"><span class="legend-label">Interaction Mode:</span> <span style="font-size:0.8rem; color:var(--dark-gray); font-style:italic;">Hover over the highlighted corporate text to view the scholarly translation and breakdown logic.</span></div>
+
+    <!-- ===== SECTION 1 ===== -->
+    <section class="section-block" id="s1">
+      <h2 style="margin:0; padding:0; line-height:1;">
+        <button class="section-trigger" aria-expanded="true" aria-controls="panel-s1" id="s1-title">
+          <span class="sec-badge" aria-hidden="true">Section 1</span>
+        <span class="sec-title">Removing the "Executive I"</span>
+        <em class="sec-chevron" aria-hidden="true">▼</em>
+        </button>
+      </h2>
+      <div class="section-panel open" id="panel-s1">
+        <div class="section-panel-inner">
+          <p class="section-desc">Corporate writing derives authority from the writer's personal experience. Academic writing derives authority from peer-reviewed evidence. The shift is not about humility. It is about sourcing your credibility in the right place for your audience.</p>
+
+          <div class="example-pair"><h3 class="pair-header">Example 1.1</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIGNvcnBvcmF0ZSBkcmFmdCB1c2VzIHRoZSBmaXJzdC1wZXJzb24gcHJvbm91biBhbmQgYSBzcGFuIG9mIHBlcnNvbmFsIGV4cGVyaWVuY2UgYXMgaXRzIG9ubHkgZXZpZGVuY2Ug4oCUIGEgZm9ybSBvZiBhcmd1bWVudCBzY2hvbGFycyBjYWxsIDxlbSBjbGFzcz0ia2V5LXRlcm0iPmFuZWNkb3RhbCBhdXRob3JpdHk8L2VtPi4gVGhlIHNjaG9sYXJseSB0cmFuc2xhdGlvbiByZW1vdmVzIHRoZSAiSSIgZW50aXJlbHkgYW5kIHJlcGxhY2VzIHBlcnNvbmFsIHRlbnVyZSB3aXRoIHR3byBwZWVyLXJldmlld2VkIGNpdGF0aW9ucywgZ3JvdW5kaW5nIHRoZSBjbGFpbSBpbiByZXBsaWNhdGVkLCBleHRlcm5hbGx5IHZhbGlkYXRlZCBmaW5kaW5ncy4gVGhlIHdyaXRlcidzIGp1ZGdtZW50IGlzIG5vdyBpbXBsaWNpdCBpbiBzb3VyY2Ugc2VsZWN0aW9uLCBub3QgZXhwbGljaXQgaW4gYXNzZXJ0aW9uLjxkaXYgY2xhc3M9ImV4YW1pbmVyLW5vdGUiPjxzcGFuIGNsYXNzPSJlbi1sYWJlbCI+JiN4MUYzOTM7IEV4YW1pbmVyIFBlcnNwZWN0aXZlPC9zcGFuPkEgY29tbWl0dGVlIG1lbWJlciByZWFkaW5nICJJIGhhdmUgc2VlbiBmaXJzdGhhbmQiIGltbWVkaWF0ZWx5IGFza3M6IHdoZXJlIGFyZSB0aGUgY2l0YXRpb25zPyBQZXJzb25hbCBhdXRob3JpdHkgY2FycmllcyB6ZXJvIGV2aWRlbnRpYXJ5IHdlaWdodCBpbiBkb2N0b3JhbCBzY2hvbGFyc2hpcC48L2Rpdj4="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">In my 20 years leading supply chain operations across three continents, <span class="hl-corp" data-type="corp">I have seen firsthand</span> that vendor consolidation consistently reduces procurement costs. This is exactly what our division needs to implement now.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">Vendor consolidation strategies <span class="hl-schol" data-type="schol">have been associated with</span> measurable reductions in procurement expenditure in mid-to-large organizations (Chen &amp; Paulraj, 2004; Monczka et al., 2015). These findings carry particular relevance for organizational units seeking cost optimization within complex, multi-tier supply networks.</div></div></div></div>
+
+          <div class="example-pair"><h3 class="pair-header">Example 1.2</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIHBocmFzZSAiSSBrbm93IiBzaWduYWxzIGNvbnZpY3Rpb24gZGVyaXZlZCBmcm9tIHBlcnNvbmFsIGhpc3RvcnksIHdoaWNoIGNhcnJpZXMgbm8gZXZpZGVudGlhcnkgd2VpZ2h0IGluIGEgZGlzc2VydGF0aW9uIGNvbnRleHQuIFRoZSB0cmFuc2xhdGlvbiByZXBsYWNlcyB0aGlzIHdpdGggPGVtIGNsYXNzPSJrZXktdGVybSI+ImhhcyBiZWVuIGlkZW50aWZpZWQsIjwvZW0+IGludm9raW5nIGEgYnJvYWRlciBzY2hvbGFybHkgY29uc2Vuc3VzIHJhdGhlciB0aGFuIGEgc2luZ2xlIHByYWN0aXRpb25lcidzIG1lbW9yeS4gVGhlIGltcGVyYXRpdmUgZGlyZWN0aXZlICgiV2UgbmVlZCB0byBhZGRyZXNzIHRoaXMiKSBpcyBhbHNvIG5ldXRyYWxpemVkIGludG8gYSBjb25kaXRpb25hbCBzY2hvbGFybHkgb2JzZXJ2YXRpb24uPGRpdiBjbGFzcz0iZXhhbWluZXItbm90ZSI+PHNwYW4gY2xhc3M9ImVuLWxhYmVsIj4mI3gxRjM5MzsgRXhhbWluZXIgUGVyc3BlY3RpdmU8L3NwYW4+RXhhbWluZXJzIHRyZWF0ICJJIGtub3ciIGFzIGEgcmVkIGZsYWcgdGhhdCB0aGUgc3R1ZGVudCBoYXMgbm90IGVuZ2FnZWQgdGhlIHB1Ymxpc2hlZCBsaXRlcmF0dXJlIOKAlCBleHBlcmllbnRpYWwgcmVhc29uaW5nIGlzIG5vdCBhIHN1YnN0aXR1dGUgZm9yIHBlZXItcmV2aWV3ZWQgZXZpZGVuY2UuPC9kaXY+"><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">Having personally managed three post-merger integrations, <span class="hl-corp" data-type="corp">I know</span> that cultural misalignment is the number one reason these deals fail. We need to address this before the close date.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">Cultural incompatibility <span class="hl-schol" data-type="schol">has been identified</span> as a primary determinant of post-merger integration failure, frequently outweighing financial or operational misalignment in its effect on long-term value creation (Cartwright &amp; Cooper, 1993; Weber &amp; Tarba, 2012). Scholars have therefore emphasized the strategic importance of initiating cultural due diligence processes prior to transaction close.</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 2 ===== -->
+    <section class="section-block" id="s2">
+      <h2 style="margin:0; padding:0; line-height:1;">
+        <button class="section-trigger" aria-expanded="false" aria-controls="panel-s2" id="s2-title">
+          <span class="sec-badge" aria-hidden="true">Section 2</span>
+        <span class="sec-title">The Art of Hedging</span>
+        <em class="sec-chevron" aria-hidden="true">▼</em>
+        </button>
+      </h2>
+      <div class="section-panel" id="panel-s2">
+        <div class="section-panel-inner">
+          <p class="section-desc">Business writing is built to inspire confidence. Academic writing is built to survive scrutiny. Hedging is not weakness. It is a precise epistemological tool that signals you understand the difference between correlation, association, and causation.</p>
+
+          <div class="example-pair"><h3 class="pair-header">Example 2.1</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIGNvcnBvcmF0ZSBkcmFmdCB1c2VzIGFic29sdXRlIGxhbmd1YWdlICgid2lsbCBib29zdCwiICJpbW1lZGlhdGVseSwiICJhY3Jvc3MgdGhlIGJvYXJkIikgdGhhdCBubyBzaW5nbGUgc3R1ZHkgY291bGQgZnVsbHkgc3VwcG9ydC4gVGhlIHRyYW5zbGF0aW9uIGludHJvZHVjZXMgdGhyZWUgY3JpdGljYWwgaGVkZ2luZyBtZWNoYW5pc21zOiB0aGUgZXBpc3RlbWljIHF1YWxpZmllciA8ZW0gY2xhc3M9ImtleS10ZXJtIj4ic3VnZ2VzdCwiPC9lbT4gdGhlIHByb2JhYmlsaXN0aWMgbW9kYWwgPGVtIGNsYXNzPSJrZXktdGVybSI+Im1heSBiZSwiPC9lbT4gYW5kIHRoZSBzY29wZSBsaW1pdGF0aW9uIDxlbSBjbGFzcz0ia2V5LXRlcm0iPiJyZW1haW5zIGFuIGFyZWEgd2FycmFudGluZyBmdXJ0aGVyIGludmVzdGlnYXRpb24uIjwvZW0+IFRoZXNlIGFyZSBzaWduYWxzIG9mIGludGVsbGVjdHVhbCBwcmVjaXNpb24gdGhhdCBkaXNzZXJ0YXRpb24gY29tbWl0dGVlcyBleHBlY3QuPGRpdiBjbGFzcz0iZXhhbWluZXItbm90ZSI+PHNwYW4gY2xhc3M9ImVuLWxhYmVsIj4mI3gxRjM5MzsgRXhhbWluZXIgUGVyc3BlY3RpdmU8L3NwYW4+QSByZXZpZXdlciB3aWxsIGluc3RhbnRseSBhc2s6ICJXaWxsIGJvb3N0IOKAlCBhY2NvcmRpbmcgdG8gd2hvbT8gVW5kZXIgd2hhdCBjb25kaXRpb25zPyIgQWJzb2x1dGUgbGFuZ3VhZ2UgaXMgdGhlIHNpbmdsZSBtb3N0IHJlbGlhYmxlIHRyaWdnZXIgZm9yIGRldmFzdGF0aW5nIGNvbW1pdHRlZSBjcml0aXF1ZS48L2Rpdj4="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">Implementing a four-day work week <span class="hl-corp" data-type="corp">will boost</span> employee productivity and dramatically reduce turnover. Companies that make this change see immediate results across the board.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">Preliminary findings from organizational trials <span class="hl-schol" data-type="schol">suggest</span> that compressed work schedules may be positively associated with self-reported employee productivity and reduced voluntary turnover intentions (Moen et al., 2016; Barnes et al., 2012). However, the generalizability of these outcomes across industry sectors and organizational sizes remains an area warranting further investigation.</div></div></div></div>
+
+          <div class="example-pair"><h3 class="pair-header">Example 2.2</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIG9yaWdpbmFsIGNvbnRhaW5zIHR3byBjb21tb24gZXJyb3JzIGV4ZWN1dGl2ZXMgYnJpbmcgdG8gYWNhZGVtaWMgd3JpdGluZzogPGVtIGNsYXNzPSJrZXktdGVybSI+Y29uZmxhdGluZyBjb3JyZWxhdGlvbiB3aXRoIGNhdXNhdGlvbjwvZW0+ICgiY2F1c2VzIGEgZGVjbGluZSIpIGFuZCB0cmVhdGluZyBhIGNvbnZlbmllbmNlIHNhbXBsZSBhcyB1bml2ZXJzYWwgdHJ1dGggKCJldmVyeSBtYW5hZ2VyIHdlIHN1cnZleWVkIikuIFRoZSBzY2hvbGFybHkgdHJhbnNsYXRpb24gY29ycmVjdHMgYm90aCBlcnJvcnMg4oCUIG5vdGluZyBhICJwb3RlbnRpYWwgcmVsYXRpb25zaGlwIiByYXRoZXIgdGhhbiBhIGNhdXNhbCBvbmUsIGFuZCBzcGVjaWZ5aW5nIGZpbmRpbmdzIGFwcGx5IHRvICJjZXJ0YWluIG1hbmFnZXJpYWwgcG9wdWxhdGlvbnMiIHJhdGhlciB0aGFuIGFsbCB0ZWFtcy48ZGl2IGNsYXNzPSJleGFtaW5lci1ub3RlIj48c3BhbiBjbGFzcz0iZW4tbGFiZWwiPiYjeDFGMzkzOyBFeGFtaW5lciBQZXJzcGVjdGl2ZTwvc3Bhbj5FeGFtaW5lcnMgYXJlIHNwZWNpZmljYWxseSB0cmFpbmVkIHRvIGNhdGNoIGNvbmZsYXRpb24gb2YgY29ycmVsYXRpb24gd2l0aCBjYXVzYXRpb24uIFRoaXMgZXJyb3IgYWxvbmUsIGlmIGZvdW5kIGluIGEgbWV0aG9kcyBzZWN0aW9uLCBjYW4gc3RhbGwgYSBkaXNzZXJ0YXRpb24gZGVmZW5zZS48L2Rpdj4="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">Remote work <span class="hl-corp" data-type="corp">clearly causes</span> a decline in team cohesion. Every manager we surveyed confirmed this. It is an undeniable fact that in-person collaboration produces better outcomes.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">Extant research indicates a <span class="hl-schol" data-type="schol">potential relationship</span> between remote work adoption and diminished perceptions of team cohesion among certain managerial populations (Gilson et al., 2015; Luse et al., 2013), though the causal direction of this relationship has not been definitively established. Some studies further indicate that collaborative outcomes may vary depending on task interdependence and the communication infrastructure available to distributed teams.</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 3 ===== -->
+    <section class="section-block" id="s3">
+      <h2 style="margin:0; padding:0; line-height:1;">
+        <button class="section-trigger" aria-expanded="false" aria-controls="panel-s3" id="s3-title">
+          <span class="sec-badge" aria-hidden="true">Section 3</span>
+        <span class="sec-title">Eliminating Business Jargon</span>
+        <em class="sec-chevron" aria-hidden="true">▼</em>
+        </button>
+      </h2>
+      <div class="section-panel" id="panel-s3">
+        <div class="section-panel-inner">
+          <p class="section-desc">Corporate buzzwords carry implicit meaning within organizations, but they are imprecise, culturally specific, and often undefined. Academic writing demands terms that can be operationalized, measured, tested, and compared across studies.</p>
+
+          <div class="example-pair"><h3 class="pair-header">Example 3.1</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIG9yaWdpbmFsIGNvbnRhaW5zIGF0IGxlYXN0IHNpeCBqYXJnb24gdGVybXMg4oCUICJnYW1lLWNoYW5nZXIsIiAibGV2ZXJhZ2UsIiAic3luZXJnaWVzLCIgIm1vdmUgdGhlIG5lZWRsZSwiICJkZWVwIGRpdmUsIiBhbmQgImNpcmNsZSBiYWNrIiDigJQgbm9uZSBvZiB3aGljaCBoYXMgYW4gYWdyZWVkLXVwb24gc2Nob2xhcmx5IGRlZmluaXRpb24uIFRoZSB0cmFuc2xhdGlvbiByZXBsYWNlcyBlYWNoIHdpdGggYSB0ZXJtaW5vbG9naWNhbGx5IHByZWNpc2UgZXF1aXZhbGVudDogPGVtIGNsYXNzPSJrZXktdGVybSI+ImNyb3NzLWRlcGFydG1lbnRhbCBjb2xsYWJvcmF0aW9uIHN0cnVjdHVyZXMiPC9lbT4gY2FuIGJlIG9wZXJhdGlvbmFsaXplZCBhbmQgbWVhc3VyZWQ7IDxlbSBjbGFzcz0ia2V5LXRlcm0iPiJodW1hbiBjYXBpdGFsIG1ldHJpY3MiPC9lbT4gc3BlY2lmaWVzIHdoYXQgZGF0YSB3b3VsZCBhY3R1YWxseSBiZSBjb2xsZWN0ZWQuIEFjYWRlbWljIHJlYWRlcnMgaW50ZXJwcmV0IGphcmdvbiBhcyBhbiBhYnNlbmNlIG9mIGNvbmNlcHR1YWwgY2xhcml0eS48ZGl2IGNsYXNzPSJleGFtaW5lci1ub3RlIj48c3BhbiBjbGFzcz0iZW4tbGFiZWwiPiYjeDFGMzkzOyBFeGFtaW5lciBQZXJzcGVjdGl2ZTwvc3Bhbj5KYXJnb24taGVhdnkgcHJvc2Ugc2lnbmFscyB5b3UgaGF2ZW4ndCBvcGVyYXRpb25hbGl6ZWQgeW91ciBjb25zdHJ1Y3RzLiBFeGFtaW5lcnMgbmVlZCB0ZXJtcyBwcmVjaXNlIGVub3VnaCB0byBhcHBlYXIgaW4gYSBtZWFzdXJlbWVudCBpbnN0cnVtZW50IG9yIGNvZGVib29rLjwvZGl2Pg=="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">The real game-changer here is <span class="hl-corp" data-type="corp">leveraging cross-functional synergies</span> to move the needle on employee engagement. We need to do a deep dive into our people data and circle back with a best-in-class solution.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">A potentially significant contributor to improvements in employee engagement may be the deliberate integration of <span class="hl-schol" data-type="schol">cross-departmental collaboration structures</span> (Edmondson &amp; Nembhard, 2009). A systematic analysis of available human capital metrics, including turnover rates, engagement survey indices, and absenteeism data, could yield evidence-based recommendations aligned with established frameworks for organizational development.</div></div></div></div>
+
+          <div class="example-pair"><h3 class="pair-header">Example 3.2</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="QmV5b25kIGluZGl2aWR1YWwgYnV6endvcmRzLCB0aGlzIGV4YW1wbGUgaWxsdXN0cmF0ZXMgYW4gZW50aXJlIG1vZGUgb2YgY29ycG9yYXRlIHJlYXNvbmluZyDigJQgdXJnZW5jeSBmcmFtaW5nIGFuZCB2YWd1ZSBwcmVzY3JpcHRpb24g4oCUIHRoYXQgaXMgYWJzZW50IGZyb20gYWNhZGVtaWMgd3JpdGluZy4gVGhlIHRyYW5zbGF0aW9uIGNvbnZlcnRzIHVyZ2VuY3kgaW50byBhbiBhbmFseXRpY2FsIG9ic2VydmF0aW9uIGFuZCByZXBsYWNlcyBtZXRhcGhvciB3aXRoIHRoZSBlc3RhYmxpc2hlZCBjb25jZXB0IG9mIDxlbSBjbGFzcz0ia2V5LXRlcm0iPiJlYXJseS1tb3ZlciBhZHZhbnRhZ2UiPC9lbT4gKExpZWJlcm1hbiAmYW1wOyBNb250Z29tZXJ5LCAxOTg4KSwgdGhlbiBpbW1lZGlhdGVseSBhY2tub3dsZWRnZXMgdGhlIGNvbmNlcHQncyBjb21wbGV4aXR5IGJ5IG5vdGluZyBjb21wZXRpbmcgZXZpZGVuY2UuPGRpdiBjbGFzcz0iZXhhbWluZXItbm90ZSI+PHNwYW4gY2xhc3M9ImVuLWxhYmVsIj4mI3gxRjM5MzsgRXhhbWluZXIgUGVyc3BlY3RpdmU8L3NwYW4+TWV0YXBob3JzIGNhbm5vdCBiZSBtZWFzdXJlZCwgY2l0ZWQsIG9yIHJlcGxpY2F0ZWQuIEFuIGV4YW1pbmVyIHJlYWRpbmcgbWV0YXBob3IgaW4gYSB0aGVvcnkgY2hhcHRlciB3aWxsIHF1ZXN0aW9uIHdoZXRoZXIgdGhlIHN0dWRlbnQgdW5kZXJzdGFuZHMgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiBhZHZvY2FjeSBhbmQgc2Nob2xhcnNoaXAuPC9kaXY+"><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">At the end of the day, we need to disrupt our go-to-market strategy and <span class="hl-corp" data-type="corp">think outside the box</span> to gain a first-mover advantage in this space before our competitors do.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body"><span class="hl-schol" data-type="schol">Significant revision</span> of an organization's market entry and distribution strategy may be warranted to secure early-mover advantages in emerging competitive contexts (Lieberman &amp; Montgomery, 1988). Such advantages have been theorized to confer sustainable differentiation benefits, though scholars have also documented conditions under which late-market entry strategies yield superior long-term performance outcomes.</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 4 ===== -->
+    <section class="section-block" id="s4">
+      <h2 style="margin:0; padding:0; line-height:1;">
+        <button class="section-trigger" aria-expanded="false" aria-controls="panel-s4" id="s4-title">
+          <span class="sec-badge" aria-hidden="true">Section 4</span>
+        <span class="sec-title">Synthesizing vs. Listing</span>
+        <em class="sec-chevron" aria-hidden="true">▼</em>
+        </button>
+      </h2>
+      <div class="section-panel" id="panel-s4">
+        <div class="section-panel-inner">
+          <p class="section-desc">A literature review is not an annotated bibliography. The difference between a doctoral scholar and a competent researcher is the ability to weave multiple sources into a single, coherent analytical thread, revealing relationships, tensions, and patterns across the literature.</p>
+
+          <div class="example-pair"><h3 class="pair-header">Example 4.1</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIGJ1bGxldGVkIGRyYWZ0IHRyZWF0cyBmb3VyIGF1dGhvcnMgYXMgZm91ciBzZXBhcmF0ZSwgdW5yZWxhdGVkIGRhdGEgcG9pbnRzIOKAlCBhIHN0cnVjdHVyYWwgaGFiaXQgaW1wb3J0ZWQgZnJvbSBleGVjdXRpdmUgYnJpZWZpbmcgZGVja3MuIFRoZSBzY2hvbGFybHkgdHJhbnNsYXRpb24gcmV2ZWFscyA8ZW0gY2xhc3M9ImtleS10ZXJtIj5hIHRoZW9yZXRpY2FsIGNoYWluOjwvZW0+IGxlYWRlcnNoaXAgc2hhcGVzIGN1bHR1cmU7IGN1bHR1cmUgZW5hYmxlcyBzYWZldHk7IHNhZmV0eSBlbmFibGVzIHRydXN0OyB0cnVzdCBlbmFibGVzIGtub3dsZWRnZSBzaGFyaW5nLiBUaGUgc2FtZSBmb3VyIGNpdGF0aW9ucyBub3cgdGVsbCBhIHN0b3J5IHdpdGggYSBjb25jZXB0dWFsIGFyY2hpdGVjdHVyZS4gVGhpcyBzeW50aGVzaXMgaXMgdGhlIGNvcmUgaW50ZWxsZWN0dWFsIGNvbnRyaWJ1dGlvbiBvZiBhIGxpdGVyYXR1cmUgcmV2aWV3LjxkaXYgY2xhc3M9ImV4YW1pbmVyLW5vdGUiPjxzcGFuIGNsYXNzPSJlbi1sYWJlbCI+JiN4MUYzOTM7IEV4YW1pbmVyIFBlcnNwZWN0aXZlPC9zcGFuPkEgbGl0ZXJhdHVyZSByZXZpZXcgb3JnYW5pemVkIGFzICdBdXRob3IgWCBmb3VuZC4uLicgaXMgdGhlIG1vc3QgY29tbW9uIGNhdXNlIG9mIGEgcmV2aXNlLWFuZC1yZXN1Ym1pdCBkZWNpc2lvbiDigJQgaXQgc2lnbmFscyBzdW1tYXJ5IHJhdGhlciB0aGFuIHN5bnRoZXNpcywgdGhlIGNvcmUgZG9jdG9yYWwgY29tcGV0ZW5jeS48L2Rpdj4="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">Key findings from our research review:<ul class="draft-list"><li><span class="hl-corp" data-type="corp">Smith (2018) found</span> that leadership style affects innovation.</li><li>Jones (2020) said organizational culture matters for performance.</li><li>Davis (2019) studied psychological safety and team outcomes.</li><li>Williams (2021) looked at how trust affects knowledge sharing.</li></ul></div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">A convergent theme in the organizational behavior literature is the role of internal relational climate in enabling performance outcomes. <span class="hl-schol" data-type="schol">Leadership style has been identified</span> as a foundational antecedent of innovation capacity (Smith, 2018), a relationship mediated, in part, by the degree to which organizational cultures support experimentation and risk tolerance (Jones, 2020). Extending this line of inquiry, Davis (2019) demonstrated that psychological safety, a condition partly established by leadership behavior, significantly predicted team-level outcomes, while Williams (2021) further argued that trust, cultivated within such psychologically safe climates, functions as a critical enabler of knowledge-sharing behavior across organizational units.</div><div class="apa-refs"><div class="apa-label">📋 APA 7th Edition: Reference List Format</div><ol class="apa-list"><li>Smith, J. A. (2018). Leadership style and innovation capacity in knowledge-intensive organizations. <em>Journal of Organizational Behavior</em>, <em>39</em>(4), 512–528. https://doi.org/10.1002/job.2248</li><li>Jones, L. B. (2020). Organizational culture as a moderator of performance outcomes. <em>Academy of Management Review</em>, <em>45</em>(2), 301–317.</li><li>Davis, R. T. (2019). Psychological safety and team performance: A meta-analytic review. <em>Journal of Applied Psychology</em>, <em>104</em>(8), 1184–1197.</li><li>Williams, C. M. (2021). Trust and knowledge-sharing behavior in professional teams. <em>Organization Science</em>, <em>32</em>(1), 88–107.</li></ol></div></div></div></div>
+
+          <div class="example-pair"><h3 class="pair-header">Example 4.2</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIG9yaWdpbmFsIGxpZnRzIGEgc3RhdGlzdGljLCBhZGRzIHRocmVlIHZhZ3VlIG9ic2VydmF0aW9ucywgYW5kIGVuZHMgd2l0aCBhIGNsaWNow6kuIFRoZSB0cmFuc2xhdGlvbiBwZXJmb3JtcyB0aHJlZSBzY2hvbGFybHkgb3BlcmF0aW9ucyBzaW11bHRhbmVvdXNseTogaXQgPGVtIGNsYXNzPSJrZXktdGVybSI+Y29udGV4dHVhbGl6ZXMgdGhlIHN0YXRpc3RpYzwvZW0+IHdpdGggc3VwcG9ydGluZyBjaXRhdGlvbnMsIDxlbSBjbGFzcz0ia2V5LXRlcm0iPmF0dHJpYnV0ZXMgdGhlIGFyZ3VtZW50IHRvIG5hbWVkIHNjaG9sYXJzPC9lbT4gcmF0aGVyIHRoYW4gcHJlc2VudGluZyBpdCBhcyBjb21tb24ga25vd2xlZGdlLCBhbmQgPGVtIGNsYXNzPSJrZXktdGVybSI+YWR2YW5jZXMgYSBjb25jZXB0dWFsIGNsYWltPC9lbT4gKCJzb2Npb3RlY2huaWNhbCBjaGFsbGVuZ2UiKSB0aGF0IGNhbiBhbmNob3IgdGhlIG5leHQgc3RlcCBpbiB0aGUgdGhlb3JldGljYWwgYXJndW1lbnQuPGRpdiBjbGFzcz0iZXhhbWluZXItbm90ZSI+PHNwYW4gY2xhc3M9ImVuLWxhYmVsIj4mI3gxRjM5MzsgRXhhbWluZXIgUGVyc3BlY3RpdmU8L3NwYW4+TGlmdGluZyBhIHN0YXRpc3RpYyB3aXRob3V0IGNvbnRleHR1YWxpemluZyBpdCB3aXRoaW4gY29tcGV0aW5nIGV2aWRlbmNlIHNpZ25hbHMgbWV0aG9kb2xvZ2ljYWwgbmFpdmV0eS4gQW4gZXhhbWluZXIgd2lsbCBhc2s6IHdobyBlbHNlIHN0dWRpZWQgdGhpcywgYW5kIHdoYXQgZGlkIHRoZXkgZmluZD88L2Rpdj4="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body"><span class="hl-corp" data-type="corp">Research on digital transformation shows</span>:<ul class="draft-list"><li>70% of digital transformations fail (McKinsey, 2018).</li><li>Technology is only one part of the problem.</li><li>People and process issues are usually the real barrier.</li><li>Change management is important.</li></ul></div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">Despite substantial organizational investment in digital transformation initiatives, the <span class="hl-schol" data-type="schol">preponderance of evidence suggests</span> that a significant proportion of such efforts fail to achieve intended objectives (McKinsey Global Institute, 2018; Fitzgerald et al., 2013). Scholars have consistently attributed this pattern less to technological shortcomings than to human and organizational factors, including inadequate change leadership, workforce resistance, and misalignment between technological adoption and existing process infrastructures (Kotter, 1996; Westerman et al., 2014). This body of literature collectively underscores the proposition that digital transformation is fundamentally a sociotechnical challenge, not a purely technical one.</div><div class="apa-refs"><div class="apa-label">📋 APA 7th Edition: Reference List Format</div><ol class="apa-list"><li>McKinsey Global Institute. (2018). <em>Unlocking success in digital transformations</em>. McKinsey &amp; Company.</li><li>Fitzgerald, M., Kruschwitz, N., Bonnet, D., &amp; Welch, M. (2013). Embracing digital technology. <em>MIT Sloan Management Review</em>, <em>55</em>(2), 1–12.</li><li>Westerman, G., Bonnet, D., &amp; McAfee, A. (2014). <em>Leading digital: Turning technology into business transformation</em>. Harvard Business Review Press.</li></ol></div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 5 ===== -->
+    <section class="section-block" id="s5">
+      <h2 style="margin:0; padding:0; line-height:1;">
+        <button class="section-trigger" aria-expanded="false" aria-controls="panel-s5" id="s5-title">
+          <span class="sec-badge" aria-hidden="true">Section 5</span>
+        <span class="sec-title">Handling Counter-evidence</span>
+        <em class="sec-chevron" aria-hidden="true">▼</em>
+        </button>
+      </h2>
+      <div class="section-panel" id="panel-s5">
+        <div class="section-panel-inner">
+          <p class="section-desc">In business, you present the best case for your position and minimize conflicting data. In academia, ignoring counter-evidence does not strengthen your argument. It disqualifies it. Doctoral scholars are expected to engage opposing findings directly.</p>
+
+          <div class="example-pair"><h3 class="pair-header">Example 5.1</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIGNvcnBvcmF0ZSBkcmFmdCBwcmVzZW50cyBhIGRlY2FkZXMtbG9uZyBkZWJhdGUgYXMgYSBzZXR0bGVkIHF1ZXN0aW9uIOKAlCBzaWduYWxpbmcgdG8gYWNhZGVtaWMgcmVhZGVycyB0aGF0IHRoZSB3cml0ZXIgaGFzIG5vdCBmdWxseSBlbmdhZ2VkIHRoZSBsaXRlcmF0dXJlLiBUaGUgc2Nob2xhcmx5IHRyYW5zbGF0aW9uIHByZXNlcnZlcyB0aGUgcG9zaXRpdmUgY2xhaW0gd2hpbGUgaW5jb3Jwb3JhdGluZyBhIHN0cnVjdHVyYWxseSBlc3NlbnRpYWwgY291bnRlcmFyZ3VtZW50OiB0aGUgPGVtIGNsYXNzPSJrZXktdGVybSI+Imhvd2V2ZXIiIHBpdm90PC9lbT4gaXMgb25lIG9mIHRoZSBtb3N0IGltcG9ydGFudCBzZW50ZW5jZXMgeW91IHdpbGwgd3JpdGUgaW4gYSBkaXNzZXJ0YXRpb24uIEVuZ2FnaW5nIGNvdW50ZXItZXZpZGVuY2UgZGVtb25zdHJhdGVzIG1hc3Rlcnkgb2YgdGhlIGZpZWxkIGFuZCBzdHJlbmd0aGVucyB5b3VyIHNjaG9sYXJseSBjcmVkaWJpbGl0eS48ZGl2IGNsYXNzPSJleGFtaW5lci1ub3RlIj48c3BhbiBjbGFzcz0iZW4tbGFiZWwiPiYjeDFGMzkzOyBFeGFtaW5lciBQZXJzcGVjdGl2ZTwvc3Bhbj5FeGFtaW5lcnMgd2lsbCBhc2s6ICJIYXZlIHlvdSByZWFkIHRoZSBjb3VudGVyLWV2aWRlbmNlPyIgUHJlc2VudGluZyBvbmx5IHN1cHBvcnRpbmcgc3R1ZGllcyBleHBvc2VzIHRoZSBzdHVkZW50IHRvIGEgc2luZ2xlIGRldmFzdGF0aW5nIGNpdGF0aW9uIHRoYXQgY2FuIHVuZGVybWluZSB0aGUgZW50aXJlIGFyZ3VtZW50LjwvZGl2Pg=="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">Numerous studies <span class="hl-corp" data-type="corp">confirm</span> that performance-based pay increases employee motivation and output. This is a proven strategy that leading companies have used with great success for decades. Any organization serious about results should implement it.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">A substantial body of research <span class="hl-schol" data-type="schol">supports a positive relationship</span> between performance-based compensation and employee motivation in contexts characterized by high task measurability and individual accountability (Lazear, 2000; Gerhart &amp; Rynes, 2003). However, this relationship is subject to important boundary conditions. Critics of extrinsic reward structures, drawing on cognitive evaluation theory, argue that contingent pay may undermine intrinsic motivation in roles requiring creativity, autonomy, or complex problem-solving (Deci et al., 1999; Kohn, 1993). These competing findings suggest that the efficacy of performance-based pay is contingent upon task characteristics, organizational culture, and the degree to which employees perceive reward allocation as equitable.</div></div></div></div>
+
+          <div class="example-pair"><h3 class="pair-header">Example 5.2</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIHBocmFzZXMgImFsbCBvZiB0aGUgZGF0YSBwb2ludHMgc2hvdyIgYW5kICJ0aGVyZSBpcyBubyBkb3duc2lkZSIgYXJlIGFic29sdXRlIGNsYWltcyBubyBsZWdpdGltYXRlIGxpdGVyYXR1cmUgcmV2aWV3IGNhbiBzdXN0YWluLiBUaGUgdHJhbnNsYXRpb24gaGFuZGxlcyBhIGNvbXBsZXggdG9waWMgd2l0aCBzY2hvbGFybHkgaW50ZWdyaXR5OiA8ZW0gY2xhc3M9ImtleS10ZXJtIj5hY2tub3dsZWRnZSB0aGUgY29tcGxleGl0eSBvZiB0aGUgZXZpZGVuY2UsPC9lbT4gcHJlc2VudCB0aGUgcG9zaXRpdmUgZmluZGluZ3Mgd2l0aCBjaXRhdGlvbnMsIHByZXNlbnQgdGhlIGNyaXRpY2FsIGxpdGVyYXR1cmUgd2l0aCBlcXVhbCByaWdvciwgYW5kIHJlc29sdmUgdGhlIHRlbnNpb24gYnkgaWRlbnRpZnlpbmcgdGhlIG1vZGVyYXRpbmcgdmFyaWFibGVzIHRoYXQgZXhwbGFpbiB3aGVuIGVhY2ggc2V0IG9mIGZpbmRpbmdzIGFwcGxpZXMuPGRpdiBjbGFzcz0iZXhhbWluZXItbm90ZSI+PHNwYW4gY2xhc3M9ImVuLWxhYmVsIj4mI3gxRjM5MzsgRXhhbWluZXIgUGVyc3BlY3RpdmU8L3NwYW4+QWJzb2x1dGUgY2xhaW1zIGFib3V0IGV2aWRlbmNlIGFyZSBhbG1vc3QgYWx3YXlzIGVtcGlyaWNhbGx5IGZhbHNlLiBBIHNpbmdsZSBjb3VudGVyLXN0dWR5IGNhbiBjb2xsYXBzZSBhbiBvdmVyY2xhaW1lZCBhcmd1bWVudCDigJQgY29tbWl0dGVlcyBrbm93IHRoZSBsaXRlcmF0dXJlIGFuZCB3aWxsIHRlc3QgeW91IG9uIGl0LjwvZGl2Pg=="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body"><span class="hl-corp" data-type="corp">All of the data points</span> in our analysis show that diversity initiatives improve company performance. There is no downside to these programs, and any resistance to them is simply a change management problem to be overcome.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">Research examining the relationship between workforce diversity and organizational performance has produced a <span class="hl-schol" data-type="schol">complex and at times contradictory body of evidence</span>. Several studies document positive associations between diversity and outcomes such as innovation, problem-solving breadth, and financial performance, particularly in organizations with inclusive climates (Hunt et al., 2018; Page, 2007). However, scholars have also identified conditions under which diversity may increase interpersonal conflict, reduce social cohesion, or produce performance decrements absent adequate structural support (Mannix &amp; Neale, 2005; Ely &amp; Thomas, 2001). This nuanced landscape suggests that the performance effects of diversity initiatives are moderated by organizational context, program design, and the degree to which inclusion practices accompany demographic diversification efforts.</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 6 ===== -->
+    <section class="section-block" id="s6">
+      <h2 style="margin:0; padding:0; line-height:1;">
+        <button class="section-trigger" aria-expanded="false" aria-controls="panel-s6" id="s6-title">
+          <span class="sec-badge" aria-hidden="true">Section 6</span>
+        <span class="sec-title">Framing Recommendations</span>
+        <em class="sec-chevron" aria-hidden="true">▼</em>
+        </button>
+      </h2>
+      <div class="section-panel" id="panel-s6">
+        <div class="section-panel-inner">
+          <p class="section-desc">A dissertation does not conclude with a directive. It concludes with implications, grounded in your findings, qualified by your study's limitations, and framed as contributions to both scholarship and practice. The shift is from "do this" to "these findings suggest the following may be worth considering."</p>
+
+          <div class="example-pair"><h3 class="pair-header">Example 6.1</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIGNvcnBvcmF0ZSBkcmFmdCBnaXZlcyBvcmRlcnMgYW5kIGF0dGFjaGVzIGEgdGhyZWF0IOKAlCBhcHByb3ByaWF0ZSBmb3IgYSBib2FyZCBwcmVzZW50YXRpb24sIG5vdCBhIGRpc3NlcnRhdGlvbi4gVGhlIHNjaG9sYXJseSB0cmFuc2xhdGlvbiBtYWtlcyBmb3VyIGVzc2VudGlhbCBtb3ZlczogaXQgPGVtIGNsYXNzPSJrZXktdGVybSI+dGV0aGVycyB0aGUgcmVjb21tZW5kYXRpb24gdG8gc3BlY2lmaWMgc3R1ZHkgZmluZGluZ3M7PC9lbT4gdXNlcyAibWF5IGNvbnNpZGVyIiByYXRoZXIgdGhhbiAibXVzdDsiIDxlbSBjbGFzcz0ia2V5LXRlcm0iPnF1YWxpZmllcyB0aGUgc2NvcGU8L2VtPiBvZiBhcHBsaWNhYmlsaXR5ICgiY29tcGFyYWJsZSBvcmdhbml6YXRpb25hbCBjb250ZXh0cyIpOyBhbmQgY2xvc2VzIHdpdGggYW4gaW1wbGljYXRpb24gZm9yIGZ1dHVyZSByZXNlYXJjaCDigJQgZGVtb25zdHJhdGluZyB0aGF0IGRvY3RvcmFsIHdvcmsgZG9lcyBub3QgZW5kIGlucXVpcnkgYnV0IGFkdmFuY2VzIGl0LjxkaXYgY2xhc3M9ImV4YW1pbmVyLW5vdGUiPjxzcGFuIGNsYXNzPSJlbi1sYWJlbCI+JiN4MUYzOTM7IEV4YW1pbmVyIFBlcnNwZWN0aXZlPC9zcGFuPkEgY29tbWl0dGVlIG1lbWJlciByZWFkaW5nIGRpcmVjdGl2ZXMgaW4gYSBkaXNjdXNzaW9uIGNoYXB0ZXIgd2lsbCBub3RlIHRoYXQgdGhlIHN0dWRlbnQgaGFzIHdyaXR0ZW4gYSBjb25zdWx0aW5nIHJlcG9ydCwgbm90IGEgZGlzc2VydGF0aW9uLiBUaGUgc3RydWN0dXJhbCBkaWZmZXJlbmNlIGlzIG5vdCBjb3NtZXRpYy48L2Rpdj4="><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">Based on what we found, the company <span class="hl-corp" data-type="corp">must restructure</span> its performance management system immediately. HR leaders should eliminate annual reviews and replace them with continuous feedback loops within the next fiscal year. Failure to act will result in continued talent loss.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">The findings of the present study <span class="hl-schol" data-type="schol">carry several implications</span> for human resource management practice. Given the negative association observed between annual performance review cycles and retention outcomes in the study's sample of mid-size technology firms, practitioners in comparable organizational contexts may consider transitioning toward more frequent, developmental feedback structures. Prior research suggests that continuous performance management approaches are associated with improved employee goal clarity and perceived organizational support (Buckingham &amp; Goodall, 2015; London &amp; Smither, 2002), though successful implementation likely requires commensurate investment in managerial capability development. Future research might examine the extent to which these relationships hold across industries characterized by different task routinization and performance measurability.</div></div></div></div>
+
+          <div class="example-pair"><h3 class="pair-header">Example 6.2</h3><div class="mobile-swipe-btns" aria-label="Toggle view"><button class="msb msb-corp active" data-target="corp">Corporate Draft</button><button class="msb msb-schol" data-target="schol">Scholarly Translation</button></div><div class="split-container" data-breakdown="VGhlIHBocmFzZSAib3VyIHJlc2VhcmNoIHByb3ZlcyIgaXMgYW1vbmcgdGhlIG1vc3QgY29uc2VxdWVudGlhbCBlcnJvcnMgYSBkb2N0b3JhbCBzdHVkZW50IGNhbiBtYWtlIOKAlCByZXNlYXJjaCBpbiBzb2NpYWwgc2NpZW5jZXMgZG9lcyBub3QgcHJvdmU7IGl0IDxlbSBjbGFzcz0ia2V5LXRlcm0iPnByb3ZpZGVzIGV2aWRlbmNlIGNvbnNpc3RlbnQgd2l0aDwvZW0+IG9yIDxlbSBjbGFzcz0ia2V5LXRlcm0iPnN1Z2dlc3RzIHN1cHBvcnQgZm9yPC9lbT4gYSBwcm9wb3NpdGlvbi4gVGhlIHRyYW5zbGF0aW9uIHJlbW92ZXMgdGhpcyBvdmVyY2xhaW0gYW5kIGFkZHMgYSBsaW1pdGF0aW9uIHN0YXRlbWVudCBhY2tub3dsZWRnaW5nIHRoZSBjcm9zcy1zZWN0aW9uYWwgZGVzaWduIGFuZCBzYW1wbGUgYm91bmRhcmllcy4gQSBsaW1pdGF0aW9ucyBzZWN0aW9uIGlzIGV2aWRlbmNlIG9mIG1ldGhvZG9sb2dpY2FsIHNlbGYtYXdhcmVuZXNzIOKAlCBhIGNvbW1pdHRlZSB0aGF0IHJlYWRzIGl0IHdpbGwgdHJ1c3QgeW91ciBmaW5kaW5ncyBtb3JlLCBub3QgbGVzcy48ZGl2IGNsYXNzPSJleGFtaW5lci1ub3RlIj48c3BhbiBjbGFzcz0iZW4tbGFiZWwiPiYjeDFGMzkzOyBFeGFtaW5lciBQZXJzcGVjdGl2ZTwvc3Bhbj5TdGF0aW5nIHRoYXQgc29jaWFsLXNjaWVuY2UgcmVzZWFyY2ggInByb3ZlcyIgYW55dGhpbmcgaXMgY29uc2lkZXJlZCBhIGZ1bmRhbWVudGFsIGVwaXN0ZW1vbG9naWNhbCBlcnJvci4gSXQgY2FuIHNoYWtlIGNvbW1pdHRlZSBjb25maWRlbmNlIGluIHRoZSBzdHVkZW50J3MgZ3Jhc3Agb2YgcG9zaXRpdmlzbSB2cy4gY29uc3RydWN0aXZpc20uPC9kaXY+"><div class="pane pane-corp"><div class="pane-header">Corporate Draft</div><div class="pane-body">The conclusion is clear: organizations that want to survive the next decade must invest in AI-driven decision-making tools. <span class="hl-corp" data-type="corp">Our research proves this.</span> Every C-suite executive reading this report should begin budget allocation for these systems today.</div></div><div class="pane pane-schol"><div class="pane-header">Scholarly Translation</div><div class="pane-body">These findings <span class="hl-schol" data-type="schol">contribute to a growing body of evidence indicating</span> that investment in AI-assisted decision support systems may be associated with enhanced strategic decision quality in organizations operating in high-complexity environments (Davenport &amp; Ronanki, 2018; Brynjolfsson &amp; McAfee, 2014). Organizational leaders may wish to evaluate the applicability of these tools to their specific decision contexts, taking into account the absorptive capacity of their organization, the availability of quality data infrastructure, and existing levels of employee digital literacy. It should be noted, however, that the present study's findings are bounded by its cross-sectional design and its focus on large-enterprise respondents; caution is therefore warranted in generalizing these implications to small and medium-sized enterprises or to industries with limited digitization maturity.</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    
+
+  <div class="vocab-card" id="vocab-ref"><button class="vocab-toggle" aria-expanded="false" aria-controls="vocab-body"><span class="vocab-icon">📖</span><span class="vocab-title">Quick Reference: Corporate-to-Scholarly Vocabulary</span><em class="vocab-chevron" aria-hidden="true">▼</em></button><div class="vocab-body" id="vocab-body" hidden=""><p class="vocab-intro">Use this table as a first-pass checklist when editing any paragraph. If a corporate term appears in your draft, replace it with its scholarly equivalent before submitting.</p><table class="vocab-table" role="table" aria-label="Corporate to scholarly vocabulary table"><thead><tr><th scope="col">Corporate Draft Language</th><th scope="col">Scholarly Equivalent</th></tr></thead><tbody><tr><td class="vc-corp">game-changer</td><td class="vc-schol">significant contributor / notable development</td></tr><tr><td class="vc-corp">leverage</td><td class="vc-schol">utilize / employ / integrate</td></tr><tr><td class="vc-corp">synergies</td><td class="vc-schol">cross-functional collaboration / integrated outcomes</td></tr><tr><td class="vc-corp">move the needle</td><td class="vc-schol">produce measurable change / yield significant improvement</td></tr><tr><td class="vc-corp">deep dive</td><td class="vc-schol">systematic analysis / thorough examination</td></tr><tr><td class="vc-corp">think outside the box</td><td class="vc-schol">novel approaches / innovative strategies</td></tr><tr><td class="vc-corp">circle back</td><td class="vc-schol">revisit / re-examine</td></tr><tr><td class="vc-corp">best-in-class</td><td class="vc-schol">exemplary / consistently high-performing</td></tr><tr><td class="vc-corp">proves</td><td class="vc-schol">provides evidence consistent with / suggests support for</td></tr><tr><td class="vc-corp">clearly / obviously</td><td class="vc-schol">research indicates / evidence suggests</td></tr><tr><td class="vc-corp">always / never</td><td class="vc-schol">frequently / rarely / in many cases</td></tr><tr><td class="vc-corp">I know / I believe</td><td class="vc-schol">scholars have identified / research indicates</td></tr><tr><td class="vc-corp">across the board</td><td class="vc-schol">broadly / consistently across contexts</td></tr><tr><td class="vc-corp">disrupt</td><td class="vc-schol">significantly alter / fundamentally restructure</td></tr><tr><td class="vc-corp">at the end of the day</td><td class="vc-schol">ultimately / taken together / in aggregate</td></tr><tr><td class="vc-corp">win-win</td><td class="vc-schol">mutually beneficial outcome / convergent interest</td></tr></tbody></table></div></div></main>
+</div>
+
+<footer role="contentinfo">
+  
+  <p style="margin-top:0.35rem;font-size:0.71rem;">Designed to meet WCAG 2.1 AA accessibility standards. Contact your program coordinator to report any accessibility barriers.</p>
+</footer>
+
+<script>
+/* Mobile nav */
+const navToggle = document.querySelector('.nav-toggle');
+const primaryNav = document.getElementById('primary-nav');
+navToggle.addEventListener('click', () => {
+  const exp = navToggle.getAttribute('aria-expanded') === 'true';
+  navToggle.setAttribute('aria-expanded', String(!exp));
+  primaryNav.classList.toggle('open');
+});
+primaryNav.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => { primaryNav.classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); });
+});
+
+
+
+/* TOC active */
+const sections = document.querySelectorAll('.section-block[id]');
+const tocLinks  = document.querySelectorAll('.toc-list a');
+new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      tocLinks.forEach(l => {
+        const on = l.getAttribute('href') === '#' + id;
+        l.classList.toggle('active', on);
+        on ? l.setAttribute('aria-current','location') : l.removeAttribute('aria-current');
+      });
+    }
+  });
+}, { rootMargin: '-15% 0px -60% 0px' }).observe && sections.forEach(s => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        tocLinks.forEach(l => {
+          const on = l.getAttribute('href') === '#' + id;
+          l.classList.toggle('active', on);
+          on ? l.setAttribute('aria-current','location') : l.removeAttribute('aria-current');
+        });
+      }
+    });
+  }, { rootMargin: '-15% 0px -60% 0px' }).observe(s);
+});
+
+/* Section accordion */
+document.querySelectorAll('.section-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const exp   = btn.getAttribute('aria-expanded') === 'true';
+    const panel = document.getElementById(btn.getAttribute('aria-controls'));
+    btn.setAttribute('aria-expanded', String(!exp));
+    panel.classList.toggle('open', !exp);
+  });
+});
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tt = document.createElement('div');
+  tt.id = 'breakdown-tooltip';
+  tt.innerHTML = '<div class="breakdown-tt-header">The Breakdown</div><div class="breakdown-tt-body"></div>';
+  document.body.appendChild(tt);
+  const ttBody = tt.querySelector('.breakdown-tt-body');
+
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.id = 'line-canvas';
+  document.body.appendChild(svg);
+  const path = document.createElementNS(svgNS, 'path');
+  path.setAttribute('class', 'conn-line');
+  svg.appendChild(path);
+
+  const updateSvgSize = () => {
+    svg.style.width = document.documentElement.scrollWidth + 'px';
+    svg.style.height = document.documentElement.scrollHeight + 'px';
+  };
+  window.addEventListener('resize', updateSvgSize);
+  updateSvgSize();
+
+  const drawLine = (el1, el2) => {
+    const r1 = el1.getBoundingClientRect();
+    const r2 = el2.getBoundingClientRect();
+    const startX = r1.right + window.scrollX;
+    const startY = r1.top + (r1.height / 2) + window.scrollY;
+    const endX = r2.left + window.scrollX;
+    const endY = r2.top + (r2.height / 2) + window.scrollY;
+    const dx = Math.abs(endX - startX) * 0.5;
+    const d = 'M ' + startX + ' ' + startY + ' C ' + (startX + dx) + ' ' + startY + ', ' + (endX - dx) + ' ' + endY + ', ' + endX + ' ' + endY;
+    path.setAttribute('d', d);
+    path.classList.add('active');
+  };
+
+  const hideAll = () => {
+    tt.classList.remove('visible');
+    path.classList.remove('active');
+    document.querySelectorAll('.active-match').forEach(el => el.classList.remove('active-match'));
+  };
+
+  document.querySelectorAll('.hl-corp, .hl-schol').forEach(hl => {
+    hl.addEventListener('mouseenter', (e) => {
+      const container = hl.closest('.split-container');
+      const isCorp = hl.classList.contains('hl-corp');
+      const otherHl = container.querySelector(isCorp ? '.hl-schol' : '.hl-corp');
+      const b64 = container.getAttribute('data-breakdown');
+      
+      if(otherHl) otherHl.classList.add('active-match');
+      if(otherHl) drawLine(isCorp ? hl : otherHl, isCorp ? otherHl : hl);
+      
+      const binary = atob(b64);
+      const bytes = Uint8Array.from(binary, function(ch) { return ch.charCodeAt(0); });
+      const decodedBreakdown = new TextDecoder('utf-8').decode(bytes)
+        .replace(/[—–]/g, ' - ');
+      ttBody.innerHTML = decodedBreakdown;
+      tt.classList.add('visible');
+      
+      const rect = hl.getBoundingClientRect();
+      const leftPos = Math.max(10, rect.left + window.scrollX);
+      const rightLimit = document.documentElement.clientWidth - 460;
+      tt.style.left = Math.min(leftPos, Math.max(10, rightLimit)) + 'px';
+      tt.style.top = (rect.bottom + window.scrollY + 15) + 'px';
+    });
+    
+    hl.addEventListener('mouseleave', hideAll);
+  });
+});
+</script><script>(function() {
+  var bar = document.getElementById("section-context-bar");
+  var scbLabel = document.getElementById("scb-label");
+  var sections = document.querySelectorAll(".section-block[id]");
+  var triggers = document.querySelectorAll(".section-trigger");
+  var sectionNames = {};
+  triggers.forEach(function(t) {
+    var sid = t.getAttribute("aria-controls").replace("panel-","");
+    var title = t.querySelector(".sec-title");
+    if (title) sectionNames[sid] = t.querySelector(".sec-badge").textContent + " · " + title.textContent;
+  });
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var name = sectionNames[e.target.id];
+        if (name) { scbLabel.textContent = name; bar.classList.add("visible"); }
+      }
+    });
+  }, { rootMargin: "-62px 0px -80% 0px", threshold: 0 });
+  sections.forEach(function(s) { io.observe(s); });
+  window.addEventListener("scroll", function() {
+    var atTop = window.scrollY < 200;
+    if (atTop) bar.classList.remove("visible");
+  }, { passive: true });
+})();
+(function() {
+  function smartPosition(tt, anchorRect) {
+    var ttH = 260;
+    var spaceBelow = window.innerHeight - anchorRect.bottom;
+    var spaceAbove = anchorRect.top;
+    var top;
+    if (spaceBelow < ttH + 20 && spaceAbove > ttH + 20) {
+      top = anchorRect.top - ttH - 12;
+      tt.classList.add("flip-up");
+    } else {
+      top = anchorRect.bottom + 12;
+      tt.classList.remove("flip-up");
+    }
+    var maxW = Math.min(460, window.innerWidth - 24);
+    var left = Math.min(Math.max(12, anchorRect.left), window.innerWidth - maxW - 12);
+    tt.style.top = top + "px";
+    tt.style.left = left + "px";
+  }
+  window.__smartPosition = smartPosition;
+})();
+(function() {
+  var origScript = document.querySelector("script:nth-of-type(3)");
+  // Override mouseenter on all hls to use smart position
+  document.addEventListener("DOMContentLoaded", function() {
+    var tt = document.getElementById("breakdown-tooltip");
+    if (!tt || !window.__smartPosition) return;
+    document.querySelectorAll(".hl-corp, .hl-schol").forEach(function(hl) {
+      hl.addEventListener("mouseenter", function() {
+        setTimeout(function() {
+          if (tt.classList.contains("visible")) {
+            window.__smartPosition(tt, hl.getBoundingClientRect());
+          }
+        }, 10);
+      });
+    });
+  });
+})();
+(function() {
+  document.querySelectorAll(".mobile-swipe-btns").forEach(function(sw) {
+    var container = sw.nextElementSibling;
+    sw.querySelectorAll(".msb").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        sw.querySelectorAll(".msb").forEach(function(b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        if (btn.dataset.target === "schol") {
+          container.classList.add("show-schol");
+        } else {
+          container.classList.remove("show-schol");
+        }
+      });
+    });
+  });
+})();
+(function() {
+  var toggle = document.querySelector(".vocab-toggle");
+  var body = document.getElementById("vocab-body");
+  if (!toggle || !body) return;
+  toggle.addEventListener("click", function() {
+    var expanded = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!expanded));
+    body.hidden = expanded;
+  });
+})();
+(function() {
+  var s = document.createElement("style");
+  s.innerHTML = "#breakdown-tooltip.flip-up::after { top: auto; bottom: -10px; border-bottom: none; border-top: 10px solid var(--campus-gold-dark); }";
+  document.head.appendChild(s);
+})();</script></body></html>

@@ -1,0 +1,3 @@
+# Version 1.0 - Ignore local-only AGENTS.md and prompts.md files so they are not uploaded to GitHub.
+AGENTS.md
+prompts.md
