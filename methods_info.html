@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<!-- Version 1.0 - Initial creation: informational companion page for methods.html, describing how the Research Methodology Advisor works. -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About the Research Methodology Advisor - DBA Program</title>
+    <meta name="description" content="Learn how the Research Methodology Advisor works, what questions it asks, which methods it can recommend, and how to interpret its output.">
+    <style>
+        /* Purdue Color Palette */
+        :root {
+            --campus-gold: #C28E0E;
+            --athletic-gold: #CEB888;
+            --purdue-black: #000000;
+            --gray: #9D968D;
+            --dark-gray: #373A36;
+            --white: #FFFFFF;
+            /* Accessible text gold: #9A7010 achieves 4.63:1 on white (WCAG AA) */
+            --gold-text: #9A7010;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--white);
+            color: var(--purdue-black);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* ── Header ── */
+        .header {
+            background-color: var(--purdue-black);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* ── Main content wrapper ── */
+        .content {
+            padding: 30px;
+        }
+
+        /* ── Section cards (match intro-content in methods.html) ── */
+        .info-section {
+            background-color: var(--white);
+            border: 2px solid var(--athletic-gold);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+
+        .info-section h2 {
+            color: var(--gold-text);
+            margin-bottom: 16px;
+            font-size: 1.6rem;
+        }
+
+        .info-section h3 {
+            color: var(--purdue-black);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .info-section p {
+            color: var(--dark-gray);
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+        }
+
+        .info-section ul,
+        .info-section ol {
+            margin-left: 25px;
+            margin-bottom: 14px;
+            color: var(--dark-gray);
+        }
+
+        .info-section li {
+            margin-bottom: 8px;
+            font-size: 1.02rem;
+        }
+
+        /* ── Callout / blockquote-style boxes (match source-reference) ── */
+        .callout {
+            background-color: var(--white);
+            border-left: 4px solid var(--campus-gold);
+            padding: 18px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .callout p {
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+            font-size: 1.02rem;
+        }
+
+        .callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ── Dimension cards ── */
+        .dimension-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .dimension-card {
+            background-color: var(--white);
+            border: 1px solid var(--gray);
+            border-radius: 6px;
+            padding: 16px 18px;
+            border-left: 4px solid var(--athletic-gold);
+        }
+
+        .dimension-card h3 {
+            color: var(--gold-text);
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            margin-top: 0;
+        }
+
+        .dimension-card p {
+            margin-bottom: 4px;
+            font-size: 0.97rem;
+        }
+
+        .dimension-card .options-label {
+            font-size: 0.92rem;
+            color: var(--gray);
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        /* ── Methods tag cloud / pill list ── */
+        .method-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .method-tag {
+            background-color: #f8f1df;
+            border: 1px solid var(--athletic-gold);
+            color: var(--dark-gray);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 0.95rem;
+        }
+
+        /* ── Warning / limits box ── */
+        .limits-box {
+            background-color: #f8f1df;
+            border-left: 4px solid var(--campus-gold);
+            padding: 18px 20px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .limits-box h3 {
+            color: var(--purdue-black);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .limits-box ul {
+            margin-left: 22px;
+            color: var(--dark-gray);
+        }
+
+        .limits-box li {
+            margin-bottom: 8px;
+        }
+
+        /* ── Back-link button (matches nav-button / start-button) ── */
+        .back-link-wrap {
+            text-align: center;
+            margin: 10px 0 30px;
+        }
+
+        .back-link {
+            display: inline-block;
+            background-color: var(--campus-gold);
+            color: var(--purdue-black);
+            text-decoration: none;
+            padding: 13px 36px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: #A67309;
+        }
+
+        .back-link:focus {
+            outline: 3px solid var(--purdue-black);
+            outline-offset: 2px;
+        }
+
+        /* ── Footer credit ── */
+        .footer-note {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+            padding: 20px 30px;
+            border-top: 1px solid #e0dbd4;
+        }
+
+        .footer-note a {
+            color: var(--gold-text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--gold-text);
+        }
+
+        .footer-note a:hover {
+            color: #7A5700;
+            border-bottom-color: #7A5700;
+        }
+
+        .footer-note a:focus {
+            outline: 3px solid var(--campus-gold);
+            outline-offset: 2px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .container { margin: 10px; }
+            .content { padding: 20px; }
+            .header { padding: 20px; }
+            .header h1 { font-size: 1.5rem; }
+            .info-section { padding: 20px; }
+            .info-section h2 { font-size: 1.3rem; }
+        }
+
+        /* Respect user's motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Research Methodology Advisor</h1>
+            <p>How the Decision Tool Works &mdash; A Guide for DBA Students</p>
+        </header>
+
+        <main class="content">
+
+            <!-- ── 1. What the tool does ── -->
+            <section class="info-section" aria-labelledby="section-what">
+                <h2 id="section-what">What This Tool Does</h2>
+                <p>
+                    The Research Methodology Advisor helps DBA students choose a research methodology for an applied
+                    project. It asks a short series of practical questions about your goals, constraints, and data
+                    reality, then recommends:
+                </p>
+                <ul>
+                    <li>One <strong>primary method</strong> best aligned with your answers</li>
+                    <li>Up to <strong>two alternatives</strong> that could also work</li>
+                    <li><strong>Feasibility notes and cautions</strong> tailored to your constraints</li>
+                </ul>
+                <p>
+                    The result also includes a brief overview of the recommended method&mdash;what it is, when to use
+                    it, advantages, considerations, examples, and next-step guidance. This tool converts your practical
+                    research situation into a clear, defensible methodology choice&mdash;with reasons, cautions, and
+                    next steps&mdash;so you can move from idea to execution with confidence.
+                </p>
+
+                <div class="back-link-wrap" style="margin-top: 22px; margin-bottom: 0;">
+                    <a href="methods.html" class="back-link" aria-label="Open the Research Methodology Advisor tool">
+                        &#9654;&nbsp; Launch the Advisor
+                    </a>
+                </div>
+            </section>
+
+            <!-- ── 2. What it's based on ── -->
+            <section class="info-section" aria-labelledby="section-based">
+                <h2 id="section-based">What It&rsquo;s Based On</h2>
+                <p>
+                    The tool is grounded in common DBA/applied research guidance and a
+                    <em>Research Methodologies Guidebook</em> reference document provided by the designer. It reflects
+                    widely used methods&mdash;experimental, quasi-experimental, survey, case study, mixed methods,
+                    design science, action research, qualitative traditions, SEM, and longitudinal/time-series
+                    designs&mdash;and translates them into decision steps that are practical for organizational
+                    settings.
+                </p>
+                <div class="callout">
+                    <p>
+                        <strong>We encourage you to review the source material before starting:</strong>
+                    </p>
+                    <p>
+                        <a href="https://cunmayday.github.io/webtests/ResearchMethods.pdf"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="View the Research Methods Guide PDF (opens in new tab)">
+                            View the Research Methods Guide (PDF)
+                        </a>
+                    </p>
+                    <p>
+                        Reviewing this guide will provide you with deeper context about the various methodologies,
+                        helping you make more informed decisions as you progress through the tool.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ── 3. How it works ── -->
+            <section class="info-section" aria-labelledby="section-how">
+                <h2 id="section-how">How It Works</h2>
+
+                <h3>Step 1 &mdash; Answer a short sequence of questions</h3>
+                <p>
+                    Questions cover your research purpose, level of control, time design, data sources,
+                    depth vs. generalizability, whether you&rsquo;re building or evaluating, theory maturity,
+                    and feasibility.
+                </p>
+
+                <h3>Step 2 &mdash; The tool scores possible methods</h3>
+                <p>
+                    Each answer adds points to methods that fit (and may add &ldquo;watch-outs&rdquo; when
+                    there&rsquo;s a mismatch). For example: if you can randomize, experimental designs get a
+                    big boost; if you&rsquo;re observational, correlational/case study gain points and
+                    experiments receive cautions.
+                </p>
+
+                <h3>Step 3 &mdash; It ranks the methods and delivers a recommendation</h3>
+                <ul>
+                    <li><strong>Primary recommendation</strong> = highest-scoring method (with reasons)</li>
+                    <li><strong>Alternatives</strong> = next-best 1&ndash;2 methods (with reasons)</li>
+                    <li><strong>Feasibility notes</strong> = guidance tied to your constraints</li>
+                </ul>
+
+                <h3>Step 4 &mdash; You get an explanation, not just a label</h3>
+                <p>
+                    The output tells you <em>why</em> a method fits, what to watch for, and concrete next steps
+                    (e.g., power analysis for experiments; validated scales for surveys; sampling and coding plans
+                    for qualitative; integration plans for mixed methods).
+                </p>
+            </section>
+
+            <!-- ── 4. Dimensions ── -->
+            <section class="info-section" aria-labelledby="section-dims">
+                <h2 id="section-dims">What the Questions Cover (Eight Dimensions)</h2>
+                <p>
+                    The advisor uses eight dimensions to triangulate the best methodological fit for your project.
+                </p>
+
+                <div class="dimension-grid">
+
+                    <div class="dimension-card">
+                        <h3>1. Research Purpose</h3>
+                        <p>What core outcome must your research deliver for the organization?</p>
+                        <p class="options-label">Options: Explore &bull; Explain &bull; Predict &bull; Improve</p>
+                    </div>
+
+                    <div class="dimension-card">
+                        <h3>2. Level of Control</h3>
+                        <p>
+                            Can you manipulate the key variable and randomize assignment?
+                            This guides the choice among experimental, quasi-experimental, and
+                            observational/correlational designs.
+                        </p>
+                        <p class="options-label">
+                            Options: Randomized assignment &bull; Manipulate without randomization &bull;
+                            Observational only
+                        </p>
+                    </div>
+
+                    <div class="dimension-card">
+                        <h3>3. Time Design</h3>
+                        <p>
+                            Will you observe change over time? This distinguishes snapshot studies from
+                            growth/change models and high-frequency forecasting.
+                        </p>
+                        <p class="options-label">
+                            Options: Cross-sectional &bull; Longitudinal panel &bull; High-frequency time-series
+                        </p>
+                    </div>
+
+                    <div class="dimension-card">
+                        <h3>4. Primary Data Source</h3>
+                        <p>What data can you realistically obtain? This aligns methods with your actual access.</p>
+                        <p class="options-label">
+                            Options: Archival/organizational data &bull; New survey &bull;
+                            Qualitative (interviews/observation/docs) &bull; Mixed sources
+                        </p>
+                    </div>
+
+                    <div class="dimension-card">
+                        <h3>5. Depth vs. Generalizability</h3>
+                        <p>
+                            Is your priority rich contextual understanding or findings that scale
+                            across populations? This balances qualitative depth with quantitative breadth.
+                        </p>
+                        <p class="options-label">
+                            Options: Contextual depth &bull; Generalizable estimates &bull; Both
+                        </p>
+                    </div>
+
+                    <div class="dimension-card">
+                        <h3>6. Innovation vs. Evaluation <em>(shown only when &ldquo;Improve&rdquo; is your purpose)</em></h3>
+                        <p>
+                            Are you building something new, co-creating change with stakeholders, or evaluating an
+                            existing intervention? This routes you to design science, action research, or
+                            quasi-experimental/survey evaluation.
+                        </p>
+                        <p class="options-label">
+                            Options: Build a new artifact &bull; Co-create change &bull; Evaluate existing intervention
+                        </p>
+                    </div>
+
+                    <div class="dimension-card">
+                        <h3>7. Theoretical Maturity</h3>
+                        <p>
+                            How well-developed is the theory base in this area? This steers toward
+                            exploratory/qualitative methods for thin theory or confirmatory/quantitative methods for
+                            mature theory.
+                        </p>
+                        <p class="options-label">
+                            Options: Thin (build/refine frameworks) &bull; Mature (test/extend)
+                        </p>
+                    </div>
+
+                    <div class="dimension-card">
+                        <h3>8. Feasibility Guardrails</h3>
+                        <p>
+                            What constraints apply around resources, access, ethics, and timeline? Significant
+                            constraints may upweight leaner designs such as correlational studies, case studies,
+                            or systematic reviews.
+                        </p>
+                        <p class="options-label">
+                            Options: Strong support &bull; Some constraints &bull; Significant constraints
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ── 5. Which methods ── -->
+            <section class="info-section" aria-labelledby="section-methods">
+                <h2 id="section-methods">Which Methods the Tool Can Recommend</h2>
+                <p>
+                    Depending on your answers, the advisor selects from the following fifteen research approaches:
+                </p>
+                <div class="method-tags" role="list">
+                    <span class="method-tag" role="listitem">Experimental Design</span>
+                    <span class="method-tag" role="listitem">Quasi-Experimental</span>
+                    <span class="method-tag" role="listitem">Correlational / Observational</span>
+                    <span class="method-tag" role="listitem">Longitudinal Panel / Growth Modeling</span>
+                    <span class="method-tag" role="listitem">Time-Series / Forecasting</span>
+                    <span class="method-tag" role="listitem">SEM (Structural Equation Modeling)</span>
+                    <span class="method-tag" role="listitem">Survey Research</span>
+                    <span class="method-tag" role="listitem">Mixed Methods</span>
+                    <span class="method-tag" role="listitem">Case Study</span>
+                    <span class="method-tag" role="listitem">Ethnography</span>
+                    <span class="method-tag" role="listitem">Grounded Theory</span>
+                    <span class="method-tag" role="listitem">Phenomenology</span>
+                    <span class="method-tag" role="listitem">Action Research</span>
+                    <span class="method-tag" role="listitem">Design Science</span>
+                    <span class="method-tag" role="listitem">Systematic Review / Meta-Analysis</span>
+                </div>
+            </section>
+
+            <!-- ── 6. How the final answer is determined ── -->
+            <section class="info-section" aria-labelledby="section-output">
+                <h2 id="section-output">What the Final Answer Is Based On</h2>
+
+                <div class="callout">
+                    <p>
+                        <strong>Weighted fit:</strong> Your responses increase or decrease scores for each method
+                        according to methodological logic (e.g., randomization favors experiments; mixed sources
+                        favor mixed methods; high-frequency data favors time-series).
+                    </p>
+                </div>
+
+                <div class="callout">
+                    <p>
+                        <strong>Reasons &amp; cautions:</strong> Each recommendation lists <em>why it fits</em> and
+                        any <em>watch-outs</em> (e.g., sample size, integration workload, ethics, access).
+                    </p>
+                </div>
+
+                <div class="callout">
+                    <p>
+                        <strong>Feasibility guidance:</strong> Notes reflect your constraint level (e.g., suggesting
+                        staged approaches or synthesis when primary data are hard to obtain).
+                    </p>
+                </div>
+
+                <div class="callout">
+                    <p>
+                        <strong>Transparency:</strong> You see a full path summary (your choices), the primary
+                        method, alternatives, and next steps tailored to your selection&mdash;so you can always
+                        explain and defend how you arrived at your methodology.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ── 7. How to use the output ── -->
+            <section class="info-section" aria-labelledby="section-use">
+                <h2 id="section-use">How to Use the Output</h2>
+                <ol>
+                    <li>
+                        <strong>Check the rationale.</strong> Does the &ldquo;why this fits&rdquo; match your real
+                        constraints and objectives? If not, revisit your answers.
+                    </li>
+                    <li>
+                        <strong>Scan cautions early.</strong> Address feasibility risks before committing to a
+                        design (e.g., power analysis, access letters, IRB approval, stakeholder time).
+                    </li>
+                    <li>
+                        <strong>Plan your next steps.</strong> Use the listed actions to set up instruments,
+                        sampling, protocols, or integration plans.
+                    </li>
+                    <li>
+                        <strong>Consider an alternative.</strong> If the primary method is too demanding for your
+                        timeline, the alternatives offer viable Plan B or Plan C options.
+                    </li>
+                </ol>
+            </section>
+
+            <!-- ── 8. Limits ── -->
+            <section class="info-section" aria-labelledby="section-limits">
+                <h2 id="section-limits">Limits to Keep in Mind</h2>
+                <div class="limits-box">
+                    <ul>
+                        <li>
+                            It is a <strong>decision aid</strong>, not a substitute for advisor approval.
+                            Always discuss your final methodology selection with your dissertation committee or
+                            faculty advisor.
+                        </li>
+                        <li>
+                            Recommendations assume <strong>honest inputs</strong> about your access, timeline,
+                            and skill set. Overstating capabilities leads to poor fits.
+                        </li>
+                        <li>
+                            <strong>Complex projects</strong> may need phased designs (e.g., start correlational,
+                            move to quasi-experimental, then integrate qualitative). The tool may not capture every
+                            nuance of a multi-phase plan.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ── CTA ── -->
+            <div class="back-link-wrap">
+                <a href="methods.html" class="back-link" aria-label="Return to the Research Methodology Advisor">
+                    &#9654;&nbsp; Go to the Research Methodology Advisor
+                </a>
+            </div>
+
+        </main>
+
+        <footer class="footer-note">
+            <p>
+                This tool was created by Dr. Altinoz.
+                For suggestions, email
+                <a href="mailto:caltinoz@purdueglobal.edu">caltinoz@purdueglobal.edu</a>.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
